@@ -2,6 +2,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Layout1 from './components/Layout1';
 import {
   Switch,
@@ -18,7 +19,7 @@ function App() {
                 <Route path="/about" element={<About title="Charging Operator- About" />} />
                 <Route path="/contact" element={<Contact title="Charging Operator - Contact" />} />
                 <Route path="/login" element={<Login title="Charging Operator - Login" />} />
-                {/* <Route path="/register" element={<Register />} /> */}
+                <Route path="/register" element={<Register title="Charging Operator - Register" />} />
             </Route>
                 {/* <Route path="register" element={<Register />} />
                 <Route path="linkpage" element={<LinkPage />} />
