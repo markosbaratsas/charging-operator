@@ -3,10 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import useAuth from '../hooks/useAuth';
 import axios from '../api/axios';
+import useTitle from '../hooks/useTitle';
 
 const LOGIN_URL = '/login';
 
-const Login = () => {
+const Login = ({title}) => {
+    useTitle({title});
+
     const { setAuth } = useAuth();
 
     const navigate = useNavigate();

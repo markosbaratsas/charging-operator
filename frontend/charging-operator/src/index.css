@@ -105,6 +105,8 @@
 
 .right-nav1 ul li a {
   text-decoration: none;
+  line-height: 50px;
+  display: block;
   color: #f3f3f3;
   font-size: 15px;
 }

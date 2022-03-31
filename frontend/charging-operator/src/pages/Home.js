@@ -1,6 +1,9 @@
 import LandingPageView from '../components/LandingPageView';
+import useTitle from '../hooks/useTitle';
 
-const Home = () => {
+const Home = ({title}) => {
+    useTitle({title});
+
     return (
         <main className="flex-column-center-center">
             <LandingPageView/>

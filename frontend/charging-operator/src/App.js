@@ -14,10 +14,10 @@ function App() {
         <Routes>
             {/* public routes */}
             <Route path="/" element={<Layout1 />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Home title="Charging Operator - Home" />} />
+                <Route path="/about" element={<About title="Charging Operator- About" />} />
+                <Route path="/contact" element={<Contact title="Charging Operator - Contact" />} />
+                <Route path="/login" element={<Login title="Charging Operator - Login" />} />
                 {/* <Route path="/register" element={<Register />} /> */}
             </Route>
                 {/* <Route path="register" element={<Register />} />
