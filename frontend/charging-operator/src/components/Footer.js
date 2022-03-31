@@ -21,10 +21,13 @@ const Footer = () => {
                 <div className="footer-center flex-row-center-center">
                     <img src="/logo512.png" alt="Charging Operator logo" />
                 </div>
-                <div className="footer-right flex-column-center-center">
+                <div className="footer-right flex-column-end-center">
                     <ul>
                         <li>
-                            <Link to="/login/">Get Started</Link>
+                            <Link to="/login/">Login</Link>
+                        </li>
+                        <li>
+                            <Link to="/register/">Sign Up</Link>
                         </li>
                     </ul>
                 </div>
