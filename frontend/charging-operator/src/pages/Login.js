@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-import useAuth from '../hooks/useAuth';
+import AuthProvider from '../context/AuthProvider';
 import axios from '../api/axios';
 import useTitle from '../hooks/useTitle';
 
@@ -10,7 +10,7 @@ const LOGIN_URL = '/login';
 const Login = ({title}) => {
     useTitle({title});
 
-    const { setAuth } = useAuth();
+    const { isAuthenticated, setAuth } = AuthProvider();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -22,6 +22,10 @@ const Login = ({title}) => {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        if (isAuthenticated()) navigate(from, { replace: true });
+    }, [])
 
     useEffect(() => {
         userRef.current.focus();
@@ -46,7 +50,7 @@ const Login = ({title}) => {
             console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
-            setAuth({ user, pwd, accessToken });
+            setAuth({ accessToken });
             setUser('');
             setPwd('');
             navigate(from, { replace: true });

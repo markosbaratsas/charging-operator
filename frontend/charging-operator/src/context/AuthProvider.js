@@ -1,15 +1,22 @@
-import { createContext, useState } from "react";
+ const AuthProvider = () => {
+    const getAuth = () => {
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        return auth;
+    }
 
-const AuthContext = createContext({});
+    const setAuth = (a) => {
+        localStorage.setItem('auth', JSON.stringify(a));
+    }
 
-export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState({});
+    const isAuthenticated = (a) => {
+        const auth = getAuth();
+        if (auth && Object.keys(auth).length > 0) {
+            return true;
+        }
+        return false;
+    }
 
-    return (
-        <AuthContext.Provider value={{ auth, setAuth }}>
-            {children}
-        </AuthContext.Provider>
-    )
+    return {getAuth, setAuth, isAuthenticated}
 }
 
-export default AuthContext;
+export default AuthProvider;

@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import axios from '../api/axios';
+import AuthProvider from "../context/AuthProvider";
 import useTitle from "../hooks/useTitle";
 
 const USER_REGEX = /^[A-z][A-z0-9_]{3,23}$/;
@@ -12,6 +13,11 @@ const REGISTER_URL = '/register';
 
 const Register = ({title}) => {
     useTitle({title});
+
+    const { isAuthenticated } = AuthProvider();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/app/dashboard";
 
     const userRef = useRef();
     const errRef = useRef();
@@ -30,6 +36,10 @@ const Register = ({title}) => {
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        if (isAuthenticated()) navigate(from, { replace: true });
+    }, [])
 
     useEffect(() => {
         userRef.current.focus();
