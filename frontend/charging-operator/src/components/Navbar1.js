@@ -5,7 +5,7 @@ const Navbar1 = () => {
         <section className="nav1-background">
             <div className="wrapper">
                 <nav className="nav1">
-                    <div className="logo">
+                    <div className="logo flex-column-center-center">
                         <Link to="/">
                             <img src="/logo512.png" alt="Charging Operator Logo" />
                         </Link>

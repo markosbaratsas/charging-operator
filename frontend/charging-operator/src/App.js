@@ -8,7 +8,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/app/Dashboard';
 import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import RequireAuth from './components/RequireAuth';

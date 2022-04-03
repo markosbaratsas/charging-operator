@@ -10,6 +10,10 @@
   font-family: 'Poppins', sans-serif;
 }
 
+#root {
+  background-color: #f1f1f1;
+}
+
 .content {
   margin-top: 70px;
   background-color: #f1f1f1;
@@ -31,7 +35,7 @@
 
 .flex-column-start-center {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: start;
   align-items: center;
 }
@@ -79,7 +83,7 @@
 }
 
 .logo a img {
-  height: 60px;
+  height: 50px;
   margin: 5px 0px 5px 0px;
 }
 
@@ -650,4 +654,212 @@
   color: #f3f3f3;
   font-size: 20px;
   line-height: 30px;
+}
+
+
+/* Navbar2 */
+
+.three-lines {
+  width: 40px;
+  height: 40px;
+  background-image: url('../public/icons/three-lines.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  animation-duration: 0.3s;
+  animation-name: smoothopacity1;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+}
+
+@keyframes smoothopacity1 {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.three-lines:hover {
+  cursor: pointer;
+}
+
+.three-lines-x {
+  width: 40px;
+  height: 40px;
+  background-image: url('../public/icons/x-icon.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center right;
+
+  animation-duration: 0.5s;
+  animation-name: smoothopacity2;
+  animation-iteration-count: 1;
+  animation-direction: alternate;
+}
+
+@keyframes smoothopacity2 {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.three-lines-x:hover {
+  cursor: pointer;
+}
+
+.no-display {
+  display: none;
+  opacity: 0;
+}
+
+.three-lines-menu {
+  display: block !important;
+  opacity: 1 !important;
+  width: 90px;
+  background-color: #e3e3e3;
+  position: relative;
+  top: 40px;
+  right: 45px;
+  z-index: 2;
+  border: 1px solid #777;
+  border-radius: 4px;
+  transition: opacity 1s ease-out;
+}
+
+.three-lines-menu ul {
+  display: block;
+}
+
+.three-lines-menu ul li {
+  display: block;
+}
+
+.three-lines-menu ul li a {
+  display: block;
+  text-align: right;
+  line-height: 23px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #202020;
+  padding: 4px;
+}
+
+.three-lines-menu ul li a:hover {
+  text-shadow: 1px 1px 1px #fff;
+  background-color: #d3d3d3;
+}
+
+/* Dashboard */
+
+.dashboard {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  margin-bottom: 10px;
+}
+
+.dashboard h1 {
+  line-height: 85px;
+  font-size: 30px;
+  font-weight: 600;
+  padding: 10px;
+  font-family: 'Raleway', sans-serif;
+  color: #202020;
+
+}
+
+.stations-list {
+  background-color: #202020;
+  width: 1000px;
+  min-height: calc(100vh - 225px);
+  border: 4px solid #999;
+  border-radius: 20px;
+  padding: 20px 20px 10px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  align-content: start;
+  flex-wrap: wrap;
+}
+
+.station-preview {
+  text-decoration: none;
+  margin: 0px 10px 10px 0px;
+  padding: 10px;
+  background-color: #d5d5d5;
+  border: 2px solid #bbb;
+  border-radius: 5px;
+  width: 216px;
+  height: 85px;
+}
+
+.station-preview:hover {
+  background-color: #ccc;
+}
+
+.station-preview h2 {
+  font-weight: 600;
+  text-decoration: none;
+  color: #202020;
+  padding-bottom: 5px;
+  font-size: 18px;
+}
+
+.address, .price, .availability {
+  font-family: 'Noto Sans', sans-serif;
+  text-decoration: none;
+  color: #202020;
+  font-size: 15px;
+}
+
+.address {
+  font-style: italic;
+  padding-bottom: 10px;
+}
+
+.price, .availability {
+  line-height: 20px;
+}
+
+.price span, .availability span {
+  font-weight: 500;
+}
+
+.add-station {
+  text-decoration: none;
+  margin: 0px 10px 10px 0px;
+  padding: 10px;
+  background-color: #d5d5d5;
+  border: 2px solid #bbb;
+  border-radius: 5px;
+  width: 216px;
+  height: 85px;
+  color: #202020;
+}
+
+.add-station {
+  text-decoration: none;
+  margin: 0px 10px 10px 0px;
+  padding: 10px;
+  background-color: #d5d5d5;
+  border: 2px solid #bbb;
+  border-radius: 5px;
+  width: 216px;
+  height: 85px;
+  color: #555;
+}
+
+.add-station:hover {
+  background-color: #ccc;
+  color: #303030;
+}
+
+.add-station h2 {
+  font-size: 65px;
+  font-weight: 400;
+  line-height: 50px;
+}
+
+.add-station p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
 }
