@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/app/Dashboard';
 import AddStation from './pages/app/AddStation';
+import Page404 from './pages/Page404';
 import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
@@ -45,8 +46,8 @@ function App() {
                     <Route path="editor" element={<Editor />} />
                 </Route> */}
 
-                {/* catch all */}
-                {/* <Route path="*" element={<Missing />} /> */}
+            {/* catch all */}
+            <Route path="*" element={<Page404 />} />
         </Routes>
     );
 }

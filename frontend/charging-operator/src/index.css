@@ -986,3 +986,29 @@
 .add-station-page-div button:disabled:hover {
   cursor: not-allowed;
 }
+
+/* Page 404 */
+.page-404 {
+  height: calc(80vh);
+}
+
+.page-404 h2 {
+  font-size: 25px;
+  line-height: 40px;
+  font-weight: 600;
+  color: #202020;
+  text-align: center;
+}
+
+.page-404 h3 {
+  padding-top: 30px;
+  font-size: 20px;
+  line-height: 35px;
+  font-weight: 400;
+  color: #202020;
+  text-align: center;
+}
+
+.page-404 h3 a {
+  color: #202020;
+}

@@ -102,7 +102,7 @@ const Register = ({title}) => {
                             <div className="signup-success flex-column-center-center">
                                 <h1>Successfully registered!</h1>
                                 <p>
-                                    <a href="/login">Sign In</a>
+                                    <Link to="/login">Sign In</Link>
                                 </p>
                             </div>
                         ) : (

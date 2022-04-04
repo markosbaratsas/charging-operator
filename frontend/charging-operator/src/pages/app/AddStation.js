@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Map from "../../components/Map/Map";
 
 const getMarkers = () => {
@@ -39,7 +41,7 @@ const AddStation = () => {
                         markers={markers}
                     />
                 </div>
-                <p>If your desired charging station does not appear maybe you need to <br /> <a href="/app/new-station">add a new charging station</a>.</p>
+                <p>If your desired charging station does not appear maybe you need to <br /> <Link to="/app/new-station">add a new charging station</Link>.</p>
 
                 {stationSelected ? (
                     <button onClick={addSelectedStation}>Add station to your stations</button>
