@@ -12,7 +12,10 @@
 
 #root {
   background-color: #f1f1f1;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .content {
@@ -233,6 +236,7 @@
   background-color: #202020;
   width: 100%;
   padding: 75px 0px;
+  margin-top: auto;
 }
 
 .footer-left {
@@ -1011,4 +1015,18 @@
 
 .page-404 h3 a {
   color: #202020;
+}
+
+.logout-div {
+  background-color: #e1e1e1;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  width: 400px;
+  height: 200px;
+}
+
+.logout-div p, .logout-div a, .logout-div p a {
+  color: #202020;
+  font-size: 17px;
+  line-height: 50px;
 }

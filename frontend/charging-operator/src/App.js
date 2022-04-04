@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/app/Dashboard';
 import AddStation from './pages/app/AddStation';
 import Page404 from './pages/Page404';
+import Logout from './pages/Logout';
 import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/contact" element={<Contact title="Charging Operator - Contact" />} />
                 <Route path="/login" element={<Login title="Charging Operator - Login" />} />
                 <Route path="/register" element={<Register title="Charging Operator - Register" />} />
+                <Route path="/logout" element={<Logout title="Successfully logged out"/>} />
             </Route>
                 {/* <Route path="register" element={<Register />} />
                 <Route path="linkpage" element={<LinkPage />} />
@@ -35,10 +37,10 @@ function App() {
             {/* we want to protect these routes */}
             <Route element={<RequireAuth />}>
                 <Route element={<Layout2 />}>
-                    <Route path="/app/dashboard" element={<Dashboard />} />
+                    <Route path="/app/dashboard" element={<Dashboard title="Charging stations Dashboard"/>} />
                 </Route>
                 <Route element={<Layout3 />}>
-                    <Route path="/app/add-station" element={<AddStation />} />
+                    <Route path="/app/add-station" element={<AddStation title="Add an existing station" />} />
                 </Route>
             </Route>
 

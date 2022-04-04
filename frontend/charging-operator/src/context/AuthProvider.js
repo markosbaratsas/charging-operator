@@ -16,7 +16,11 @@
         return false;
     }
 
-    return {getAuth, setAuth, isAuthenticated}
+    const logout = () => {
+        localStorage.removeItem('auth');
+    }
+
+    return {getAuth, setAuth, isAuthenticated, logout}
 }
 
 export default AuthProvider;
