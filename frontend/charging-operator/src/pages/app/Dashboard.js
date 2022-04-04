@@ -22,7 +22,7 @@ const stations = [
 const Dashboard = () => {
     return (
         <section className="dashboard flex-column-start-center">
-            <h1>Charging Stations Dashboard</h1>
+            <h1 className="app-page-title">Charging Stations Dashboard</h1>
             <div className="stations-list flex-row-start-start">
                 {stations.map(station => (
                 <Link className="station-preview" to={`/app/station-${station.id}`} key={station.id}>

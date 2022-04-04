@@ -9,8 +9,10 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/app/Dashboard';
+import AddStation from './pages/app/AddStation';
 import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
+import Layout3 from './components/Layout3';
 import RequireAuth from './components/RequireAuth';
 
 
@@ -33,6 +35,9 @@ function App() {
             <Route element={<RequireAuth />}>
                 <Route element={<Layout2 />}>
                     <Route path="/app/dashboard" element={<Dashboard />} />
+                </Route>
+                <Route element={<Layout3 />}>
+                    <Route path="/app/add-station" element={<AddStation />} />
                 </Route>
             </Route>
 
