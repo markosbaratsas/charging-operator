@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import Map from "../../components/Map/Map";
+import Map from "../../components/Map1/Map";
+import useTitle from "../../hooks/useTitle";
 
 const getMarkers = () => {
     // TODO: Hit backend
@@ -20,7 +21,9 @@ const getMarkers = () => {
     }];
 }
 
-const AddStation = () => {
+const AddStation = ({title}) => {
+    useTitle({title});
+
     const markers = getMarkers();
     const [stationSelected, setStationSelected] = useState(null);
 
