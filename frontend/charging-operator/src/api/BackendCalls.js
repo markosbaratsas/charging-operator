@@ -79,3 +79,152 @@ export const createStation = () => {
     // temporarily return station added successfully
     return {ok: true, errors: null};
 }
+
+export const getStation = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: {
+            id: 1,
+            name: "Ntua Charging Station",
+        },
+        2: {
+            id: 2,
+            name: "Random Station",
+        }
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
+
+export const getStationChargers = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: [
+            {
+                name: "22kW Chargers",
+                total_count: 5,
+                taken: 4,
+                id: 1
+            },
+            {
+                name: "50kW Chargers",
+                total_count: 2,
+                taken: 1,
+                id: 2
+            }
+        ]
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
+
+export const getStationPrices = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: [
+            {
+                name: "22kW Chargers",
+                current_price: 0.378,
+                id: 1
+            },
+            {
+                name: "50kW Chargers",
+                current_price: 0.296,
+                id: 2
+            }
+        ]
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
+
+export const getStationVehicles = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: [
+            {
+                model: "Tesla Model 3",
+                licence_plate: "AHB 2879",
+                expected_departure: "04/05/2022 17:55",
+                charging_in: "50 kW Charger 1",
+                id: 1
+            },
+            {
+                model: "Hyundai Kona Electric",
+                licence_plate: "KPH 3421",
+                expected_departure: "04/05/2022 18:20",
+                charging_in: "22 kW Charger 5",
+                id: 2
+            },
+            {
+                model: "Nissan Leaf",
+                licence_plate: "INB 8945",
+                expected_departure: "04/05/2022 18:35",
+                charging_in: "22 kW Charger 4",
+                id: 3
+            },
+            {
+                model: "Tesla Model S",
+                licence_plate: "KRH12HE",
+                expected_departure: "04/05/2022 18:45",
+                charging_in: "22 kW Charger 1",
+                id: 4
+            },
+            {
+                model: "Tesla Model 3",
+                licence_plate: "OII 4312",
+                expected_departure: "04/05/2022 19:05",
+                charging_in: "22 kW Charger 2",
+                id: 5
+            },
+        ]
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
+
+export const getStationReservations = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: {
+            next_12_hours: [
+                {
+                    model: "Tesla Model 3",
+                    owner: "Antonios Kalogiorgos",
+                    licence_plate: "AOB 1212",
+                    expected_arrival: "04/05/2022 18:05",
+                    expected_departure: "04/05/2022 18:30",
+                    charging_in: "50 kW Charger 1",
+                    id: 1
+                },
+                {
+                    model: "Tesla Model X",
+                    owner: "Konstantina Papadopoulou",
+                    licence_plate: "HNB 3779",
+                    expected_arrival: "04/05/2022 18:10",
+                    expected_departure: "04/05/2022 19:45",
+                    charging_in: "22 kW Charger 2",
+                    id: 2
+                }
+            ],
+            next_24_hours: [
+                {
+                    model: "Tesla Model X",
+                    owner: "Konstantinos Georgiou",
+                    licence_plate: "HNK 8967",
+                    expected_arrival: "05/05/2022 10:05",
+                    expected_departure: "05/05/2022 10:30",
+                    charging_in: "50 kW Charger 1",
+                    id: 1
+                }
+            ]
+        }
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
