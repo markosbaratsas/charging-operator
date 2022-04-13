@@ -55,12 +55,12 @@ const Overview = ({title}) => {
             fetchData();
         }, 5000);
         return () => clearInterval(interval);
-    }, [])
+    }, [station, chargers, prices, reservations, vehicles])
 
 
     return (
     <>
-        <Navbar4 stationName={station.name} stationId={station.id}/>
+        <Navbar4 stationName={station.name} stationId={station.id} active={"Overview"}/>
         <div className="content">
             <div className="flex-column-center-center">
             <section className="wrapper">
