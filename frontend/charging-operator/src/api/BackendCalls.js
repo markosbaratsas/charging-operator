@@ -87,10 +87,18 @@ export const getStation = async (id) => {
         1: {
             id: 1,
             name: "Ntua Charging Station",
+            location: {
+                lat: 37.98,
+                lng: 23.783088
+            }
         },
         2: {
             id: 2,
             name: "Random Station",
+            location: {
+                lat: 37.979188,
+                lng: 23.783088,
+            }
         }
     }
 
@@ -127,12 +135,12 @@ export const getStationPrices = async (id) => {
         1: [
             {
                 name: "22kW Chargers",
-                current_price: 0.378,
+                current_price: 0.296,
                 id: 1
             },
             {
                 name: "50kW Chargers",
-                current_price: 0.296,
+                current_price: 0.378,
                 id: 2
             }
         ]
@@ -227,4 +235,162 @@ export const getStationReservations = async (id) => {
     }
 
     return id in stations ? stations[id] : stations[1];
+}
+
+export const getPricingGroups = async (id) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const stations = {
+        1: {
+            1: {
+                name: "22kW Chargers",
+                current_price: 0.296,
+                chargers: [
+                    {
+                        name: "Charger name 1",
+                        id: 1
+                    },
+                    {
+                        name: "Charger name 2",
+                        id: 2
+                    },
+                    {
+                        name: "Charger name 3",
+                        id: 3
+                    },
+                    {
+                        name: "Charger name 4",
+                        id: 4
+                    },
+                    {
+                        name: "Charger name 5",
+                        id: 5
+                    }
+                ],
+                pricing_method: {
+                    name: "Demand-centered Profit",
+                    variables: [
+                        {
+                            name: "all_expenses",
+                            id: 1,
+                            value: 0.1
+                        },
+                        {
+                            name: "grid_price",
+                            id: 2,
+                            value: true
+                        },
+                        {
+                            name: "c1",
+                            id: 3,
+                            value: 0.12
+                        },
+                        {
+                            name: "c2",
+                            id: 4,
+                            value: 0.13
+                        },
+                        {
+                            name: "n",
+                            id: 5,
+                            value: 2
+                        }
+                    ]
+                },
+                id: 1
+            },
+            2: {
+                name: "50kW Chargers",
+                current_price: 0.378,
+                chargers: [
+                    {
+                        name: "Charger name 1",
+                        id: 1
+                    },
+                    {
+                        name: "Charger name 2",
+                        id: 2
+                    }
+                ],
+                pricing_method: {
+                    name: "Competitor-centered Profit",
+                    variables: [
+                        {
+                            name: "all_expenses",
+                            id: 1,
+                            value: 0.1
+                        },
+                        {
+                            name: "grid_price",
+                            id: 2,
+                            value: true
+                        },
+                        {
+                            name: "c1",
+                            id: 3,
+                            value: 0.13
+                        },
+                        {
+                            name: "competitors_coordinates",
+                            id: 4,
+                            value: [
+                                {
+                                    lat: 37.979188,
+                                    lng: 23.783088,
+                                    title: "ECE charger",
+                                    address: "Iroon Politechniou 21",
+                                    id: 1
+                                },
+                                {
+                                    lat: 37.98,
+                                    lng: 23.782,
+                                    title: "Other Charger 1",
+                                    address: "Iroon Politechniou 123",
+                                    id: 2
+                                }
+                            ]
+                        },
+                        {
+                            name: "c2",
+                            id: 5,
+                            value: 0.15
+                        }
+                    ]
+                },
+                id: 2
+            }
+        }
+    }
+
+    return id in stations ? stations[id] : stations[1];
+}
+
+export const getGridPrices = async () => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    const grid_price = {
+        grid_price: 0.189,
+        previous_values: [
+            {
+                date: "19/05/2022 18:00",
+                price: 0.179
+            },
+            {
+                date: "19/05/2022 17:45",
+                price: 0.172
+            },
+            {
+                date: "19/05/2022 17:30",
+                price: 0.177
+            }
+        ]
+    }
+
+    return grid_price;
+}
+
+export const updatePricingGroup = (stationId, groupId) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
 }

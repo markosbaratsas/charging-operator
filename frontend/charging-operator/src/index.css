@@ -257,7 +257,8 @@
 .icon {
   background-color: #e5e5e5;
   border-radius: 5px;
-  border: 1px solid #bbb;
+  border: 1px solid #ddd;
+  transition: 1s;
 }
 
 .icon:hover {
@@ -995,6 +996,15 @@
   background-color: #404040;
   padding: 5px;
   border-radius: 5px;
+}
+
+.map-div2 {
+  width: 350px;
+  background-color: #404040;
+  padding: 5px;
+  border-radius: 5px;
+  display: block;
+  margin: 10px auto;
 }
 
 .gm-style-iw-c {
@@ -2167,6 +2177,10 @@
   list-style: none;
   margin: 0 3px;
 }
+.item-active {
+  color: #fff;
+  text-shadow: 0px 1px 1px #fff;
+}
 
 .station-nav-ul li a {
   padding: 0px 10px;
@@ -2302,4 +2316,260 @@
   margin: 20px auto;
   opacity: 0.7;
   width: 100%;
+}
+
+.station-prices {
+  width: 100%;
+  padding-bottom: 50px;
+}
+.station-prices h1 {
+  line-height: 50px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+}
+
+.station-prices-ul1 {
+  list-style: none;
+  min-width: 400px;
+  background-color: #e3e3e3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0px 10px 10px;
+  border-radius: 10px;
+  border: 1px solid #d3d3d3;
+  margin-bottom: 10px;
+}
+
+.station-prices-ul1 li {
+  margin: 0px 10px 0px 0px;
+  background-color: #f3f3f3;
+  padding: 10px;
+  border: 2px solid #606060;
+  border-radius: 3px;
+}
+
+.station-prices-ul1 li h3 {
+  line-height: 25px;
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #202020;
+  text-align: center;
+}
+
+.station-prices-ul1 li h4 {
+  line-height: 25px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+  text-align: center;
+}
+
+.station-prices-current-price {
+  height: 70px;
+  background-color: #f3f3f3;
+  border: 2px dashed #404040;
+  padding: 0px 30px;
+  margin: 20px 0px 30px 0px;
+}
+
+.station-prices-current-price h2 {
+  line-height: 70px;
+  font-size: 24px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+  text-align: center;
+}
+
+.station-prices-current-price h2 span {
+  font-weight: 600;
+  color: #ff0000;
+  margin-left: 5px;
+}
+
+.station-prices-div1 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.station-prices-div1 h3 {
+  width: 100%;
+  line-height: 40px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+  margin-left: 20px;
+}
+
+.station-prices-div2 {
+  width: 100%;
+}
+
+.station-prices-pricing-method {
+  width: 65%;
+  background-color: #e3e3e3;
+  border: 2px solid #aaa;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.station-prices-pricing-method h2, .station-prices-pricing-method h4 {
+  width: 100%;
+  line-height: 40px;
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #202020;
+}
+
+.station-prices-pricing-method img {
+  width: 500px;
+  display: block;
+  margin: 0 auto;;
+}
+
+.station-prices-pricing-method p {
+  width: 100%;
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #202020;
+  margin-left: 20px;
+}
+
+.station-prices-pricing-method p span {
+  font-style: italic;
+}
+
+.station-prices-pricing-method button {
+  outline: none;
+  border: none;
+  background-color: #e3e3e3;
+  display: block;
+  margin: 0 auto;
+  line-height: 20px;
+  font-style: italic;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #7272CC;
+  border-radius: 5px;
+  padding: 3px;
+  transition: 0.3;
+}
+
+.station-prices-pricing-method button:hover {
+  cursor: pointer;
+  color: #8a8adb;
+}
+
+.station-prices-right {
+  width: 25%;
+}
+
+.station-prices-chargers {
+  width: 100%;
+  background-color: #e3e3e3;
+  padding: 10px;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.station-prices-chargers h5 {
+  line-height: 30px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #202020;
+}
+
+.station-prices-chargers a {
+  text-decoration: none;
+  background-color: #e3e3e3;
+  display: block;
+  margin: 0 auto;
+  line-height: 18px;
+  font-style: italic;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #7272CC;
+  border-radius: 5px;
+  padding: 3px;
+  transition: 0.3;
+  margin-bottom: 12px;
+}
+
+.station-prices-chargers a:hover {
+  cursor: pointer;
+  color: #8a8adb;
+}
+
+.station-prices-chargers ul {
+  list-style: none;
+}
+
+.station-prices-chargers ul li {
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #202020;
+}
+
+.station-prices-grid {
+  width: 100%;
+  background-color: #e3e3e3;
+  padding: 10px;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+}
+
+.station-prices-grid h5 {
+  line-height: 30px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #202020;
+}
+
+.station-prices-grid h6 {
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #ff0000;
+  text-align: center;
+}
+
+.station-prices-selected {
+  opacity: 1;
+  transition: 0.3s;
+}
+
+.station-prices-selected:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+.station-prices-not-selected {
+  opacity: 0.4;
+  transition: 0.3s;
+}
+
+.station-prices-not-selected:hover {
+  cursor: pointer;
+  background-color: #e3e3e3;
 }
