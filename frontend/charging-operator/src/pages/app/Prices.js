@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import { Modal } from 'react-bootstrap';
+import { useAlert } from 'react-alert';
 
 import { getGridPrice,
     getGridPrices,
@@ -113,6 +114,8 @@ const Prices = ({title}) => {
     const [gridPrice2, setGridPrice2] = useState(null);
 
     // for the modal
+    const alert = useAlert();
+
     const stationsMarkers = getMarkers();
     const [show, setShow] = useState(false);
 
@@ -333,6 +336,8 @@ const Prices = ({title}) => {
         const data = updatePricingGroup(station.id, thisGroup);
         if (data.ok) {
             setShow(false);
+            alert.success('Pricing Method updated successfully!');
+            initializeFetchedData();
             initializeInputState();
         }
         else {
@@ -374,6 +379,13 @@ const Prices = ({title}) => {
         }
     }, [pricingMethod])
 
+    const initializeFetchedData = () => {
+        setStation({name: ""});
+        setPrices(null);
+        setGroupSelected(null);
+        setGroups(null);
+        setGridPrice2(null);
+    }
 
     const fetchData = async () => {
         try {
