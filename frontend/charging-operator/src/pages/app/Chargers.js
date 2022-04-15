@@ -8,7 +8,7 @@ import { getPricingGroups,
     deleteCharger } from '../../api/BackendCalls';
 import Navbar4 from '../../components/Navbar4';
 import useTitle from "../../hooks/useTitle";
-import ModalCharger from '../../components/ModalCharger/ModalCharger';
+import ModalCharger from '../../components/ModalCharger';
 
 
 const Chargers = ({title}) => {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap';
-import '../../bootstrap.css';
+import '../bootstrap.css';
 
-import Select from "../Select/Select";
-import { my_includes } from "../../utils/usefulFunctions";
-import { addChargerGroup, createCharger, updateCharger } from "../../api/BackendCalls";
+import Select from "./Select/Select";
+import { my_includes } from "../utils/usefulFunctions";
+import { addChargerGroup, createCharger, updateCharger } from "../api/BackendCalls";
 
 
 const CHARGER_NAME_REGEX = /^[A-z0-9_\ ]{2,32}$/;
