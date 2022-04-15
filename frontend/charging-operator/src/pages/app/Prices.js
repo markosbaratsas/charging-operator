@@ -425,7 +425,7 @@ const Prices = ({title}) => {
 
     return (
     <>
-        <Navbar4 stationName={station.name} stationId={station.id} active={"Prices"}/>
+        <Navbar4 stationName={station.name} stationId={id} active={"Prices"}/>
         <div className="content">
             <div className="flex-column-center-center">
             <section className="wrapper">

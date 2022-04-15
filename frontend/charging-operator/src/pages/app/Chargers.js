@@ -122,7 +122,7 @@ const Chargers = ({title}) => {
 
     return (
         <>
-        <Navbar4 stationName={station.name} stationId={station.id} active={"Overview"}/>
+        <Navbar4 stationName={station.name} stationId={id} active={"Overview"}/>
         <div className="content">
             <div className="flex-column-center-center">
             <section className="wrapper">
