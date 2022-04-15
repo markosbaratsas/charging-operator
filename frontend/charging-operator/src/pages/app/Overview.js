@@ -162,7 +162,7 @@ const Overview = ({title}) => {
                                                 <li key={reservation.id} className="flex-column-start-start">
                                                     <h4>{upTo(reservation.model, 30)}, {reservation.licence_plate}</h4>
                                                     <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
-                                                    <h5>Expected Departure: <span>{reservation.expected_arrival}</span></h5>
+                                                    <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
                                                     <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
                                                     <h5>Charger: <span>{reservation.charging_in}</span></h5>
                                                 </li>
