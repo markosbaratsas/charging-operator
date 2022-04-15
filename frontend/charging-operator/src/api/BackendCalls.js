@@ -248,22 +248,37 @@ export const getPricingGroups = async (id) => {
                 chargers: [
                     {
                         name: "Charger name 1",
+                        current: "AC",
+                        connector_type: "Type 1",
+                        power: 22,
                         id: 1
                     },
                     {
                         name: "Charger name 2",
+                        current: "AC",
+                        connector_type: "Type 1",
+                        power: 21.9,
                         id: 2
                     },
                     {
                         name: "Charger name 3",
+                        current: "AC",
+                        connector_type: "3-pin plug",
+                        power: 22,
                         id: 3
                     },
                     {
                         name: "Charger name 4",
+                        current: "AC",
+                        connector_type: "Type 2",
+                        power: 22.4,
                         id: 4
                     },
                     {
                         name: "Charger name 5",
+                        current: "AC",
+                        connector_type: "Type 2",
+                        power: 22,
                         id: 5
                     }
                 ],
@@ -305,10 +320,16 @@ export const getPricingGroups = async (id) => {
                 chargers: [
                     {
                         name: "Charger name 1",
+                        current: "DC",
+                        connector_type: "Type 2",
+                        power: 48.8,
                         id: 1
                     },
                     {
                         name: "Charger name 2",
+                        current: "DC",
+                        connector_type: "Combined Charging System (CCS)",
+                        power: 50,
                         id: 2
                     }
                 ],
@@ -389,7 +410,31 @@ export const getGridPrices = async () => {
     return grid_price;
 }
 
-export const updatePricingGroup = (stationId, groupId) => {
+export const updatePricingGroup = async (stationId, groupId) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
+}
+
+export const deleteCharger = async (chargerId) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
+}
+
+export const addChargerGroup = async (groupName) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
+}
+
+export const updateCharger = async (chargerId) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
+}
+
+export const createCharger = async () => {
     // TODO: Hit backend
     // temporarily return this dict
     return {ok: true, errors: null};

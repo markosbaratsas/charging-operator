@@ -15,13 +15,13 @@ import AddStation from './pages/app/AddStation';
 import NewStation from './pages/app/NewStation/NewStation';
 import Overview from './pages/app/Overview';
 import Prices from './pages/app/Prices';
+import Chargers from './pages/app/Chargers';
 import Page404 from './pages/Page404';
 import Logout from './pages/Logout';
 import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
 import RequireAuth from './components/RequireAuth';
-import { useEffect } from 'react';
 
 
 const options = {
@@ -64,6 +64,7 @@ function App() {
                     </Route>
                     <Route path="/app/station-:id" element={<Overview title="Station Overview - Charging Operator" />} />
                     <Route path="/app/station-:id/prices" element={<Prices title="Station Prices - Charging Operator" />} />
+                    <Route path="/app/station-:id/chargers" element={<Chargers title="Station Chargers - Charging Operator" />} />
                 </Route>
 
                     {/* <Route element={<RequireAuth />}>
