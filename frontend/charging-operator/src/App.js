@@ -16,6 +16,7 @@ import NewStation from './pages/app/NewStation/NewStation';
 import Overview from './pages/app/Overview';
 import Prices from './pages/app/Prices';
 import Chargers from './pages/app/Chargers';
+import Reservations from './pages/app/Reservations';
 import Page404 from './pages/Page404';
 import Logout from './pages/Logout';
 import Layout1 from './components/Layout1';
@@ -65,6 +66,7 @@ function App() {
                     <Route path="/app/station-:id" element={<Overview title="Station Overview - Charging Operator" />} />
                     <Route path="/app/station-:id/prices" element={<Prices title="Station Prices - Charging Operator" />} />
                     <Route path="/app/station-:id/chargers" element={<Chargers title="Station Chargers - Charging Operator" />} />
+                    <Route path="/app/station-:id/reservations" element={<Reservations title="Station Reservations - Charging Operator" />} />
                 </Route>
 
                     {/* <Route element={<RequireAuth />}>

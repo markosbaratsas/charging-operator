@@ -439,3 +439,38 @@ export const createCharger = async () => {
     // temporarily return this dict
     return {ok: true, errors: null};
 }
+
+export const getAvailableChargers = async (stationId, arrivalTime, departureTime) => {
+    // TODO: Hit backend
+    // temporarily return this list
+    return [
+        {
+            name: "Charger 1",
+            group: "22kW Chargers",
+            expected_price: 9.88,
+            id: 1
+        }
+    ];
+}
+
+export const addReservation = async (reservation_dict) => {
+    // TODO: Hit backend
+    // temporarily return this dict
+    return {ok: true, errors: null};
+}
+
+export const getReservations = async (startingArrival, endingArrival,
+                                    startingDeparture, endingDeparture) => {
+    // TODO: Hit backend
+    // temporarily return this list
+    return [
+        {
+            owner: "Markos Kostogiannis",
+            expected_arrival: "19/07/2022 12:00",
+            expected_departure: "19/07/2022 12:40",
+            charger: "Charger 1",
+            state: "Completed",
+            id: 1
+        }
+    ];
+}
