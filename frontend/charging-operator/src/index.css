@@ -918,6 +918,7 @@
   text-decoration: none;
   color: #f3f3f3;
   line-height: 20px;
+  width: 85px;
 }
 
 /* Map */
@@ -2226,11 +2227,11 @@
   font-family: 'Raleway', sans-serif;
   font-size: 20px;
   font-weight: 600;
-  margin: 0px 5px 0px 0px;
   line-height: 30px;
 }
 
 .text-icon img {
+  margin: 0px 0px 0px 5px;
   width: 30px;
   height: 27px;
 }
@@ -2293,6 +2294,17 @@
   width: 350px;
   padding: 8px 5px;
   border-radius: 2px;
+}
+
+.overview-station-ul2 li a {
+  text-decoration: none;
+  color: #202020;
+  display: block;
+  width: 100%;
+}
+
+.overview-station-ul2 li a:hover {
+  background-color: #eee;
 }
 
 .overview-station-ul2 li h4 {
@@ -2819,4 +2831,48 @@
   line-height: 25px;
   padding-bottom: 5px;
   font-family: 'Poppins', sans-serif;
+}
+
+
+.vehicle-state h1 {
+  line-height: 70px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+}
+
+.vehicle-state-div {
+  background-color: #f1f1f1;
+  border: 4px solid #d7d7d7;
+  border-radius: 10px;
+  width: 80%;
+  padding: 20px 0px;
+}
+
+.vehicle-state-div2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 3px 20px;
+}
+
+.vehicle-state-div2 h3 {
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+}
+
+.vehicle-state-div2 h4 {
+  display: block;
+  width: 400px;
+  line-height: 30px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #202020;
 }

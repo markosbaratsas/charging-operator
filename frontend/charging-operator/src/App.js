@@ -23,6 +23,7 @@ import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
 import RequireAuth from './components/RequireAuth';
+import VehicleState from './pages/app/VehicleState';
 
 
 const options = {
@@ -67,6 +68,7 @@ function App() {
                     <Route path="/app/station-:id/prices" element={<Prices title="Station Prices - Charging Operator" />} />
                     <Route path="/app/station-:id/chargers" element={<Chargers title="Station Chargers - Charging Operator" />} />
                     <Route path="/app/station-:id/reservations" element={<Reservations title="Station Reservations - Charging Operator" />} />
+                    <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={<VehicleState title="Vehicle State - Charging Operator" />} />
                 </Route>
 
                     {/* <Route element={<RequireAuth />}>

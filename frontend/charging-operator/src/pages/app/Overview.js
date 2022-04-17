@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
 import { getStation,
@@ -114,9 +114,11 @@ const Overview = ({title}) => {
                                     {vehicles.map(vehicle => {
                                         return (
                                             <li key={vehicle.id} className="flex-column-start-start">
-                                                <h4>{upTo(vehicle.model, 30)}, {vehicle.licence_plate}</h4>
-                                                <h5>Expected Departure: <span>{vehicle.expected_departure}</span></h5>
-                                                <h5>Charger: <span>{upTo(vehicle.charging_in,30)}</span></h5>
+                                                <Link to={`/app/station-${id}/vehicle-state/${vehicle.id}`}>
+                                                    <h4>{upTo(vehicle.model, 30)}, {vehicle.licence_plate}</h4>
+                                                    <h5>Expected Departure: <span>{vehicle.expected_departure}</span></h5>
+                                                    <h5>Charger: <span>{upTo(vehicle.charging_in,30)}</span></h5>
+                                                </Link>
                                             </li>
                                         );
                                     })}

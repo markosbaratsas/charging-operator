@@ -474,3 +474,17 @@ export const getReservations = async (startingArrival, endingArrival,
         }
     ];
 }
+
+export const getVehicleState = async (vehicleStateId) => {
+    // TODO: Hit backend
+    // temporarily return this list
+    return {
+        model: "Tesla Model 3",
+        license_plate: "INN 1234",
+        charging_in: "5 kWh Charger 1",
+        arrival: "04/05/2022 17:30",
+        expected_departure: "04/05/2022 17:55",
+        current_battery: 27,
+        desired_final_battery: 80
+    };
+}
