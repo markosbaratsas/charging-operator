@@ -2,10 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import AuthProvider from '../context/AuthProvider';
-import axios from '../api/axios';
 import useTitle from '../hooks/useTitle';
+import { loginUser } from '../api/BackendCalls';
 
-const LOGIN_URL = '/login';
 
 const Login = ({title}) => {
     useTitle({title});
@@ -39,33 +38,18 @@ const Login = ({title}) => {
         e.preventDefault();
         console.log(user, pwd)
 
-
-        try {
-            const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user: user, password: pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' }
-                }
-            );
-            console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            setAuth({ accessToken });
-            setUser('');
-            setPwd('');
-            navigate(from, { replace: true });
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response.');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password.');
-            } else if (err.response?.status === 401) {
-                setErrMsg('Username and password do not match.');
-            } else {
-                setErrMsg('Something went wrong. Please try again.');
-            }
+        let [error, accessToken] = await loginUser(user, pwd);
+        console.log("loginUser", accessToken, error);
+        if (error) {
+            setErrMsg(error);
             errRef.current.focus();
+            return;
         }
+
+        setAuth({ accessToken });
+        setUser('');
+        setPwd('');
+        navigate(from, { replace: true });
     }
     
     return (

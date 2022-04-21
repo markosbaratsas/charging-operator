@@ -1,14 +1,20 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { logoutUser } from "../api/BackendCalls";
 import AuthProvider from "../context/AuthProvider";
 
 const Logout = () => {
-    const { logout } = AuthProvider();
+    const { logout, getAuth } = AuthProvider();
 
     useEffect(() => {
-        logout();
-    }, [])
+        const logoutFunction = async () => {
+            await logoutUser(getAuth());
+            logout();
+        }
+
+        logoutFunction();
+    }, [logout, getAuth])
 
     return (
         <section className="flex-column-center-center">

@@ -1,3 +1,22 @@
+import axios from './axios';
+
+const urls = {
+    login: '/login',
+    register: '/register',
+    logout: '/logout',
+}
+const unauthorizedHeaders = {
+    headers: { 'Content-Type': 'application/json' }
+}
+const getAuthorizedHeaders = (token) => {
+    return {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    };
+}
+
 export const getMarkers = () => {
     // TODO: Hit backend
     // temporarily return this list
@@ -487,4 +506,70 @@ export const getVehicleState = async (vehicleStateId) => {
         current_battery: 27,
         desired_final_battery: 80
     };
+}
+
+export const loginUser = async (user, pwd) => {
+
+    try {
+        const response = await axios.post(urls.login,
+            JSON.stringify({ username: user, password: pwd }),
+            unauthorizedHeaders
+        );
+        console.log(response?.data);
+        if (response && response.data && response.data.token)
+            return [null, response.data.token];
+
+    } catch (err) {
+        console.log(err);
+        if (!err?.response) {
+            return ['No Server Response.', null];
+        } else if ('username' in err.response.data
+                || 'password' in err.response.data) {
+            return ['Missing Username or Password.', null];
+        } else if ('non_field_errors' in err.response.data) {
+            return ['Username and password do not match.', null];
+        }
+    }
+
+    return ['Something went wrong. Please try again.', null];
+}
+
+export const registerUser = async (user, pwd, pwd2) => {
+
+    try {
+        const response = await axios.post(urls.register,
+            JSON.stringify({ username: user, password: pwd, password2: pwd2 }),
+            unauthorizedHeaders
+        );
+        console.log(response?.data);
+        if (response && response.data && response.data.token)
+            return [null, response.data];
+
+    } catch (err) {
+        console.log(err);
+        if (!err?.response) {
+            return ['No Server Response.', false];
+        } else if (err.response?.status === 403) {
+            return ['Username already in use.', false];
+        }
+    }
+    return ['Registration failed. Please try again.', false];
+}
+
+export const logoutUser = async (token) => {
+
+    try {
+        const response = await axios.post(urls.logout,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token)
+        );
+        console.log(response?.data);
+        return [null, true];
+
+    } catch (err) {
+        if (!err?.response) {
+            return ['No Server Response.', false];
+        }
+    }
+    return ['Something went wrong.', false];
 }

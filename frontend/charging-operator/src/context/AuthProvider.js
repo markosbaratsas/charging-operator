@@ -1,4 +1,4 @@
- const AuthProvider = () => {
+const AuthProvider = () => {
     const getAuth = () => {
         const auth = JSON.parse(localStorage.getItem('auth'));
         return auth;

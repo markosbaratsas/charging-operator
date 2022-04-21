@@ -3,13 +3,12 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import axios from '../api/axios';
 import AuthProvider from "../context/AuthProvider";
 import useTitle from "../hooks/useTitle";
+import { registerUser } from "../api/BackendCalls";
 
 const USER_REGEX = /^[A-z][A-z0-9_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = '/register';
 
 const Register = ({title}) => {
     useTitle({title});
@@ -67,30 +66,20 @@ const Register = ({title}) => {
             setErrMsg("Invalid Entry");
             return;
         }
-        try {
-            const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ user: user, password: pwd }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-            console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response))
-            setSuccess(true);
-            //clear state and controlled inputs
-            setUser('');
-            setPwd('');
-            setMatchPwd('');
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response.');
-            } else if (err.response?.status === 409) {
-                setErrMsg('Username already in use.');
-            } else {
-                setErrMsg('Registration failed. Please try again.')
-            }
+
+        let [error, ok] = await registerUser(user, pwd, matchPwd);
+        console.log("registerUser", ok, error);
+        if (error) {
+            setErrMsg(error);
             errRef.current.focus();
+            return;
         }
+
+        setSuccess(true);
+        //clear state and controlled inputs
+        setUser('');
+        setPwd('');
+        setMatchPwd('');
     }
 
     return (

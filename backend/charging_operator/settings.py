@@ -31,6 +31,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000',
+    'http://localhost:3000'
+]
+
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Accept-encoding',
+    'Accept-Language',
+    'Authorization',
+    'Content-type',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Application definition
 
@@ -44,6 +58,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
 
     'users'
 ]
@@ -51,6 +66,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
