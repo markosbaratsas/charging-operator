@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+admin.site.register(PricingGroup)
+admin.site.register(MethodConstantInt)
+admin.site.register(MethodConstantDecimal)
+admin.site.register(MethodConstantBool)
+admin.site.register(MethodConstantPricingGroup)
+admin.site.register(Charger)
