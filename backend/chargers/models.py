@@ -1,7 +1,5 @@
 from django.db import models
 
-from stations.models import Station
-
 
 class PricingGroup(models.Model):
     class MethodName(models.TextChoices):
@@ -19,15 +17,6 @@ class PricingGroup(models.Model):
 
     def __str__(self):
         return f'{self.id}, {self.method_name}'
-
-
-class PricingGroupStation(models.Model):
-    id = models.AutoField(primary_key=True)
-    station = models.ForeignKey(Station, on_delete=models.CASCADE)
-    pricing_group = models.ForeignKey(PricingGroup, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f'{self.id}, {self.pricing_group}, {self.station}'
 
 
 class MethodConstantInt(models.Model):
@@ -91,6 +80,7 @@ class Charger(models.Model):
                                     choices=Current.choices)
     power = models.DecimalField(max_digits=8, decimal_places=4, default=0)
     description = models.CharField(max_length=255, default='')
+    is_occupied = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.id}, {self.name}, {self.pricing_group}'
