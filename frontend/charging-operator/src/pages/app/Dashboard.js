@@ -1,35 +1,33 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ReactLoading from 'react-loading';
 
-const stations = [
-    {
-        title: "Charging Station 1",
-        address: "Katechaki 89, Athens",
-        price: 0.393,
-        taken_parking: 9,
-        total_parking: 12,
-        id: 1
-    },
-    {
-        title: "Charging Station 2",
-        address: "Trikoupi 12, Ioannina",
-        price: 0.443,
-        taken_parking: 7,
-        total_parking: 10,
-        id: 2
-    }
-]
+import { getStations } from '../../api/BackendCalls';
+import AuthProvider from '../../context/AuthProvider';
+import { upTo } from '../../utils/usefulFunctions';
+
 
 const Dashboard = () => {
+    const [stations, setStations] = useState(null);
+    const { getAuth } = AuthProvider();
+
+    useEffect(async () => {
+        let data = await getStations(getAuth());
+        setStations(data);
+    }, [])
+
+
     return (
         <section className="dashboard flex-column-start-center">
             <h1 className="app-page-title">Charging Stations Dashboard</h1>
             <div className="stations-list flex-row-start-start">
-                {stations.map(station => (
+                {!stations
+                ? <ReactLoading type="spin" color="#202020" height={80} width={80} className="loading"/>
+                : stations.map(station => (
                 <Link className="station-preview" to={`/app/station-${station.id}`} key={station.id}>
-                    <h2>{ station.title.length < 20 ? station.title: `${station.title.substring(0,20)} ...` }</h2>
-                    <p className="address">{ station.address.length < 27 ? station.address: `${station.address.substring(0,27)} ...` }</p>
-                    <p className="price"><span>{ station.price } €/kWh</span></p>
-                    <p className="availability"><span>{ station.taken_parking }/{ station.total_parking }</span> places taken</p>
+                    <h2>{ upTo(station.name, 20) }</h2>
+                    <p className="address">{ upTo(station.address, 20) }</p>
+                    <p className="availability"><span>{ station.occupied_chargers }/{ station.all_chargers }</span> chargers occupied</p>
                 </Link>
                 ))}
                 <Link className="add-station flex-column-center-center" to="/app/new-station">

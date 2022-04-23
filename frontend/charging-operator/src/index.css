@@ -851,11 +851,11 @@
   font-size: 18px;
 }
 
-.address, .price, .availability {
-  font-family: 'Noto Sans', sans-serif;
+.address, .availability {
+  font-family: 'Poppins', sans-serif;
   text-decoration: none;
   color: #202020;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .address {
@@ -863,11 +863,12 @@
   padding-bottom: 10px;
 }
 
-.price, .availability {
+.availability {
   line-height: 20px;
+  padding-top: 18px;
 }
 
-.price span, .availability span {
+.availability span {
   font-weight: 500;
 }
 

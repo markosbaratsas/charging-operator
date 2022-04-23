@@ -4,7 +4,8 @@ const urls = {
     login: '/login',
     register: '/register',
     logout: '/logout',
-    checkAuth: '/validate-token'
+    checkAuth: '/validate-token',
+    getUserStations: '/stations',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -586,5 +587,20 @@ export const checkAuthentication = async (token) => {
     } catch (err) {
         console.log(err)
         return false;
+    }
+}
+
+export const getStations = async (token) => {
+    try {
+        const response = await axios.post(urls.getUserStations,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+
+    } catch (err) {
+        console.log(err)
+        return null;
     }
 }
