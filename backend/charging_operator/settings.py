@@ -60,7 +60,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
 
-    'users'
+    'users',
+    'stations',
+    'chargers',
+    'reservations',
 ]
 
 MIDDLEWARE = [
