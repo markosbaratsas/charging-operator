@@ -2876,3 +2876,9 @@
   font-weight: 400;
   color: #202020;
 }
+
+.loading-big {
+  position: fixed;
+  top: calc(50% - 80px);
+  left: 50%;
+}

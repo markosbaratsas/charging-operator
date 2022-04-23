@@ -22,8 +22,10 @@ const Login = ({title}) => {
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
-    useEffect(() => {
-        if (isAuthenticated()) navigate(from, { replace: true });
+    useEffect(async () => {
+        const checkAuth = await isAuthenticated();
+
+        if (checkAuth) navigate(from, { replace: true });
     }, [])
 
     useEffect(() => {

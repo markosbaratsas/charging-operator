@@ -30,3 +30,14 @@ def delete_token(request):
         pass
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def validate_token(_):
+    """Endpoint used to validate that a user's token is actually valid
+
+    Returns:
+        Ressponse: Status HTTP_200_OK if token is valid, else
+            returns HTTP_401_UNAUTHORIZED
+    """
+    return Response(status=status.HTTP_200_OK)

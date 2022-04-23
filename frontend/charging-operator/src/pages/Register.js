@@ -36,8 +36,10 @@ const Register = ({title}) => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
-    useEffect(() => {
-        if (isAuthenticated()) navigate(from, { replace: true });
+    useEffect(async () => {
+        const checkAuth = await isAuthenticated();
+
+        if (checkAuth) navigate(from, { replace: true });
     }, [])
 
     useEffect(() => {

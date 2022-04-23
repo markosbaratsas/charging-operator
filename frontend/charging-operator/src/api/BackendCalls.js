@@ -4,6 +4,7 @@ const urls = {
     login: '/login',
     register: '/register',
     logout: '/logout',
+    checkAuth: '/validate-token'
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -561,9 +562,8 @@ export const logoutUser = async (token) => {
     try {
         const response = await axios.post(urls.logout,
             JSON.stringify({}),
-            getAuthorizedHeaders(token)
+            getAuthorizedHeaders(token.accessToken)
         );
-        console.log(response?.data);
         return [null, true];
 
     } catch (err) {
@@ -572,4 +572,19 @@ export const logoutUser = async (token) => {
         }
     }
     return ['Something went wrong.', false];
+}
+
+export const checkAuthentication = async (token) => {
+
+    try {
+        const response = await axios.post(urls.checkAuth,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return true;
+
+    } catch (err) {
+        console.log(err)
+        return false;
+    }
 }
