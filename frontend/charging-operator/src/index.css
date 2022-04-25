@@ -2883,3 +2883,9 @@
   top: calc(50% - 80px);
   left: 50%;
 }
+
+.loading-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
