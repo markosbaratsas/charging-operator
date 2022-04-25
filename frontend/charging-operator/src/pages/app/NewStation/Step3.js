@@ -6,6 +6,7 @@ import Select from "../../../components/Select/Select";
 import { getGridPrice, getMarkers } from "../../../api/BackendCalls";
 import Map from "../../../components/Map3/Map";
 import { upTo } from "../../../utils/usefulFunctions";
+import AuthProvider from "../../../context/AuthProvider";
 
 const pricingMethods = [
     {
@@ -93,9 +94,11 @@ const pricingMethods = [
 
 const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                 zoom, setZoom, center, setCenter, marker, setMarker}) => {
+    const { getAuth } = AuthProvider();
+    const [stationsMarkers, setStationsMarkers] = useState([]);
+
     const [gridPrice, setGridPrice] = useState(true);
     const { grid_price: currentGridPrice } = getGridPrice();
-    const stationsMarkers = getMarkers();
 
     const [groupId, setGroupId] = useState(null);
     const [errorNextStep, setErrorNextStep] = useState(false);
@@ -122,6 +125,11 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
 
     const [competitors, setCompetitors] = useState([]);
     const [competitorsError, setCompetitorsError] = useState(false);
+
+    useEffect(async () => {
+        const mark = await getMarkers(getAuth());
+        setStationsMarkers(mark);
+    }, [])
 
     const handleEdit = (group_id) => {
         let this_group = chargerGroups.find(g => g.id === group_id);
@@ -782,7 +790,7 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                                         {competitors.map(competitor => {
                                                             return (
                                                                 <li key={competitor.id}>
-                                                                    <h5>{upTo(competitor.title, 20)}</h5>
+                                                                    <h5>{upTo(competitor.name, 20)}</h5>
                                                                     <h6>{upTo(competitor.address, 25)}</h6>
                                                                 </li>
                                                             );

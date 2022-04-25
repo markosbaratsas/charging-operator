@@ -28,8 +28,8 @@ const Map = ({marker, setMarker, markers, zoom, setZoom, center, setCenter}) => 
         console.log(event)
         console.log(event.latLng.lat())
         setMarker({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng()
+            latitude: event.latLng.lat(),
+            longitude: event.latLng.lng()
         });
     }
 
@@ -68,8 +68,8 @@ const Map = ({marker, setMarker, markers, zoom, setZoom, center, setCenter}) => 
             
             {marker ? (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
                   icon={{
                     url: "/icons/marker-icon-green.png",
                     origin: new window.google.maps.Point(0, 0),
@@ -82,11 +82,9 @@ const Map = ({marker, setMarker, markers, zoom, setZoom, center, setCenter}) => 
 
             {markers.map((marker) => (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
-                  onClick={(e) => {
-                    console.log(`marker-${marker.lat}-${marker.lng}`)
-                  }}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
+                  onClick={(e) => {}}
                   icon={{
                     url: "/icons/marker-icon.png",
                     origin: new window.google.maps.Point(0, 0),

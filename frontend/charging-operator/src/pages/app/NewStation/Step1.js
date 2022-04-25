@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 
 import Map from "../../../components/Map2/Map";
 import { getMarkers } from "../../../api/BackendCalls";
+import AuthProvider from "../../../context/AuthProvider";
 
 
 const STATION_NAME_REGEX = /^[A-z][A-z0-9_\ ]{2,31}$/;
 
 const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, setZoom, center, setCenter}) => {
-    const stationsMarkers = getMarkers();
+
+    const { getAuth } = AuthProvider();
+    const [stationsMarkers, setStationsMarkers] = useState([]);
 
     // step1
     const [validMarker, setValidMarker] = useState(false);
@@ -20,6 +23,11 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
     useEffect(() => {
         setValidMarker(true);
     }, [marker])
+
+    useEffect(async () => {
+        const mark = await getMarkers(getAuth());
+        setStationsMarkers(mark);
+    }, [])
 
     const moveToStep2 = () => {
         let all_valid = true;

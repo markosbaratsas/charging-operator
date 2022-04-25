@@ -31,7 +31,7 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
     });
 
     const addMarkerToCompetitors = (lat, lng) => {
-        let i = myMarkers.findIndex(marker => (marker.lat === lat && marker.lng === lng));
+        let i = myMarkers.findIndex(marker => (marker.latitude === lat && marker.longitude === lng));
         let this_marker = myMarkers[i];
         let newMyMarkers = myMarkers.slice();
         newMyMarkers.splice(i, 1);
@@ -40,7 +40,7 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
     }
 
     const addMarkerToMyMarkers = (lat, lng) => {
-        let i = competitors.findIndex(marker => (marker.lat === lat && marker.lng === lng));
+        let i = competitors.findIndex(marker => (marker.latitude === lat && marker.longitude === lng));
         let this_marker = competitors[i];
         let newCompetitors = competitors.slice();
         newCompetitors.splice(i, 1);
@@ -62,8 +62,8 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
             
             {marker ? (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
                   icon={{
                     url: "/icons/marker-icon-green.png",
                     origin: new window.google.maps.Point(0, 0),
@@ -76,9 +76,9 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
 
             {myMarkers.map((marker) => (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
-                  onClick={() => addMarkerToCompetitors(marker.lat, marker.lng)}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
+                  onClick={() => addMarkerToCompetitors(marker.latitude, marker.longitude)}
                   icon={{
                     url: "/icons/marker-icon.png",
                     origin: new window.google.maps.Point(0, 0),
@@ -91,9 +91,9 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
 
               {competitors.map((marker) => (
                   <Marker
-                    key={`${marker.lat}-${marker.lng}`}
-                    position={{ lat: marker.lat, lng: marker.lng }}
-                    onClick={() => addMarkerToMyMarkers(marker.lat, marker.lng)}
+                    key={marker.id}
+                    position={{ lat: marker.latitude, lng: marker.longitude }}
+                    onClick={() => addMarkerToMyMarkers(marker.latitude, marker.longitude)}
                     icon={{
                       url: "/icons/marker-icon-red.png",
                       origin: new window.google.maps.Point(0, 0),

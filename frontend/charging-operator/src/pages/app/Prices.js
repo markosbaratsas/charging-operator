@@ -17,6 +17,7 @@ import useTitle from "../../hooks/useTitle";
 import Map4 from "../../components/Map4/Map";
 import Map3 from "../../components/Map3/Map";
 import { upTo } from '../../utils/usefulFunctions';
+import AuthProvider from '../../context/AuthProvider';
 
 
 const pricingMethods = [
@@ -116,7 +117,8 @@ const Prices = ({title}) => {
     // for the modal
     const alert = useAlert();
 
-    const stationsMarkers = getMarkers();
+    const { getAuth } = AuthProvider();
+    const [stationsMarkers, setStationsMarkers] = useState([]);
     const [show, setShow] = useState(false);
 
     const [pricingMethod, setPricingMethod] = useState("");
@@ -142,6 +144,11 @@ const Prices = ({title}) => {
 
     const [competitors, setCompetitors] = useState([]);
     const [competitorsError, setCompetitorsError] = useState(false);
+
+    useEffect(async () => {
+        const mark = await getMarkers(getAuth());
+        setStationsMarkers(mark);
+    }, [])
 
     const handleEdit = () => {
         let thisGroup = JSON.parse(JSON.stringify(groups[groupSelected]));
@@ -824,7 +831,7 @@ const Prices = ({title}) => {
                                                     {competitors.map(competitor => {
                                                         return (
                                                             <li key={competitor.id}>
-                                                                <h5>{upTo(competitor.title, 20)}</h5>
+                                                                <h5>{upTo(competitor.name, 20)}</h5>
                                                                 <h6>{upTo(competitor.address, 25)}</h6>
                                                             </li>
                                                         );

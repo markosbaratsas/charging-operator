@@ -35,8 +35,8 @@ const Map = ({marker, markers, center, zoom}) => {
             
             {marker ? (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
                   icon={{
                     url: "/icons/marker-icon-green.png",
                     origin: new window.google.maps.Point(0, 0),
@@ -49,8 +49,8 @@ const Map = ({marker, markers, center, zoom}) => {
 
             {markers.map((marker) => (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={marker.id}
+                  position={{ lat: marker.latitude, lng: marker.longitude }}
                   onClick={() => {}}
                   icon={{
                     url: "/icons/marker-icon.png",

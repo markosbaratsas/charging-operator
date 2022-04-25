@@ -1,14 +1,24 @@
-import Map from "../../../components/Map4/Map";
-import { getMarkers, createStation } from "../../../api/BackendCalls";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAlert } from 'react-alert';
 
+import Map from "../../../components/Map4/Map";
+import { getMarkers, createStation } from "../../../api/BackendCalls";
+import AuthProvider from "../../../context/AuthProvider";
+
 const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationName}) => {
-    const stationsMarkers = getMarkers();
+    const { getAuth } = AuthProvider();
+    const [stationsMarkers, setStationsMarkers] = useState([]);
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/app/dashboard";
     const alert = useAlert();
+
+    useEffect(async () => {
+        const mark = await getMarkers(getAuth());
+        setStationsMarkers(mark);
+    }, [])
 
     const moveToStep1 = () => {
         setStep(1);
