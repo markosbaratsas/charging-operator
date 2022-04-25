@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from stations.models import Station
-from stations.serializers import DashboardStationSerializer
+from stations.serializers import (DashboardStationSerializer,
+                        StationMarkersSerializer)
 
 
 @api_view(['POST', ])
@@ -21,3 +22,41 @@ def get_stations(request):
     serializer = DashboardStationSerializer(stations, many=True)
     
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_station_markers(_):
+    """Return stations markers, to be rendered on map
+
+    Returns:
+        data, status: if successful returns a list of station markers, with an
+            HTTP_200_OK status
+    """
+    stations = Station.objects.all()
+    serializer = StationMarkersSerializer(stations, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def add_station(request):
+    """Add an operator to a station
+
+    Returns:
+        data, status: if successful returns a list of station markers, with an
+            HTTP_200_OK status
+    """
+    given_id = int(request.data['station_id'])
+    try:
+        station = Station.objects.get(id=given_id)
+    except:
+        return Response(data={
+            "error": "No station with this id"
+        }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    station.operators.add(request.user)
+    station.save()
+
+    return Response(status=status.HTTP_200_OK)

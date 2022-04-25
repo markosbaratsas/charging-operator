@@ -33,18 +33,17 @@ const Map = ({stationSelected, setStationSelected, markers}) => {
     return (
         <GoogleMap 
             mapContainerStyle={mapContainerStyle}
-            zoom={14}
+            zoom={7}
             center={center}
             options={options}
         >
 
             {markers.map((marker) => (
                 <Marker
-                  key={`${marker.lat}-${marker.lng}`}
-                  position={{ lat: marker.lat, lng: marker.lng }}
+                  key={marker.id}
+                  position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
                   onClick={(e) => {
                     setStationSelected(marker);
-                    console.log(`marker-${marker.lat}-${marker.lng}`)
                   }}
                   icon={{
                     url: "/icons/marker-icon.png",
@@ -57,14 +56,17 @@ const Map = ({stationSelected, setStationSelected, markers}) => {
 
             {stationSelected ? (
                 <InfoWindow
-                    position={{ lat: stationSelected.lat, lng: stationSelected.lng }}
+                    position={{
+                            lat: parseFloat(stationSelected.latitude),
+                            lng: parseFloat(stationSelected.longitude)
+                    }}
                     onCloseClick={() => {
                     setStationSelected(null);
                     }}
                 >
                     <div>
                         <h2>
-                            {stationSelected.title}
+                            {stationSelected.name}
                         </h2>
                         <p>{stationSelected.address}</p>
                     </div>
