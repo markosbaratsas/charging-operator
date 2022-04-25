@@ -1,5 +1,7 @@
 from django.db import models
 
+from stations.models import Station
+
 
 class PricingGroup(models.Model):
     class MethodName(models.TextChoices):
@@ -11,6 +13,8 @@ class PricingGroup(models.Model):
         COMPETITORS = 'Competitor-centered Profit'
 
     id = models.AutoField(primary_key=True)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    name = models.CharField(max_length=31, default='')
     method_name = models.CharField(max_length=31, default='',
                                     choices=MethodName.choices)
     description = models.CharField(max_length=255, default='')
