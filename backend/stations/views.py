@@ -69,8 +69,10 @@ def create_station(request):
     """Create a new Station
 
     Returns:
-        data, status: if successful returns a list of station markers, with an
-            HTTP_200_OK status
+        data, status: if successful returns a message that specifies success
+            along with HTTP_200_OK status. If an error occurred it returns the
+            the step in which the error occured, along with a
+            HTTP_400_BAD_REQUEST status
     """
 
     if ('station' not in request.data
