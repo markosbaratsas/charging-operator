@@ -6,7 +6,7 @@ import Map from "../../../components/Map4/Map";
 import { getMarkers, createStation } from "../../../api/BackendCalls";
 import AuthProvider from "../../../context/AuthProvider";
 
-const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationName}) => {
+const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationName, address, phone}) => {
     const { getAuth } = AuthProvider();
     const [stationsMarkers, setStationsMarkers] = useState([]);
 
@@ -29,12 +29,34 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
     const moveToStep3 = () => {
         setStep(3);
     }
-    const submitStation = () => {
-        let {ok, errors} = createStation(stationName, marker, chargers, chargerGroups);
+    const submitStation = async () => {
+        let requestChargerGroups = chargerGroups.filter(elem => {
+            return elem.name !== "... Add a new Charger Group"
+        })
+        let {ok, errors} = await createStation(getAuth(), {
+            step1: {
+                name: stationName,
+                address: address,
+                phone: phone,
+                latitude: marker.latitude.toFixed(5),
+                longitude: marker.longitude.toFixed(5)
+            },
+            step2: {
+                chargers: chargers,
+            },
+            step3: {
+                charger_groups: requestChargerGroups
+            }
+        });
+        console.log(ok, errors)
+        if (!ok && !errors) console.log("Sth is clearly wrong...")
+
         if (ok) {
             alert.success('Station created successfully!');
             navigate(from, { replace: true });
         }
+
+        console.log(errors);
     }
 
     return (
@@ -55,8 +77,17 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
                                 />
                             </div>
 
-                            <div className="step-4-station-info">
-                                <h3>Station Name: <br /> <span>{stationName}</span></h3>
+
+                            <div className="flex-column-center-center">
+                                <div className="step-4-station-info">
+                                    <h3>Station Name: <br /> <span>{stationName}</span></h3>
+                                </div>
+                                <div className="step-4-station-info">
+                                    <h3>Station Address: <br /> <span>{address}</span></h3>
+                                </div>
+                                <div className="step-4-station-info">
+                                    <h3>Station Phone: <br /> <span>{phone}</span></h3>
+                                </div>
                             </div>
                         </div>
                         <button onClick={moveToStep1}>
@@ -67,7 +98,7 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
                     
                     <div className="step-4-check">
                         <h2>Station's Chargers Information</h2>
-                        <div className="step-4-check-inside">
+                        <div className="step-4-check-inside3">
                             {chargers.map(charger => {
                                 return (
                                     <div

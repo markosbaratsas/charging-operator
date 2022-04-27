@@ -6,8 +6,11 @@ import AuthProvider from "../../../context/AuthProvider";
 
 
 const STATION_NAME_REGEX = /^[A-z][A-z0-9_\ ]{2,31}$/;
+const ADDRESS_REGEX = /^[A-z][A-z0-9_\ ,]{2,64}$/;
+const PHONE_REGEX = /^[0-9]{10}$/;
 
-const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, setZoom, center, setCenter}) => {
+const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, setZoom,
+            center, setCenter, address, setAddress, phone, setPhone}) => {
 
     const { getAuth } = AuthProvider();
     const [stationsMarkers, setStationsMarkers] = useState([]);
@@ -15,10 +18,20 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
     // step1
     const [validMarker, setValidMarker] = useState(false);
     const [validName, setValidName] = useState(false);
+    const [validAddress, setValidAddress] = useState(false);
+    const [validPhone, setValidPhone] = useState(false);
 
     useEffect(() => {
         setValidName(true);
     }, [stationName])
+
+    useEffect(() => {
+        setValidAddress(true);
+    }, [address])
+
+    useEffect(() => {
+        setValidPhone(true);
+    }, [phone])
 
     useEffect(() => {
         setValidMarker(true);
@@ -34,6 +47,15 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
 
         if (!STATION_NAME_REGEX.test(stationName)) {
             setValidName(false);
+            all_valid = false;
+        }
+        if (!ADDRESS_REGEX.test(address)) {
+            console.log("hello")
+            setValidAddress(false);
+            all_valid = false;
+        }
+        if (!PHONE_REGEX.test(phone)) {
+            setValidPhone(false);
             all_valid = false;
         }
         if (!marker) {
@@ -78,16 +100,35 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
                         value={stationName}
                     />
                     {!validName ?
-                    <p className="error-p">Please follow the given instructions when providing the station name.</p>
+                    <p className="error-p">Station name should be 2-31 characters, starting with a letter and can contain letters, digits, underscores and spaces.</p>
                     : null}
-                    <p>2-31 characters, starts with letter and can contain letters, digits, underscores and spaces.</p>
-                    {/* <h2>Input Operators Names</h2>
-                    <AutoCompleteOperator
-                        suggestions={operatorNames}
-                        operator={operator}
-                        setOperator={setOperator}
+
+                    <h2>Input desired Charging Station Address</h2>
+                    <input
+                        className={"my-classic-input " + (!validAddress ? "error-selected" : null)}
+                        type="text"
+                        placeholder="Charging Station Address"
+                        onChange={(e) => setAddress(e.target.value)}
+                        autoComplete="off"
+                        value={address}
                     />
-                    <p>Click the (+) button to add more operators.</p> */}
+                    {!validAddress ?
+                    <p className="error-p">Station address should be 2-31 characters, starting with a letter and can contain letters, digits, underscores, commas and spaces.</p>
+                    : null}
+
+                    <h2>Input desired Charging Station Phone</h2>
+                    <input
+                        className={"my-classic-input " + (!validPhone ? "error-selected" : null)}
+                        type="tel"
+                        step="1"
+                        min="0"
+                        placeholder="Charging Station Phone"
+                        onChange={(e) => setPhone(e.target.value)}
+                        value={phone}
+                    />
+                    {!validPhone ?
+                    <p className="error-p">Station phone should have exactly 10 digits (numerical characters only).</p>
+                    : null}
                     <h4>You will be this station's operator. Other operators can be added after the station is created.</h4>
                 </div>
             </div>

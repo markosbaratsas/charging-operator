@@ -2062,6 +2062,15 @@
   width: 800px;
 }
 
+.step-4-check-inside3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 800px;
+}
+
 .step-4-station-info {
   display: flex;
   flex-direction: row;
@@ -2088,7 +2097,7 @@
   background-color: #d5d5d5;
   border: 2px solid #bbb;
   border-radius: 5px;
-  width: 236px;
+  width: 232px;
   color: #303030;
   transition: 0.15s;
 }

@@ -179,7 +179,8 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                     {
                         name: "c",
                         id: 1,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     }
                 ]
             }
@@ -205,17 +206,20 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     }
                 ]
             }
@@ -249,27 +253,32 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c1",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     },
                     {
                         name: "c2",
                         id: 4,
-                        value: constant2
+                        value: constant2,
+                        type: "float"
                     },
                     {
                         name: "n",
                         id: 5,
-                        value: n
+                        value: n,
+                        type: "int"
                     }
                 ]
             }
@@ -303,27 +312,32 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c1",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     },
                     {
                         name: "competitors_coordinates",
                         id: 4,
-                        value: competitors
+                        value: competitors,
+                        type: "list_of_coordinates"
                     },
                     {
                         name: "c2",
                         id: 5,
-                        value: constant2
+                        value: constant2,
+                        type: "float"
                     }
                 ]
             }

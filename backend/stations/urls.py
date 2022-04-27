@@ -7,4 +7,5 @@ urlpatterns = [
     path('stations/markers', views.get_station_markers,
                                             name="get_station_markers"),
     path('stations/add-station', views.add_station, name="add_station"),
+    path('stations/create-station', views.create_station, name="create_station"),
 ]

@@ -20,6 +20,9 @@ const NewStation = ({title}) => {
         lng: 23.783088
     });
     const [stationName, setStationName] = useState("");
+    const [address, setAddress] = useState("");
+    const [phone, setPhone] = useState("");
+
     const [chargers, setChargers] = useState([{
         current: "AC",
         connector_type: "Whatever",
@@ -114,6 +117,10 @@ const NewStation = ({title}) => {
                     <Step1
                         stationName={stationName}
                         setStationName={setStationName}
+                        address={address}
+                        setAddress={setAddress}
+                        phone={phone}
+                        setPhone={setPhone}
                         marker={marker}
                         setMarker={setMarker}
                         setStep={setStep}
@@ -152,6 +159,8 @@ const NewStation = ({title}) => {
                     <Step4
                         chargers={chargers}
                         stationName={stationName}
+                        address={address}
+                        phone={phone}
                         chargerGroups={chargerGroups}
                         setStep={setStep}
                         marker={marker}

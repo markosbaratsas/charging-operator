@@ -8,6 +8,7 @@ const urls = {
     getUserStations: '/stations',
     getStationMarkers: '/stations/markers',
     addStation: '/stations/add-station',
+    createStation: '/stations/create-station',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -58,10 +59,20 @@ export const getGridPrice = () => {
     };
 }
 
-export const createStation = () => {
-    // TODO: Hit backend
-    // temporarily return station added successfully
-    return {ok: true, errors: null};
+export const createStation = async (token, station_dict) => {
+    try {
+        await axios.post(urls.createStation,
+            JSON.stringify({station: station_dict}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true, errors: null};
+    } catch (err) {
+        console.log("error", err);
+        if (!err?.response) {
+            return ['No Server Response.', null];
+        }
+        return {ok: false, errors: err.resonse};
+    }
 }
 
 export const getStation = async (id) => {
