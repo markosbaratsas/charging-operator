@@ -24,6 +24,7 @@ import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
 import RequireAuth from './components/RequireAuth';
 import VehicleState from './pages/app/VehicleState';
+import AppNotAuthorized from './pages/app/AppNotAuthorized';
 
 
 const options = {
@@ -69,6 +70,11 @@ function App() {
                     <Route path="/app/station-:id/chargers" element={<Chargers title="Station Chargers - Charging Operator" />} />
                     <Route path="/app/station-:id/reservations" element={<Reservations title="Station Reservations - Charging Operator" />} />
                     <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={<VehicleState title="Vehicle State - Charging Operator" />} />
+
+
+                    <Route element={<Layout2 />}>
+                        <Route path="/app/not-authorized" element={<AppNotAuthorized title="Not Authorized - Charging Operator" />} />
+                    </Route>
                 </Route>
 
                     {/* <Route element={<RequireAuth />}>
