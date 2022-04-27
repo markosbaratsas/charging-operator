@@ -18,7 +18,7 @@ class DashboardStationSerializer(serializers.ModelSerializer):
         all = 0
         groups = PricingGroup.objects.filter(station=obj)
         for group in groups:
-            all = Charger.objects.filter(pricing_group=group).count()
+            all += Charger.objects.filter(pricing_group=group).count()
 
         return all
 
@@ -26,7 +26,7 @@ class DashboardStationSerializer(serializers.ModelSerializer):
         occupied = 0
         groups = PricingGroup.objects.filter(station=obj)
         for group in groups:
-            occupied = Charger.objects.filter(pricing_group=group,
+            occupied += Charger.objects.filter(pricing_group=group,
                                               is_occupied=True).count()
 
         return occupied
