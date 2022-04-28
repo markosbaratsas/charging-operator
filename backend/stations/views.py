@@ -2,11 +2,12 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from stations.insert_data_functions import add_charger, add_pricing_group
+from stations.useful_functions import (add_charger, add_pricing_group,
+                                get_user_station)
 
 from stations.models import Station
 from stations.serializers import (DashboardStationSerializer,
-                        StationMarkersSerializer)
+                        StationInformationSerializer, StationMarkersSerializer)
 
 
 @api_view(['POST', ])
@@ -139,3 +140,25 @@ def create_station(request):
     return Response({
             "success": "Successfully created a new station!"
         }, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_station(request):
+    """Get Station information
+
+    Returns:
+        data, status: if successful returns station's information along with
+            HTTP_200_OK status, else it returns an error message along with
+            an HTTP_401_UNAUTHORIZED status
+    """
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = StationInformationSerializer(station)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

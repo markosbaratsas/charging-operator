@@ -91,3 +91,14 @@ def add_charger(charger, group):
         pricing_group=group
     )
     return charger
+
+
+def get_user_station(user, station_id):
+    try:
+        station = Station.objects.get(id=station_id)
+        if user not in station.operators.all():
+            return None
+        return station
+
+    except:
+        return None
