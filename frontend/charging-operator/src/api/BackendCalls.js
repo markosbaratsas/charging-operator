@@ -9,6 +9,9 @@ const urls = {
     getStationMarkers: '/stations/markers',
     addStation: '/stations/add-station',
     createStation: '/stations/create-station',
+    getStation: '/stations/get-station',
+    getPricingGroupsInfo: '/chargers/pricing-groups',
+    getPricingGroupsPrices: '/chargers/pricing-groups/prices',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -75,73 +78,48 @@ export const createStation = async (token, station_dict) => {
     }
 }
 
-export const getStation = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: {
-            id: 1,
-            name: "Ntua Charging Station",
-            location: {
-                lat: 37.98,
-                lng: 23.783088
-            }
-        },
-        2: {
-            id: 2,
-            name: "Random Station",
-            location: {
-                lat: 37.979188,
-                lng: 23.783088,
-            }
+export const getStation = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getStation,
+            JSON.stringify({station_id: station_id}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+    } catch (err) {
+        console.log("error", err);
+        if (!err?.response) {
+            return {ok: false, data: null};
         }
+        return {ok: false, data: null};
     }
-
-    return id in stations ? stations[id] : stations[1];
+    return {ok: true, data: null};
 }
 
-export const getStationChargers = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: [
-            {
-                name: "22kW Chargers",
-                total_count: 5,
-                taken: 4,
-                id: 1
-            },
-            {
-                name: "50kW Chargers",
-                total_count: 2,
-                taken: 1,
-                id: 2
-            }
-        ]
-    }
+export const getStationChargerGroupsInfo = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getPricingGroupsInfo,
+            JSON.stringify({station_id: station_id}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
 
-    return id in stations ? stations[id] : stations[1];
+    return null;
 }
 
-export const getStationPrices = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: [
-            {
-                name: "22kW Chargers",
-                current_price: 0.296,
-                id: 1
-            },
-            {
-                name: "50kW Chargers",
-                current_price: 0.378,
-                id: 2
-            }
-        ]
-    }
+export const getStationPrices = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getPricingGroupsPrices,
+            JSON.stringify({station_id: station_id}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
 
-    return id in stations ? stations[id] : stations[1];
+    return null;
 }
 
 export const getStationVehicles = async (id) => {

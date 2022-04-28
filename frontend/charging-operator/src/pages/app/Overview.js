@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
 import { getStation,
-    getStationChargers,
+    getStationChargerGroupsInfo,
     getStationPrices,
     getStationReservations,
     getStationVehicles } from '../../api/BackendCalls';
 import Navbar4 from '../../components/Navbar4';
 import useTitle from "../../hooks/useTitle";
 import { upTo } from '../../utils/usefulFunctions';
+import AuthProvider from '../../context/AuthProvider';
 
 const Overview = ({title}) => {
     useTitle({title});
 
     const { id } = useParams();
+    const { getAuth } = AuthProvider();
+    const navigate = useNavigate();
 
     const [station, setStation] = useState({name: ""});
     const [chargers, setChargers] = useState(null);
@@ -24,23 +27,27 @@ const Overview = ({title}) => {
 
     const fetchData = async () => {
         try {
-            let data = await getStation(id);
+            let {ok, data} = await getStation(getAuth(), id);
+            console.log(ok, data)
+            if (!ok) {
+                navigate("/app/not-authorized", { replace: true });
+            }
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(station)) setStation(data);
 
-            data = await getStationChargers(id);
+            data = await getStationChargerGroupsInfo(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(chargers)) setChargers(data);
 
-            data = await getStationPrices(id);
+            data = await getStationPrices(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(prices)) setPrices(data);
 
-            data = await getStationVehicles(id);
+            data = await getStationVehicles(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(vehicles)) setVehicles(data);
 
-            data = await getStationReservations(id);
+            data = await getStationReservations(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(reservations)) setReservations(data);
 
@@ -78,16 +85,16 @@ const Overview = ({title}) => {
                                         return (
                                             <li key={charger.id} className="flex-column-center-center">
                                                 <h3>{charger.name}</h3>
-                                                <h4>{charger.taken}/{charger.total_count} taken</h4>
+                                                <h4>{charger.occupied_chargers}/{charger.all_chargers} occupied</h4>
                                                 <div className="flex-row-center-center">
                                                     <div className="percentage-availability">
                                                         <div style={{
-                                                            width: `${200*(charger.taken/charger.total_count)}px`,
+                                                            width: `${200*(charger.occupied_chargers/charger.all_chargers)}px`,
                                                             backgroundColor: "#202020",
                                                             height: "10px"
                                                         }}/>
                                                         <div style={{
-                                                            width: `${200*(1-charger.taken/charger.total_count)}px`,
+                                                            width: `${200*(1-charger.occupied_chargers/charger.all_chargers)}px`,
                                                             backgroundColor: "#f3f3f3",
                                                             height: "10px"
                                                         }} />
