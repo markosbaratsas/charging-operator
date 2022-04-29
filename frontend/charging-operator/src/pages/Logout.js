@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 
 import { logoutUser } from "../api/BackendCalls";
 import AuthProvider from "../context/AuthProvider";
+import useTitle from "../hooks/useTitle";
 
-const Logout = () => {
+const Logout = ({title}) => {
+    useTitle({title});
+
     const { logout, getAuth } = AuthProvider();
 
     useEffect(() => {

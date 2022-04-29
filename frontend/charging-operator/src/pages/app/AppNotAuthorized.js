@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 
 
-const AppNotAuthorized = () => {
+const AppNotAuthorized = ({title}) => {
+    useTitle({title});
+
     return (
         <section className="flex-column-center-center">
             <h1 className="app-page-title">You are not authorized to see this page</h1>

@@ -5,9 +5,12 @@ import ReactLoading from 'react-loading';
 import { getStations } from '../../api/BackendCalls';
 import AuthProvider from '../../context/AuthProvider';
 import { upTo } from '../../utils/usefulFunctions';
+import useTitle from '../../hooks/useTitle';
 
 
-const Dashboard = () => {
+const Dashboard = ({title}) => {
+    useTitle({title});
+
     const [stations, setStations] = useState(null);
     const { getAuth } = AuthProvider();
 

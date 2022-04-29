@@ -48,7 +48,7 @@ function App() {
                     <Route path="/contact" element={<Contact title="Charging Operator - Contact" />} />
                     <Route path="/login" element={<Login title="Charging Operator - Login" />} />
                     <Route path="/register" element={<Register title="Charging Operator - Register" />} />
-                    <Route path="/logout" element={<Logout title="Successfully logged out"/>} />
+                    <Route path="/logout" element={<Logout title="Charging Operator - Successfully logged out"/>} />
 
                     {/* <Route path="/pricing-methods" element={<Logout title="Charging Operator - Pricing methods"/>} /> */}
                 </Route>
@@ -59,11 +59,11 @@ function App() {
                 {/* we want to protect these routes */}
                 <Route element={<RequireAuth />}>
                     <Route element={<Layout2 />}>
-                        <Route path="/app/dashboard" element={<Dashboard title="Charging stations Dashboard"/>} />
+                        <Route path="/app/dashboard" element={<Dashboard title="Dashboard - Charging Operator"/>} />
                     </Route>
                     <Route element={<Layout3 />}>
-                        <Route path="/app/add-station" element={<AddStation title="Add an Existing Station" />} />
-                        <Route path="/app/new-station" element={<NewStation title="Create a new Charging Station" />} />
+                        <Route path="/app/add-station" element={<AddStation title="Add an Existing Station - Charging Operator" />} />
+                        <Route path="/app/new-station" element={<NewStation title="Create a new Charging Station - Charging Operator" />} />
                     </Route>
                     <Route path="/app/station-:id" element={<Overview title="Station Overview - Charging Operator" />} />
                     <Route path="/app/station-:id/prices" element={<Prices title="Station Prices - Charging Operator" />} />

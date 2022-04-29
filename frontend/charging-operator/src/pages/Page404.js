@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import useTitle from "../hooks/useTitle";
 
-const Page404 = () => {
+const Page404 = ({title}) => {
+    useTitle({title});
 
     return (
         <>
