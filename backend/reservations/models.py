@@ -64,7 +64,8 @@ class Reservation(models.Model):
     charger = models.ForeignKey(Charger, on_delete=models.SET_NULL, null=True)
     station = models.ForeignKey(Station, on_delete=models.SET_NULL, null=True)
     vehicle_state = models.ForeignKey(VehicleState,
-                                      on_delete=models.SET_NULL, null=True)
+                                      on_delete=models.SET_NULL, null=True,
+                                      blank=True)
     expected_arrival = models.DateTimeField(default=datetime.\
             datetime.strptime("2022-04-22 00:00:00", "%Y-%m-%d %H:%M:%S").\
             replace(tzinfo=timezone('UTC')))
@@ -83,6 +84,9 @@ class Reservation(models.Model):
                                         default=0)
 
     # calculated when reservation is over
+    total_power_transmited = models.DecimalField(max_digits=7,
+                                                 decimal_places=3,
+                                                 default=0)
     parking_cost = models.DecimalField(max_digits=6, decimal_places=3,
                                        default=0)
     parking_cost_extra = models.DecimalField(max_digits=6, decimal_places=3,

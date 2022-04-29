@@ -12,6 +12,8 @@ const urls = {
     getStation: '/stations/get-station',
     getPricingGroupsInfo: '/chargers/pricing-groups',
     getPricingGroupsPrices: '/chargers/pricing-groups/prices',
+    getVehicleStates: '/reservations/vehicle-states',
+    getReservations: '/reservations',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -122,92 +124,42 @@ export const getStationPrices = async (token, station_id) => {
     return null;
 }
 
-export const getStationVehicles = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: [
-            {
-                model: "Tesla Model 3",
-                licence_plate: "AHB 2879",
-                expected_departure: "04/05/2022 17:55",
-                charging_in: "50 kW Charger 1",
-                id: 1
-            },
-            {
-                model: "Hyundai Kona Electric",
-                licence_plate: "KPH 3421",
-                expected_departure: "04/05/2022 18:20",
-                charging_in: "22 kW Charger 5",
-                id: 2
-            },
-            {
-                model: "Nissan Leaf",
-                licence_plate: "INB 8945",
-                expected_departure: "04/05/2022 18:35",
-                charging_in: "22 kW Charger 4",
-                id: 3
-            },
-            {
-                model: "Tesla Model S",
-                licence_plate: "KRH12HE",
-                expected_departure: "04/05/2022 18:45",
-                charging_in: "22 kW Charger 1",
-                id: 4
-            },
-            {
-                model: "Tesla Model 3",
-                licence_plate: "OII 4312",
-                expected_departure: "04/05/2022 19:05",
-                charging_in: "22 kW Charger 2",
-                id: 5
-            },
-        ]
-    }
+export const getStationVehicles = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getVehicleStates,
+            JSON.stringify({station_id: station_id}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
 
-    return id in stations ? stations[id] : stations[1];
+    return null;
 }
 
-export const getStationReservations = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: {
-            next_12_hours: [
-                {
-                    model: "Tesla Model 3",
-                    owner: "Antonios Kalogiorgos",
-                    licence_plate: "AOB 1212",
-                    expected_arrival: "04/05/2022 18:05",
-                    expected_departure: "04/05/2022 18:30",
-                    charging_in: "50 kW Charger 1",
-                    id: 1
-                },
-                {
-                    model: "Tesla Model X",
-                    owner: "Konstantina Papadopoulou",
-                    licence_plate: "HNB 3779",
-                    expected_arrival: "04/05/2022 18:10",
-                    expected_departure: "04/05/2022 19:45",
-                    charging_in: "22 kW Charger 2",
-                    id: 2
-                }
-            ],
-            next_24_hours: [
-                {
-                    model: "Tesla Model X",
-                    owner: "Konstantinos Georgiou",
-                    licence_plate: "HNK 8967",
-                    expected_arrival: "05/05/2022 10:05",
-                    expected_departure: "05/05/2022 10:30",
-                    charging_in: "50 kW Charger 1",
-                    id: 1
-                }
-            ]
-        }
-    }
+export const getStationReservations = async (token, station_id) => {
+    try {
+        // now
+        let from_date = new Date();
+        let from_str = from_date.toISOString().split("T").join(" ").substring(0, 19)
+        // 24 hours later
+        let to_date = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
+        let to_str = to_date.toISOString().split("T").join(" ").substring(0, 19)
 
-    return id in stations ? stations[id] : stations[1];
+        const response = await axios.post(urls.getReservations,
+            JSON.stringify({
+                station_id: station_id,
+                from: from_str,
+                to: to_str
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        console.log(response.data)
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
+
+    return null;
 }
 
 export const getPricingGroups = async (id) => {

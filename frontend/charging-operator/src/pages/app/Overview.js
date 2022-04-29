@@ -9,7 +9,7 @@ import { getStation,
     getStationVehicles } from '../../api/BackendCalls';
 import Navbar4 from '../../components/Navbar4';
 import useTitle from "../../hooks/useTitle";
-import { upTo } from '../../utils/usefulFunctions';
+import { next_hours, upTo } from '../../utils/usefulFunctions';
 import AuthProvider from '../../context/AuthProvider';
 
 const Overview = ({title}) => {
@@ -28,7 +28,6 @@ const Overview = ({title}) => {
     const fetchData = async () => {
         try {
             let {ok, data} = await getStation(getAuth(), id);
-            console.log(ok, data)
             if (!ok) {
                 navigate("/app/not-authorized", { replace: true });
             }
@@ -116,20 +115,28 @@ const Overview = ({title}) => {
 
                             {!vehicles ? <ReactLoading type="spin" color="#202020" height={30} width={30} className="loading"/>
                             : (
-                            
-                                <ul className="overview-station-ul2 flex-column-start-center">
-                                    {vehicles.map(vehicle => {
-                                        return (
-                                            <li key={vehicle.id} className="flex-column-start-start">
-                                                <Link to={`/app/station-${id}/vehicle-state/${vehicle.id}`}>
-                                                    <h4>{upTo(vehicle.model, 30)}, {vehicle.licence_plate}</h4>
-                                                    <h5>Expected Departure: <span>{vehicle.expected_departure}</span></h5>
-                                                    <h5>Charger: <span>{upTo(vehicle.charging_in,30)}</span></h5>
-                                                </Link>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
+                                <>
+                                    {vehicles.length === 0 ? (
+                                        <>
+                                            <p>There is no vehicle charging now...</p>
+                                            <br />
+                                        </>
+                                        ) : (
+                                        <ul className="overview-station-ul2 flex-column-start-center">
+                                            {vehicles.map(vehicle => {
+                                                return (
+                                                    <li key={vehicle.id} className="flex-column-start-start">
+                                                        <Link to={`/app/station-${id}/vehicle-state/${vehicle.id}`}>
+                                                            <h4>{upTo(vehicle.model, 30)}, {vehicle.license_plate}</h4>
+                                                            <h5>Expected Departure: <span>{vehicle.expected_departure}</span></h5>
+                                                            <h5>Charger: <span>{upTo(vehicle.charging_in,30)}</span></h5>
+                                                        </Link>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>
@@ -166,33 +173,37 @@ const Overview = ({title}) => {
                                 <>
                                     <p>For the next 12 hours</p>
                                     <ul className="overview-station-ul2 flex-column-start-center">
-                                        {reservations.next_12_hours.map(reservation => {
+                                        {reservations.filter(reservation => next_hours(reservation.expected_arrival, 12)).map(reservation => {
                                             return (
                                                 <li key={reservation.id} className="flex-column-start-start">
-                                                    <h4>{upTo(reservation.model, 30)}, {reservation.licence_plate}</h4>
+                                                    <h4>{upTo(reservation.model, 30)}, {reservation.license_plate}</h4>
                                                     <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
                                                     <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
                                                     <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
-                                                    <h5>Charger: <span>{reservation.charging_in}</span></h5>
+                                                    <h5>Charger: <span>{reservation.charger}</span></h5>
                                                 </li>
                                             );
                                         })}
                                     </ul>
-                                    
-                                    <p>For the next 24 hours</p>
-                                    <ul className="overview-station-ul2 flex-column-start-center">
-                                        {reservations.next_24_hours.map(reservation => {
-                                            return (
-                                                <li key={reservation.id} className="flex-column-start-start">
-                                                    <h4>{reservation.model}, {reservation.licence_plate}</h4>
-                                                    <h5>Owner: <span>{reservation.owner}</span></h5>
-                                                    <h5>Expected Departure: <span>{reservation.expected_arrival}</span></h5>
-                                                    <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
-                                                    <h5>Charger: <span>{reservation.charging_in}</span></h5>
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
+
+                                    {reservations.filter(reservation =>( ! next_hours(reservation.expected_arrival, 12) && next_hours(reservation.expected_arrival, 24))).length > 0 ? (
+                                    <>
+                                        <p>For the next 24 hours</p>
+                                        <ul className="overview-station-ul2 flex-column-start-center">
+                                            {reservations.filter(reservation =>( ! next_hours(reservation.expected_arrival, 12) && next_hours(reservation.expected_arrival, 24))).map(reservation => {
+                                                return (
+                                                    <li key={reservation.id} className="flex-column-start-start">
+                                                        <h4>{reservation.model}, {reservation.license_plate}</h4>
+                                                        <h5>Owner: <span>{reservation.owner}</span></h5>
+                                                        <h5>Expected Departure: <span>{reservation.expected_arrival}</span></h5>
+                                                        <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
+                                                        <h5>Charger: <span>{reservation.charger}</span></h5>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </>
+                                    ) : null}
                                 </>
                             )}
                         </div>
