@@ -3,11 +3,14 @@ import datetime
 from pytz import timezone
 
 from chargers.models import Charger
+from stations.models import Station
 
 
 class Owner(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=31, default='')
+    email = models.EmailField(max_length=31, default='')
+    phone = models.CharField(max_length=15, default='')
 
     def __str__(self):
         return f'{self.id}, {self.name}'
@@ -59,6 +62,7 @@ class Reservation(models.Model):
     id = models.AutoField(primary_key=True)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True)
     charger = models.ForeignKey(Charger, on_delete=models.SET_NULL, null=True)
+    station = models.ForeignKey(Station, on_delete=models.SET_NULL, null=True)
     vehicle_state = models.ForeignKey(VehicleState,
                                       on_delete=models.SET_NULL, null=True)
     expected_arrival = models.DateTimeField(default=datetime.\
