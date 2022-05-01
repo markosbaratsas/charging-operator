@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import { Modal } from 'react-bootstrap';
 import { useAlert } from 'react-alert';
@@ -8,7 +8,6 @@ import { getGridPrice,
     getGridPrices,
     getPricingGroups,
     getStation,
-    getStationPrices,
     getMarkers, 
     updatePricingGroup} from '../../api/BackendCalls';
 import Select from "../../components/Select/Select";
@@ -107,12 +106,15 @@ const pricingMethods = [
 const Prices = ({title}) => {
     useTitle({title});
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [station, setStation] = useState({name: ""});
-    const [prices, setPrices] = useState(null);
     const [groupSelected, setGroupSelected] = useState(null);
     const [groups, setGroups] = useState(null);
     const [gridPrice2, setGridPrice2] = useState(null);
+
+    const [stationLocation, setStationLocation] = useState({lat: 0, lng: 0, id: 0});
+    const [center, setCenter] = useState({lat: 0, lng: 0});
 
     // for the modal
     const alert = useAlert();
@@ -160,6 +162,7 @@ const Prices = ({title}) => {
 
         if ("pricing_method" in thisGroup) {
             setPricingMethod(thisGroup["pricing_method"].name);
+            let comp = [];
             for (let i=0; i<thisGroup["pricing_method"].variables.length; i++) {
                 let v = thisGroup["pricing_method"].variables[i];
                 if (v.name === "c" || v.name === "c1") setConstant(v.value);
@@ -167,7 +170,10 @@ const Prices = ({title}) => {
                 if (v.name === "grid_price") setGridPrice(v.value);
                 if (v.name === "c2") setConstant2(v.value);
                 if (v.name === "n") setN(v.value);
-                if (v.name === "competitors_coordinates") setCompetitors(v.value);
+                if(v.name === "competitors_coordinates") comp.push(v.value);
+            }
+            if (thisGroup["pricing_method"].name == "Competitor-centered Profit") {
+                setCompetitors(comp);
             }
         }
         setShow(true);
@@ -176,7 +182,7 @@ const Prices = ({title}) => {
         initializeInputState();
         setShow(false);
     }
-    const handleSetPricingMethod = () => {
+    const handleSetPricingMethod = async () => {
         let thisGroup = JSON.parse(JSON.stringify(groups[groupSelected]));
 
         if (!pricingMethod) {
@@ -199,7 +205,8 @@ const Prices = ({title}) => {
                     {
                         name: "c",
                         id: 1,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     }
                 ]
             }
@@ -222,17 +229,20 @@ const Prices = ({title}) => {
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     }
                 ]
             }
@@ -263,27 +273,32 @@ const Prices = ({title}) => {
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c1",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     },
                     {
                         name: "c2",
                         id: 4,
-                        value: constant2
+                        value: constant2,
+                        type: "float"
                     },
                     {
                         name: "n",
                         id: 5,
-                        value: n
+                        value: n,
+                        type: "int"
                     }
                 ]
             }
@@ -314,38 +329,43 @@ const Prices = ({title}) => {
                     {
                         name: "all_expenses",
                         id: 1,
-                        value: allExpenses
+                        value: allExpenses,
+                        type: "float"
                     },
                     {
                         name: "grid_price",
                         id: 2,
-                        value: gridPrice
+                        value: gridPrice,
+                        type: "bool"
                     },
                     {
                         name: "c1",
                         id: 3,
-                        value: constant
+                        value: constant,
+                        type: "float"
                     },
                     {
                         name: "competitors_coordinates",
                         id: 4,
-                        value: competitors
+                        value: competitors,
+                        type: "list_of_coordinates"
                     },
                     {
                         name: "c2",
                         id: 5,
-                        value: constant2
+                        value: constant2,
+                        type: "float"
                     }
                 ]
             }
         }
 
-        const data = updatePricingGroup(station.id, thisGroup);
+        const data = await updatePricingGroup(getAuth(), station.id, thisGroup);
         if (data.ok) {
             setShow(false);
             alert.success('Pricing Method updated successfully!');
-            initializeFetchedData();
             initializeInputState();
+            initializeFetchedData();
         }
         else {
             console.log("sth went wrong...");
@@ -388,7 +408,6 @@ const Prices = ({title}) => {
 
     const initializeFetchedData = () => {
         setStation({name: ""});
-        setPrices(null);
         setGroupSelected(null);
         setGroups(null);
         setGridPrice2(null);
@@ -396,19 +415,22 @@ const Prices = ({title}) => {
 
     const fetchData = async () => {
         try {
-            let data = await getStation(id);
+            let {ok, data} = await getStation(getAuth(), id);
+            if (!ok) {
+                navigate("/app/not-authorized", { replace: true });
+            }
             // check if data changed
-            if (JSON.stringify(data) !== JSON.stringify(station)) setStation(data);
+            if (JSON.stringify(data) !== JSON.stringify(station)) {
+                setStation(data);
+                setStationLocation({ latitude: parseFloat(data.latitude), longitude: parseFloat(data.longitude), id: data.id });
+                setCenter({ lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) });
+            }
 
-            data = await getStationPrices(id);
-            // check if data changed
-            if (JSON.stringify(data) !== JSON.stringify(prices)) setPrices(data);
-
-            data = await getPricingGroups(id);
+            data = await getPricingGroups(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(groups)) setGroups(data);
             
-            data = await getGridPrices(id);
+            data = await getGridPrices(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(gridPrice2)) setGridPrice2(data);
 
@@ -420,7 +442,7 @@ const Prices = ({title}) => {
     useEffect(() => {
         if (groupSelected === null && groups && Object.keys(groups).length)
             setGroupSelected(Object.keys(groups)[0]);
-    }, [station, prices, groups, gridPrice2])
+    }, [station, groups, gridPrice2])
 
     useEffect(() => {
         fetchData();
@@ -428,7 +450,7 @@ const Prices = ({title}) => {
             fetchData();
         }, 5000);
         return () => clearInterval(interval);
-    }, [station, prices, groups, gridPrice2])
+    }, [station, groups, gridPrice2])
 
     return (
     <>
@@ -469,15 +491,17 @@ const Prices = ({title}) => {
                                     <div className="station-prices-pricing-method">
                                         <h2>{groups[groupSelected].pricing_method.name}</h2>
 
-                                        {(groups[groupSelected].pricing_method.name === "Fixed Price") ? (
-                                            <img src="/img/pricing_methods/fixed-price-method.png" alt="" />
-                                        ) : (groups[groupSelected].pricing_method.name === "Fixed Profit")  ? (
-                                            <img src="/img/pricing_methods/fixed-profit-method.png" alt="" />
-                                        ) : (groups[groupSelected].pricing_method.name === "Demand-centered Profit")  ? (
-                                            <img src="/img/pricing_methods/demand-centered-method.png" alt="" />
-                                        ) : (groups[groupSelected].pricing_method.name === "Competitor-centered Profit")  ? (
-                                            <img src="/img/pricing_methods/competitor-centered-profit-method.png" alt="" />
-                                        ) : null}
+                                        <div className="method_images">
+                                            {(groups[groupSelected].pricing_method.name === "Fixed Price") ? (
+                                                <img src="/img/pricing_methods/fixed-price-method.png" alt="" />
+                                            ) : (groups[groupSelected].pricing_method.name === "Fixed Profit")  ? (
+                                                <img src="/img/pricing_methods/fixed-profit-method.png" alt="" />
+                                            ) : (groups[groupSelected].pricing_method.name === "Demand-centered Profit")  ? (
+                                                <img src="/img/pricing_methods/demand-centered-method.png" alt="" />
+                                            ) : (groups[groupSelected].pricing_method.name === "Competitor-centered Profit")  ? (
+                                                <img src="/img/pricing_methods/competitor-centered-profit-method.png" alt="" />
+                                            ) : null}
+                                        </div>
                                         <h4>Where you defined:</h4>
                                         {groups[groupSelected].pricing_method.variables.filter(elem => (
                                                 elem.name !== "competitors_coordinates"
@@ -492,22 +516,19 @@ const Prices = ({title}) => {
                                                 <p key={elem.id}>Grid Price: <span>{elem.value ? "Yes" : "No"}</span></p>
                                             );
                                         })}
-                                        {groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").map(elem => {
-                                            return (
-                                                <p key={elem.id}>Number of competitors selected: <span>{elem.value.length}</span></p>
-                                            );
-                                        })}
 
                                         {(groups[groupSelected].pricing_method.name === "Competitor-centered Profit"
-                                                && station && station.location && groups[groupSelected].pricing_method)  ? (
+                                                && station && station.latitude && station.longitude && groups[groupSelected].pricing_method
+                                                && groups[groupSelected].pricing_method.variables)  ? (
                                             <>
+                                                <p>Number of competitors selected: <span>{groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").length}</span></p>
                                                 <p><span>See the competitors on the map below:</span></p>
                                                 <div className="map-div2">
                                                     <Map4
-                                                        marker={station.location}
-                                                        markers={groups[groupSelected].pricing_method.variables[3].value}
-                                                        center={station.location}
-                                                        zoom={13}
+                                                        marker={stationLocation}
+                                                        markers={groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").map(elem => elem.value)}
+                                                        center={center}
+                                                        zoom={10}
                                                     />
                                                 </div>
                                             </>
@@ -814,14 +835,18 @@ const Prices = ({title}) => {
                                     <br />
                                     <section className="flex-row-center-center">
                                         <div className="map-div">
-                                            <Map3
-                                                marker={station.location}
-                                                competitors={competitors}
-                                                setCompetitors={setCompetitors}
-                                                markers={stationsMarkers}
-                                                zoom={13}
-                                                center={station.location}
-                                            />
+                                            { stationLocation && competitors && stationsMarkers ? (
+                                                <Map3
+                                                    marker={stationLocation}
+                                                    competitors={competitors}
+                                                    setCompetitors={setCompetitors}
+                                                    // TODO: Find a better way to do this
+                                                    markers={stationsMarkers.filter(elem => (elem.id !== stationLocation.id
+                                                        && !competitors.map(elem => elem.id).includes(elem.id)))}
+                                                    zoom={13}
+                                                    center={center}
+                                                />
+                                            ) : null}
                                         </div>
 
                                         <div className="competitors-selected">

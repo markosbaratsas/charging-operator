@@ -10,10 +10,12 @@ const urls = {
     addStation: '/stations/add-station',
     createStation: '/stations/create-station',
     getStation: '/stations/get-station',
-    getPricingGroupsInfo: '/chargers/pricing-groups',
+    getPricingGroupsInfo: '/chargers/pricing-groups/information',
     getPricingGroupsPrices: '/chargers/pricing-groups/prices',
     getVehicleStates: '/reservations/vehicle-states',
     getReservations: '/reservations',
+    getPricingGroups: '/chargers/pricing-groups',
+    updatePricingGroup: '/chargers/pricing-group/update',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -33,7 +35,6 @@ export const getMarkers = async (token) => {
             JSON.stringify({}),
             getAuthorizedHeaders(token.accessToken)
         );
-        console.log(response.data)
         if (response && response.data)
             return response.data;
 
@@ -154,7 +155,6 @@ export const getStationReservations = async (token, station_id) => {
             }),
             getAuthorizedHeaders(token.accessToken)
         );
-        console.log(response.data)
         if (response && response.data)
             return response.data;
     } catch (err) {}
@@ -162,153 +162,17 @@ export const getStationReservations = async (token, station_id) => {
     return null;
 }
 
-export const getPricingGroups = async (id) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const stations = {
-        1: {
-            1: {
-                name: "22kW Chargers",
-                current_price: 0.296,
-                chargers: [
-                    {
-                        name: "Charger name 1",
-                        current: "AC",
-                        connector_type: "Type 1",
-                        power: 22,
-                        id: 1
-                    },
-                    {
-                        name: "Charger name 2",
-                        current: "AC",
-                        connector_type: "Type 1",
-                        power: 21.9,
-                        id: 2
-                    },
-                    {
-                        name: "Charger name 3",
-                        current: "AC",
-                        connector_type: "3-pin plug",
-                        power: 22,
-                        id: 3
-                    },
-                    {
-                        name: "Charger name 4",
-                        current: "AC",
-                        connector_type: "Type 2",
-                        power: 22.4,
-                        id: 4
-                    },
-                    {
-                        name: "Charger name 5",
-                        current: "AC",
-                        connector_type: "Type 2",
-                        power: 22,
-                        id: 5
-                    }
-                ],
-                pricing_method: {
-                    name: "Demand-centered Profit",
-                    variables: [
-                        {
-                            name: "all_expenses",
-                            id: 1,
-                            value: 0.1
-                        },
-                        {
-                            name: "grid_price",
-                            id: 2,
-                            value: true
-                        },
-                        {
-                            name: "c1",
-                            id: 3,
-                            value: 0.12
-                        },
-                        {
-                            name: "c2",
-                            id: 4,
-                            value: 0.13
-                        },
-                        {
-                            name: "n",
-                            id: 5,
-                            value: 2
-                        }
-                    ]
-                },
-                id: 1
-            },
-            2: {
-                name: "50kW Chargers",
-                current_price: 0.378,
-                chargers: [
-                    {
-                        name: "Charger name 1",
-                        current: "DC",
-                        connector_type: "Type 2",
-                        power: 48.8,
-                        id: 1
-                    },
-                    {
-                        name: "Charger name 2",
-                        current: "DC",
-                        connector_type: "Combined Charging System (CCS)",
-                        power: 50,
-                        id: 2
-                    }
-                ],
-                pricing_method: {
-                    name: "Competitor-centered Profit",
-                    variables: [
-                        {
-                            name: "all_expenses",
-                            id: 1,
-                            value: 0.1
-                        },
-                        {
-                            name: "grid_price",
-                            id: 2,
-                            value: true
-                        },
-                        {
-                            name: "c1",
-                            id: 3,
-                            value: 0.13
-                        },
-                        {
-                            name: "competitors_coordinates",
-                            id: 4,
-                            value: [
-                                {
-                                    lat: 37.979188,
-                                    lng: 23.783088,
-                                    title: "ECE charger",
-                                    address: "Iroon Politechniou 21",
-                                    id: 1
-                                },
-                                {
-                                    lat: 37.98,
-                                    lng: 23.782,
-                                    title: "Other Charger 1",
-                                    address: "Iroon Politechniou 123",
-                                    id: 2
-                                }
-                            ]
-                        },
-                        {
-                            name: "c2",
-                            id: 5,
-                            value: 0.15
-                        }
-                    ]
-                },
-                id: 2
-            }
-        }
-    }
+export const getPricingGroups = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getPricingGroups,
+            JSON.stringify({station_id: station_id}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
 
-    return id in stations ? stations[id] : stations[1];
+    return null;
 }
 
 export const getGridPrices = async () => {
@@ -335,10 +199,19 @@ export const getGridPrices = async () => {
     return grid_price;
 }
 
-export const updatePricingGroup = async (stationId, groupId) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const updatePricingGroup = async (token, station_id, group) => {
+    try {
+        await axios.post(urls.updatePricingGroup,
+            JSON.stringify({
+                station_id: station_id,
+                group: group
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
 export const deleteCharger = async (chargerId) => {
@@ -421,7 +294,6 @@ export const loginUser = async (user, pwd) => {
             JSON.stringify({ username: user, password: pwd }),
             unauthorizedHeaders
         );
-        console.log(response?.data);
         if (response && response.data && response.data.token)
             return [null, response.data.token];
 
@@ -447,7 +319,6 @@ export const registerUser = async (user, pwd, pwd2) => {
             JSON.stringify({ username: user, password: pwd, password2: pwd2 }),
             unauthorizedHeaders
         );
-        console.log(response?.data);
         if (response && response.data && response.data.token)
             return [null, response.data];
 

@@ -23,7 +23,7 @@ const options = {
 const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
 
     const [map, setMap] = useState(null);
-    const [myMarkers, setMyMarkers] = useState(markers.filter(marker => !competitors.includes(marker)));
+    const [myMarkers, setMyMarkers] = useState(markers);
     console.log(myMarkers);
 
     const { isLoaded, loadError} = useLoadScript({
@@ -62,8 +62,8 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
             
             {marker ? (
                 <Marker
-                  key={marker.id}
-                  position={{ lat: marker.latitude, lng: marker.longitude }}
+                  position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
+                  onClick={() => {}}
                   icon={{
                     url: "/icons/marker-icon-green.png",
                     origin: new window.google.maps.Point(0, 0),
@@ -74,10 +74,10 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
             ) : null}
 
 
-            {myMarkers.map((marker) => (
+            {myMarkers.filter(marker1 => (marker1.id !== marker.id)).map((marker) => (
                 <Marker
                   key={marker.id}
-                  position={{ lat: marker.latitude, lng: marker.longitude }}
+                  position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
                   onClick={() => addMarkerToCompetitors(marker.latitude, marker.longitude)}
                   icon={{
                     url: "/icons/marker-icon.png",
@@ -89,10 +89,10 @@ const Map = ({marker, markers, zoom, center, competitors, setCompetitors}) => {
               ))}
 
 
-              {competitors.map((marker) => (
+              {competitors.filter(marker1 => marker1.id !== marker.id).map((marker) => (
                   <Marker
                     key={marker.id}
-                    position={{ lat: marker.latitude, lng: marker.longitude }}
+                    position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
                     onClick={() => addMarkerToMyMarkers(marker.latitude, marker.longitude)}
                     icon={{
                       url: "/icons/marker-icon-red.png",

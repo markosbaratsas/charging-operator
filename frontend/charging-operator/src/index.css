@@ -2461,8 +2461,9 @@
   color: #202020;
 }
 
-.station-prices-pricing-method img {
-  width: 500px;
+.method_images img {
+  max-width: 600px;
+  max-height: 80px;
   display: block;
   margin: 0 auto;;
 }

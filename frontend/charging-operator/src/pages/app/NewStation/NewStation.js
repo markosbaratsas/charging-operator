@@ -38,6 +38,7 @@ const NewStation = ({title}) => {
                 variables: [
                     {
                         name: "c",
+                        type: "float",
                         id: 1,
                         value: 0.1
                     }

@@ -3,7 +3,6 @@ import {
     useLoadScript,
     Marker
 } from '@react-google-maps/api';
-import { useState } from 'react';
 import mapStyles from '../Map1/styles'
 
 const mapContainerStyle = {
@@ -22,8 +21,8 @@ const Map = ({marker, markers, center, zoom}) => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     });
 
-    if (loadError) return "ErrorLoadingMaps"
-    if (!isLoaded) return "Loading Maps"
+    if (loadError) return "ErrorLoadingMaps";
+    if (!isLoaded) return "Loading Maps";
 
     return (
         <GoogleMap 
