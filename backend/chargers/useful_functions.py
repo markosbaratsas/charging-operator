@@ -170,6 +170,35 @@ def get_charging_price(group, set_groups):
         return -1.0
 
     return round(ret, 5)
-    
 
+
+def update_existing_charger(charger, charger_dict):
+    """Update a given Charger
+
+    Args:
+        charger (Charger): The Charger object
+        charger_dict (dict): The given charger dict
+
+    Returns:
+        bool: True if successful update else False
+    """
+    print(charger.name)
     
+    if ('charger_name' not in charger_dict
+            or 'connector_type' not in charger_dict
+            or 'power' not in charger_dict
+            or 'current' not in charger_dict):
+        return False
+
+    # TODO: Add extra checks to validate given input
+
+    try:
+        charger.name = str(charger_dict['charger_name'])
+        charger.connector_type = str(charger_dict['connector_type'])
+        charger.power = float(charger_dict['power'])
+        charger.current = str(charger_dict['current'])
+        charger.save()
+    except:
+        return False
+
+    return True

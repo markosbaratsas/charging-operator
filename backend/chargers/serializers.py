@@ -36,6 +36,7 @@ class PricingGroupPricesSerializer(serializers.ModelSerializer):
 
 
 class ChargerSerializer(serializers.ModelSerializer):
+    power = serializers.FloatField()
 
     class Meta:
         model = Charger

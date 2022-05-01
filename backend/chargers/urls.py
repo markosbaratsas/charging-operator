@@ -10,6 +10,13 @@ urlpatterns = [
                             name="get_pricing_groups_prices"),
     path('chargers/pricing-groups', views.get_pricing_groups,
                             name="get_pricing_groups"),
+    path('chargers/pricing-group/create', views.create_pricing_group,
+                            name="create_pricing_group"),
     path('chargers/pricing-group/update', views.update_pricing_group,
                             name="update_pricing_group"),
+    path('chargers/pricing-group/delete', views.delete_pricing_group,
+                            name="delete_pricing_group"),
+    path('chargers/create', views.create_charger, name="create_charger"),
+    path('chargers/update', views.update_charger, name="update_charger"),
+    path('chargers/delete', views.delete_charger, name="delete_charger"),
 ]
