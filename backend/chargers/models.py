@@ -22,6 +22,41 @@ class PricingGroup(models.Model):
     def __str__(self):
         return f'{self.id}, {self.method_name}'
 
+    def get_constants(self):
+        variables = []
+
+        for i in MethodConstantInt.objects.filter(pricing_group=self):
+            variables.append(i)
+
+        for i in MethodConstantDecimal.objects.filter(pricing_group=self):
+            variables.append(i)
+
+        for i in MethodConstantBool.objects.filter(pricing_group=self):
+            variables.append(i)
+
+        for i in MethodConstantStation.objects.filter(pricing_group=self):
+            variables.append(i)
+
+        return variables
+
+    def get_constants_list_of_dict(self):
+        variables = self.get_constants()
+        variables_list_of_dict = [
+            {
+                "name": i.name,
+                "value": i.value,
+                "id": i.id
+            } for i in variables
+        ]
+
+        return variables_list_of_dict
+
+    def delete_constants(self):
+        variables = self.get_constants()
+
+        for i in variables:
+            i.delete()
+
 
 class MethodConstantInt(models.Model):
     id = models.AutoField(primary_key=True)
