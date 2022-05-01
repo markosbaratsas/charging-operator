@@ -38,6 +38,13 @@
   align-items: flex-start;
 }
 
+.flex-row-between-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .flex-row-center-center {
   display: flex;
   flex-direction: row;
@@ -1977,6 +1984,8 @@
 
 .methods-info {
   width: 100%;
+  padding-top: 10px;
+  opacity: 0.8;
 }
 
 .methods-info a {
@@ -2629,11 +2638,44 @@
   color: #404040;
 }
 
+.station-chargers-div2 {
+  background-color: #d5d5d5;
+  color: #303030;
+  font-size: 35px;
+  line-height: 50px;
+  padding: 5px 20px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+}
+
+.station-chargers-div2:hover {
+  background-color: #ddd;
+  color: #404040;
+  cursor: pointer;
+}
+
+.station-chargers-div2 h2 {
+  font-size: 15px;
+  line-height: 25px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.station-chargers-div2 p {
+  font-size: 60px;
+  line-height: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
 .station-chargers-ul1 {
   background-color: #202020;
   list-style: none;
   padding: 20px 20px 10px 20px;
-  width: 100%;
+  width: calc(100% - 40px);
   border-radius: 5px;
   border: 3px solid #909090;
 }
@@ -2898,4 +2940,15 @@
   position: absolute;
   left: 50%;
   top: 50%;
+}
+
+.edit-pricing-group {
+  background-color: transparent;
+  border: none;
+  color: #7272CC;
+}
+
+.edit-pricing-group:hover {
+  cursor: pointer;
+  text-shadow: 0px 1px 1px #c3c3c3;
 }

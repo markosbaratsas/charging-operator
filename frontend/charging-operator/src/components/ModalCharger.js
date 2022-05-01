@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Modal } from 'react-bootstrap';
 import '../bootstrap.css';
+import { useAlert } from "react-alert";
 
 import Select from "./Select/Select";
 import { my_includes } from "../utils/usefulFunctions";
-import { addChargerGroup, createCharger, updateCharger } from "../api/BackendCalls";
+import { createCharger, updateCharger } from "../api/BackendCalls";
+import AuthProvider from "../context/AuthProvider";
 
 
 const CHARGER_NAME_REGEX = /^[A-z0-9_\ ]{2,32}$/;
@@ -54,96 +56,69 @@ const charger_info = {
 }
 
 
-const ModalCharger = ({chargers, chargerGroups, current,
-        setCurrent, type, setType, power, setPower, chargerName,
-        setChargerName, chargerGroup, setChargerGroup, chargerGroupName,
-        setChargerGroupName, chargerId, setChargerId, handleDelete,
-        initializeInputState, fetchData, show, setShow}) => {
+const ModalCharger = ({station, current, setCurrent, type, setType, power, setPower,
+        chargerName, setChargerName, chargerGroupId, handleDelete, chargerId,
+        initializeInputState, show, setShow, initializeFetchedData}) => {
+
+    const alert = useAlert();
+    const { getAuth } = AuthProvider();
 
     // the following state variables are needed for error handling
     const [currentError, setCurrentError] = useState(false);
     const [typeError, setTypeError] = useState(false);
     const [powerError, setPowerError] = useState(false);
     const [chargerNameError, setChargerNameError] = useState(false);
-    const [chargerGroupError, setChargerGroupError] = useState(false);
-    const [chargerGroupNameError, setChargerGroupNameError] = useState(false);
 
-    
+
     const handleClose = () => {
         setShow(false);
         initializeInputState();
     }
     // used when updating a charger
-    const handleUpdate = async () => {
-        if (checkInput(false)) {
-            let actualChargerGroup = chargerGroup;
-            if (chargerGroup === "... Add a new Charger Group") {
-                actualChargerGroup = chargerGroupName;
-                if (!my_includes(chargerGroups, chargerGroupName)) {
-                    const {ok, errors} = await addChargerGroup(chargerGroupName);
+    const handleSubmit = async () => {
+        if (!checkInput()) return;
 
-                    if (!ok) {
-                        console.log(errors);
-                        return
-                    }
-                }
-            }
+        if (chargerId === -1) {
 
-            const {ok, errors} = await updateCharger(chargerId, {
+            const data = await createCharger(getAuth(), station.id, {
                 current: current,
                 connector_type: type,
                 power: power,
                 charger_name: chargerName,
-                charger_group: actualChargerGroup
+                charger_id: null,
+                charger_group: chargerGroupId
             });
 
-            if (!ok) {
-                console.log(errors);
-                return
+            if (data.ok) {
+                alert.success('Charger created successfully!');
+                setShow(false);
+                initializeInputState();
+                initializeFetchedData();
+            } else {
+                console.log("Something went wrong while creating Charger");
             }
-
-            fetchData();
-            setShow(false);
-            initializeInputState();
-        }
-    }
-    const handleCreateCharger = async () => {
-        let actualChargerGroup = "";
-        if (checkInput()) {
-            actualChargerGroup = chargerGroup;
-            if (chargerGroup === "... Add a new Charger Group") {
-                actualChargerGroup = chargerGroupName;
-
-                if (!my_includes(chargerGroups, chargerGroupName)) {
-                    const {ok, errors} = await addChargerGroup(chargerGroupName);
-
-                    if (!ok) {
-                        console.log(errors);
-                        return
-                    }
-                }
-            }
-
-            const {ok, errors} = await createCharger({
+        } else {
+            const data = await updateCharger(getAuth(), station.id, {
                 current: current,
                 connector_type: type,
                 power: power,
                 charger_name: chargerName,
-                charger_group: actualChargerGroup
+                charger_id: chargerId,
+                charger_group: chargerGroupId
             });
 
-            if (!ok) {
-                console.log(errors);
-                return
+            if (data.ok) {
+                alert.success('Charger updated successfully!');
+                setShow(false);
+                initializeInputState();
+                initializeFetchedData();
+            } else {
+                console.log("Something went wrong while updating Charger");
             }
-
-            fetchData();
-            setShow(false);
-            initializeInputState();
         }
     }
 
-    const checkInput = (new_charger=true) => {
+    const checkInput = () => {
         let errors = false;
         if (!Object.keys(charger_info).includes(current)) {
             setCurrentError(true);
@@ -164,25 +139,6 @@ const ModalCharger = ({chargers, chargerGroups, current,
             setChargerNameError(true);
             errors = true;
         }
-        
-        if (new_charger)
-            for(let i=0; i<chargers.length; i++)
-                if (chargers[i].charger_name === chargerName) {
-                    errors = true;
-                    setChargerNameError(true);
-                }
-
-        if (chargerGroup !== "... Add a new Charger Group"
-                && !GROUP_NAME_REGEX.test(chargerGroup)) {
-            setChargerGroupError(true);
-            errors = true;
-        }
-
-        if (chargerGroup === "... Add a new Charger Group"
-                && !GROUP_NAME_REGEX.test(chargerGroupName)) {
-            setChargerGroupNameError(true);
-            errors = true;
-        }
 
         if (!errors) return true;
         return false;
@@ -195,10 +151,6 @@ const ModalCharger = ({chargers, chargerGroups, current,
     useEffect(() => {
         setChargerNameError(false);
     }, [chargerName])
-    
-    useEffect(() => {
-        setChargerGroupNameError(false);
-    }, [chargerGroupName])
 
     return (
         <Modal
@@ -282,65 +234,25 @@ const ModalCharger = ({chargers, chargerGroups, current,
                         <p className="error-p">Each charger's name should be unique.</p>
                         : null}
 
-                    {current ? (
-                        <div className="input-with-help">
-                            <Select 
-                                initialText="Select Charger Group"
-                                options={chargerGroups}
-                                label="Charger Group"
-                                selected={chargerGroup}
-                                setSelected={setChargerGroup}
-                                error={chargerGroupError}
-                                setError={setChargerGroupError}
-                                width="80%"
-                                tabIndex={2}
-                                reset={[]}
-                            />
-                            <p><span>Select a pricing group for your charger.</span></p>
-                        </div>
-                        ) : null}
-
-                    {chargerGroup === "... Add a new Charger Group" ? (
-                        <div className="input-with-help">
-                            <div className="label-input">
-                                <h5>Charger Group Name</h5>
-                                <input
-                                    type="text"
-                                    className={"my-classic-input" + " " + (chargerGroupNameError ? "error-selected" : "")}
-                                    placeholder="Input Charger Group Name"
-                                    value={chargerGroupName}
-                                    onChange={(e) => setChargerGroupName(e.target.value)}
-                                />
-                            </div>
-                            <p><span>Specify a name for your charger.</span></p>
-                        </div>
-                    ) : null}
-
-
-                    {(currentError || typeError || powerError || chargerNameError || chargerGroupError || chargerGroupNameError) ?
+                    {(currentError || typeError || powerError || chargerNameError) ?
                         <p className="error-p-input">Please correct the errors highlighted with <br /> red color, and then resubmit the form.</p>
                         : null}
                 </div>
             </Modal.Body>
             <Modal.Footer className="modal-footer">
-                {chargerId === -1 ? (
+                <button className="cancel-charger" onClick={handleClose}>
+                    Cancel
+                </button>
+                {chargerId === -1 ? ( 
+                    <button className="submit-charger" onClick={handleSubmit}>
+                        Create Charger
+                    </button>
+                 ) : (
                     <>
-                        <button className="cancel-charger" onClick={handleClose}>
-                            Cancel
-                        </button>
-                        <button className="submit-charger" onClick={handleCreateCharger}>
-                            Add Charger
-                        </button>
-                    </>
-                ) : (
-                    <>
-                        <button className="cancel-charger" onClick={handleClose}>
-                            Cancel
-                        </button>
-                        <button className="delete-charger" onClick={handleDelete}>
+                        <button className="delete-charger" onClick={() => handleDelete(chargerId, chargerGroupId)}>
                             Delete Charger
                         </button>
-                        <button className="submit-charger" onClick={handleUpdate}>
+                        <button className="submit-charger" onClick={handleSubmit}>
                             Update Charger
                         </button>
                     </>

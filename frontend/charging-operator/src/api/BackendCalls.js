@@ -15,7 +15,12 @@ const urls = {
     getVehicleStates: '/reservations/vehicle-states',
     getReservations: '/reservations',
     getPricingGroups: '/chargers/pricing-groups',
+    createPricingGroup: '/chargers/pricing-group/create',
     updatePricingGroup: '/chargers/pricing-group/update',
+    deletePricingGroup: '/chargers/pricing-group/delete',
+    createCharger: '/chargers/create',
+    updateCharger: '/chargers/update',
+    deleteCharger: '/chargers/delete',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -199,6 +204,21 @@ export const getGridPrices = async () => {
     return grid_price;
 }
 
+export const createPricingGroup = async (token, station_id, group) => {
+    try {
+        await axios.post(urls.createPricingGroup,
+            JSON.stringify({
+                station_id: station_id,
+                group: group
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
+}
+
 export const updatePricingGroup = async (token, station_id, group) => {
     try {
         await axios.post(urls.updatePricingGroup,
@@ -214,28 +234,64 @@ export const updatePricingGroup = async (token, station_id, group) => {
     return {ok: false};
 }
 
-export const deleteCharger = async (chargerId) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const deletePricingGroup = async (token, station_id, group) => {
+    try {
+        await axios.post(urls.deletePricingGroup,
+            JSON.stringify({
+                station_id: station_id,
+                group: group
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
-export const addChargerGroup = async (groupName) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const createCharger = async (token, station_id, charger) => {
+    try {
+        await axios.post(urls.createCharger,
+            JSON.stringify({
+                station_id: station_id,
+                charger: charger
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
-export const updateCharger = async (chargerId) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const updateCharger = async (token, station_id, charger) => {
+    try {
+        await axios.post(urls.updateCharger,
+            JSON.stringify({
+                station_id: station_id,
+                charger: charger
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
-export const createCharger = async () => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const deleteCharger = async (token, station_id, charger) => {
+    try {
+        await axios.post(urls.deleteCharger,
+            JSON.stringify({
+                station_id: station_id,
+                charger: charger
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
 export const getAvailableChargers = async (stationId, arrivalTime, departureTime) => {
