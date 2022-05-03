@@ -470,7 +470,7 @@ const Prices = ({title}) => {
                                                     ? "station-prices-selected"
                                                     : "station-prices-not-selected"}>
                                         <h3>{price.name}</h3>
-                                        <h4>{price.current_price} €/kWh</h4>
+                                        <h4>{price.current_price} €/KW</h4>
                                     </li>
                                 );
                             })
@@ -482,7 +482,7 @@ const Prices = ({title}) => {
                         <>
 
                             <div className="station-prices-current-price">
-                                <h2>Current price: <span>{groups[groupSelected].current_price} €/kWh</span></h2>
+                                <h2>Current price: <span>{groups[groupSelected].current_price} €/KW</span></h2>
                             </div>
 
                             <div className="station-prices-div1">
@@ -552,7 +552,7 @@ const Prices = ({title}) => {
                                         
                                         <div className="station-prices-grid">
                                             <h5>Grid Price:</h5>
-                                            <h6>{gridPrice2 ? gridPrice2.grid_price : "?"} €/kWh</h6>
+                                            <h6>{gridPrice2 ? gridPrice2.grid_price : "?"} €/KW</h6>
                                             {/* diagram?? */}
                                         </div>
                                     </div>
@@ -656,7 +656,7 @@ const Prices = ({title}) => {
                                     <div className="all-expenses-calc">
                                         Current expenses calculation: {" "}
                                         <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/kWh</span>
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
                                     </div>
                                     
                                     <div className="label-input">
@@ -711,7 +711,7 @@ const Prices = ({title}) => {
                                     <div className="all-expenses-calc">
                                         Current expenses calculation: {" "}
                                         <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/kWh</span>
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
                                     </div>
 
                                     <div className="label-input">
@@ -799,7 +799,7 @@ const Prices = ({title}) => {
                                     <div className="all-expenses-calc">
                                         Current expenses calculation: {" "}
                                         <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/kWh</span>
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
                                     </div>
 
                                     
