@@ -31,7 +31,7 @@ const VehicleState = ({title}) => {
                 navigate("/app/not-authorized", { replace: true });
             }
             // check if data changed
-            if (JSON.stringify(data) !== JSON.stringify(vehicleState)) setVehicleState(data);
+            if (JSON.stringify(data.data) !== JSON.stringify(vehicleState)) setVehicleState(data.data);
         } catch (err) {
             console.error(err.message);
         }
