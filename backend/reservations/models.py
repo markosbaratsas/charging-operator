@@ -43,7 +43,9 @@ class VehicleState(models.Model):
                                     choices=State.choices)
     current_battery = models.DecimalField(max_digits=8, decimal_places=4,
                                           default=-1)
-    desired_final_batter = models.DecimalField(max_digits=8,
+    desired_final_battery = models.DecimalField(max_digits=8,
+                                               decimal_places=4, default=-1)
+    energy_transmitted_so_far = models.DecimalField(max_digits=8,
                                                decimal_places=4, default=-1)
 
     def __str__(self):

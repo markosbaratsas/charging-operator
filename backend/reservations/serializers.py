@@ -12,13 +12,13 @@ class VehiclesChargingNowSerializer(serializers.ModelSerializer):
     arrival = serializers.SerializerMethodField()
     expected_departure = serializers.SerializerMethodField()
     current_battery = serializers.SerializerMethodField()
-    desired_final_batter = serializers.SerializerMethodField()
+    desired_final_battery = serializers.SerializerMethodField()
 
     class Meta:
         model = VehicleState
         fields = ['id', 'model', 'license_plate', 'charging_in', 'arrival',
                   'expected_departure', 'current_battery',
-                  'desired_final_batter']
+                  'desired_final_battery']
 
     def get_model(self, obj):
         return obj.vehicle.model
@@ -40,8 +40,8 @@ class VehiclesChargingNowSerializer(serializers.ModelSerializer):
     def get_current_battery(self, obj):
         return obj.current_battery
 
-    def get_desired_final_batter(self, obj):
-        return obj.desired_final_batter
+    def get_desired_final_battery(self, obj):
+        return obj.desired_final_battery
 
 
 class ReservationSerializer(serializers.ModelSerializer):

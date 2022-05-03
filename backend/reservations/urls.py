@@ -5,6 +5,8 @@ import reservations.views as views
 urlpatterns = [
     path('reservations/vehicle-states', views.get_vehicle_states,
                                     name="get_vehicle_states"),
+    path('reservations/vehicle-state/get', views.get_vehicle_state,
+                                    name="get_vehicle_state"),
     path('reservations', views.get_reservations, name="get_reservations"),
     path('reservations/available-chargers', views.get_available_chargers,
                                     name="get_available_chargers"),

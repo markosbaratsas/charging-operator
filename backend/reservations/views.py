@@ -45,6 +45,40 @@ def get_vehicle_states(request):
 
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+def get_vehicle_state(request):
+    """Get Vehicle States
+
+    Returns:
+        data, status: if successful returns VehicleStates along with
+            an HTTP_200_OK status, else it returns an error message along
+            with an HTTP_401_UNAUTHORIZED status
+    """
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this Vehicle State"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        vehicle_state = VehicleState.objects.get(
+                                id=request.data["vehicle_state_id"])
+        if (vehicle_state.charger.pricing_group.station != station):
+            return Response({
+                    "error": "You do not have access to this Vehicle State"
+                }, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({
+                "error": "You do not have access to this Vehicle State"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = VehiclesChargingNowSerializer(vehicle_state)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
 def get_reservations(request):
     """Get Reservations of a station, for a specific period specified in
     request data
@@ -374,7 +408,7 @@ def vehicle_state(request):
     if ('reservation_id' not in request.data
             or 'station_id' not in request.data
             or 'current_battery' not in request.data
-            or 'desired_final_batter' not in request.data
+            or 'desired_final_battery' not in request.data
             or 'actual_arrival' not in request.data):
         return Response({
                 "error": "Invalid format"
@@ -414,7 +448,7 @@ def vehicle_state(request):
             charger=r.charger,
             state="Charging",
             current_battery=request.data["current_battery"],
-            desired_final_batter=request.data["desired_final_batter"],
+            desired_final_battery=request.data["desired_final_battery"],
         )
         r.vehicle_state = vs
         r.save()

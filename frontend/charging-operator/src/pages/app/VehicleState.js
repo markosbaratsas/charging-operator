@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getStation, getVehicleState } from "../../api/BackendCalls";
 import ReactLoading from 'react-loading';
 
 import Navbar5 from '../../components/Navbar5';
 import useTitle from "../../hooks/useTitle";
+import AuthProvider from "../../context/AuthProvider";
 
 const VehicleState = ({title}) => {
     useTitle({title});
 
     const { id: stationId,  vehicleStateId } = useParams();
+    const { getAuth } = AuthProvider();
+    const navigate = useNavigate();
 
     const [station, setStation] = useState({name: ""});
     const [vehicleState, setVehicleState] = useState(null);
 
     const fetchData = async () => {
         try {
-            let data = await getStation(stationId);
+            let {ok, data} = await getStation(getAuth(), stationId);
+            if (!ok) {
+                navigate("/app/not-authorized", { replace: true });
+            }
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(station)) setStation(data);
 
-            data = await getVehicleState(vehicleStateId);
+            data = await getVehicleState(getAuth(), stationId, vehicleStateId);
+            if (!data.ok) {
+                navigate("/app/not-authorized", { replace: true });
+            }
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(vehicleState)) setVehicleState(data);
         } catch (err) {

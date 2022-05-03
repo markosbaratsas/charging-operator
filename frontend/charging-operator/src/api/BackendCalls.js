@@ -30,6 +30,7 @@ const urls = {
     cancelReservation: '/reservations/cancel',
     vehicleArrived: 'reservations/vehicle-state/create',
     reservationEnd: 'reservations/end-reservation',
+    getVehicleState: 'reservations/vehicle-state/get',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -389,13 +390,13 @@ export const cancelReservation = async (token, station_id, reservation_id) => {
 }
 
 export const vehicleArrived = async (token, station_id, reservation_id, actual_arrival,
-                            current_battery, desired_final_batter) => {
+                            current_battery, desired_final_battery) => {
     try {
         await axios.post(urls.vehicleArrived,
             JSON.stringify({
                 station_id: station_id,
                 reservation_id: reservation_id,
-                desired_final_batter: desired_final_batter,
+                desired_final_battery: desired_final_battery,
                 current_battery: current_battery,
                 actual_arrival: actual_arrival
             }),
@@ -450,18 +451,21 @@ export const getReservations = async (token, station_id, startingArrival, ending
     return {ok: false};
 }
 
-export const getVehicleState = async (vehicleStateId) => {
-    // TODO: Hit backend
-    // temporarily return this list
-    return {
-        model: "Tesla Model 3",
-        license_plate: "INN 1234",
-        charging_in: "5 kWh Charger 1",
-        arrival: "04/05/2022 17:30",
-        expected_departure: "04/05/2022 17:55",
-        current_battery: 27,
-        desired_final_battery: 80
-    };
+export const getVehicleState = async (token, station_id, vehicle_state_id) => {
+    try {
+        const response = await axios.post(urls.getVehicleState,
+            JSON.stringify({
+                station_id: station_id,
+                vehicle_state_id: vehicle_state_id
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+
+    } catch (err) {}
+
+    return {ok: false};
 }
 
 export const loginUser = async (user, pwd) => {
