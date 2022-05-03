@@ -188,7 +188,6 @@ def update_existing_charger(charger, charger_dict):
     Returns:
         bool: True if successful update else False
     """
-    print(charger.name)
     
     if ('charger_name' not in charger_dict
             or 'connector_type' not in charger_dict

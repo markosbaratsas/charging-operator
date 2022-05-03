@@ -175,7 +175,6 @@ def create_reservation(request):
             }, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        print(reservation_dict)
         # TODO: Perform better checks in given input
         owner = Owner.objects.create(
             name=reservation_dict["owner_name"]
@@ -396,21 +395,32 @@ def vehicle_state(request):
                 "error": "Something went wrong"
             }, status=status.HTTP_400_BAD_REQUEST)
 
+    try:
+        charger = r.charger
+        charger.is_occupied = True
+        charger.save()
+    except:
+        return Response({
+                "error": "Something went wrong 2"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
     r.state = "Charging"
     r.actual_arrival = request.data["actual_arrival"]
     r.save()
 
     try:
-        VehicleState.objects.create(
+        vs = VehicleState.objects.create(
             vehicle=r.vehicle,
             charger=r.charger,
             state="Charging",
             current_battery=request.data["current_battery"],
             desired_final_batter=request.data["desired_final_batter"],
         )
+        r.vehicle_state = vs
+        r.save()
     except:
         return Response({
-                "error": "Something went wrong 2"
+                "error": "Something went wrong 3"
             }, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(status=status.HTTP_200_OK)
@@ -451,6 +461,11 @@ def end_reservation(request):
     if r.vehicle_state != None:
         vs = r.vehicle_state
         vs.state = "Success"
+
+    if r.charger != None:
+        charger = r.charger
+        charger.is_occupied = False
+        charger.save()
 
     r.state = "Success"
     r.actual_departure = request.data["actual_departure"]

@@ -280,7 +280,6 @@ def delete_charger(request):
         return Response({
                 "error": "You do not have access to this PricingGroup"
             }, status=status.HTTP_401_UNAUTHORIZED)
-    print("here1")
 
     try:
         charger = Charger.objects.get(id=request.data["charger"]["charger_id"],

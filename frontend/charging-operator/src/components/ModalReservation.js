@@ -122,8 +122,8 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
             else {
                 console.log("Something went wrong while creating reservation.");
             }
-            searchReservations();
         }
+        searchReservations();
     }
 
     useEffect(() => {

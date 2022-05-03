@@ -342,6 +342,8 @@ const Reservations = ({title}) => {
                                                     <span className="span-state-green">{reservation.state}</span>
                                                 ) : ( reservation.state === "Failure" ) ? (
                                                     <span className="span-state-red">{reservation.state}</span>
+                                                ): ( reservation.state === "Canceled" ) ? (
+                                                    <span className="span-state-red">{reservation.state}</span>
                                                 ) : null}
                                             </>
                                             </p>

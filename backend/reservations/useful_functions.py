@@ -40,11 +40,11 @@ def get_station_available_chargers(station, from_datetime, to_datetime):
     try:
         reservations = set(Reservation.objects.filter((
             (
-                Q(expected_arrival__range=[from_datetime, to_datetime])
-                | Q(expected_departure__range=[from_datetime, to_datetime])
+                Q(actual_arrival__range=[from_datetime, to_datetime])
+                | Q(actual_departure__range=[from_datetime, to_datetime])
             ) | (
-                (Q(expected_arrival__lte=from_datetime)
-                & Q(expected_departure__gte=to_datetime)
+                (Q(actual_arrival__lte=from_datetime)
+                & Q(actual_departure__gte=to_datetime)
             ))),
             station=station
         ))
