@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from chargers.models import (Charger, MethodConstantBool,
@@ -32,7 +33,11 @@ class PricingGroupPricesSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'current_price']
 
     def get_current_price(self, obj):
-        return get_charging_price(obj, set())
+        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        return get_charging_price(obj,
+                                  set(),
+                                  datetime_now,
+                                  datetime_now)
 
 
 class ChargerSerializer(serializers.ModelSerializer):
@@ -41,6 +46,23 @@ class ChargerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Charger
         fields = ['id', 'name', 'current', 'connector_type', 'power']
+
+
+class ChargerReservationSerializer(serializers.ModelSerializer):
+    power = serializers.FloatField()
+    current_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Charger
+        fields = ['id', 'name', 'current', 'connector_type', 'power',
+                  'current_price']
+
+    def get_current_price(self, obj):
+        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        return get_charging_price(obj.pricing_group,
+                                  set(),
+                                  datetime_now,
+                                  datetime_now)
 
 
 class MethodConstantIntSerializer(serializers.ModelSerializer):
@@ -88,7 +110,11 @@ class PricingGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'current_price', 'chargers', 'pricing_method']
 
     def get_current_price(self, obj):
-        return get_charging_price(obj, set())
+        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        return get_charging_price(obj,
+                                  set(),
+                                  datetime_now,
+                                  datetime_now)
 
     def get_chargers(self, obj):
         chargers = Charger.objects.filter(pricing_group=obj)

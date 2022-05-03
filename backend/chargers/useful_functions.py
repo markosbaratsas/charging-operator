@@ -2,6 +2,7 @@ from random import random
 from unicodedata import name
 
 from chargers.models import Charger, MethodConstantBool, MethodConstantDecimal, MethodConstantInt, MethodConstantStation, PricingGroup
+from reservations.useful_functions import get_station_available_chargers
 
 
 def get_grid_price():
@@ -69,7 +70,7 @@ def competitor_method_get_min(group):
     
 
 
-def get_charging_price(group, set_groups):
+def get_charging_price(group, set_groups, from_datetime, to_datetime):
     """Return the charging price of a PricingGroup
 
     TODO: Find a way to cache those results... Given the fact that grid price
@@ -121,8 +122,12 @@ def get_charging_price(group, set_groups):
             n = MethodConstantInt.objects.filter(pricing_group=group,
                                                  name="n")[0]
 
-            occupied = get_occupied_chargers(group)
+            available_chargers = int(len(get_station_available_chargers(
+                                                group.station,
+                                                from_datetime,
+                                                to_datetime)))
             all_chargers = get_all_chargers(group)
+            occupied = all_chargers - available_chargers
 
             if grid_price.value:
                 ret += get_grid_price()
@@ -153,7 +158,8 @@ def get_charging_price(group, set_groups):
                     if this_group not in set_groups:
                         min_competitor_price = min(
                             min_competitor_price,
-                            get_charging_price(this_group, set_groups)
+                            get_charging_price(this_group, set_groups,
+                                               from_datetime, to_datetime)
                         )
                     else:   
                         # Avoid infinite loops
