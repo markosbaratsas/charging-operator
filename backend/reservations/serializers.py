@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from datetime import datetime
+from chargers.serializers import ChargerReservationSerializer
 
 from reservations.models import Reservation, VehicleState
 
@@ -44,6 +45,7 @@ class VehiclesChargingNowSerializer(serializers.ModelSerializer):
 
 
 class ReservationSerializer(serializers.ModelSerializer):
+    vehicle_name = serializers.SerializerMethodField()
     model = serializers.SerializerMethodField()
     license_plate = serializers.SerializerMethodField()
     owner = serializers.SerializerMethodField()
@@ -59,7 +61,10 @@ class ReservationSerializer(serializers.ModelSerializer):
                     'expected_arrival', 'actual_arrival', 'expected_departure',
                     'actual_departure', 'price_per_kwh', 'parking_cost',
                     'parking_cost_extra', 'energy_cost', 'total_cost',
-                    'charger', 'total_power_transmited']
+                    'charger', 'total_power_transmitted', 'vehicle_name']
+
+    def get_vehicle_name(self, obj):
+        return obj.vehicle.name
 
     def get_model(self, obj):
         return obj.vehicle.model
@@ -73,4 +78,4 @@ class ReservationSerializer(serializers.ModelSerializer):
         return obj.vehicle.owner.name
 
     def get_charger(self, obj):
-        return obj.charger.name
+        return ChargerReservationSerializer(obj.charger).data
