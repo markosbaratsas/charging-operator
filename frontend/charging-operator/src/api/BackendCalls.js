@@ -1,4 +1,6 @@
 import axios from './axios';
+import { getTimeString } from '../utils/usefulFunctions';
+
 
 const urls = {
     login: '/login',
@@ -21,6 +23,13 @@ const urls = {
     createCharger: '/chargers/create',
     updateCharger: '/chargers/update',
     deleteCharger: '/chargers/delete',
+    getAvailableChargers: '/reservations/available-chargers',
+    createReservation: '/reservations/create',
+    updateReservation: '/reservations/update',
+    deleteReservation: '/reservations/delete',
+    cancelReservation: '/reservations/cancel',
+    vehicleArrived: 'reservations/vehicle-state/create',
+    reservationEnd: 'reservations/end-reservation',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -147,16 +156,17 @@ export const getStationReservations = async (token, station_id) => {
     try {
         // now
         let from_date = new Date();
-        let from_str = from_date.toISOString().split("T").join(" ").substring(0, 19)
+        let from_str = getTimeString(from_date);
         // 24 hours later
         let to_date = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
-        let to_str = to_date.toISOString().split("T").join(" ").substring(0, 19)
+        let to_str = getTimeString(to_date);
 
         const response = await axios.post(urls.getReservations,
             JSON.stringify({
                 station_id: station_id,
-                from: from_str,
-                to: to_str
+                states: ["Charging"],
+                from_arrival: from_str,
+                to_arrival: to_str
             }),
             getAuthorizedHeaders(token.accessToken)
         );
@@ -294,39 +304,150 @@ export const deleteCharger = async (token, station_id, charger) => {
     return {ok: false};
 }
 
-export const getAvailableChargers = async (stationId, arrivalTime, departureTime) => {
-    // TODO: Hit backend
-    // temporarily return this list
-    return [
-        {
-            name: "Charger 1",
-            group: "22kW Chargers",
-            expected_price: 9.88,
-            id: 1
-        }
-    ];
+export const getAvailableChargers = async (token, station_id, arrivalTime, departureTime) => {
+    try {
+        const response = await axios.post(urls.getAvailableChargers,
+            JSON.stringify({
+                station_id: station_id,
+                arrival_time: arrivalTime,
+                departure_time: departureTime,
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+
+    } catch (err) {}
+
+    return {ok: false};
 }
 
-export const addReservation = async (reservation_dict) => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    return {ok: true, errors: null};
+export const createReservation = async (token, reservation) => {
+    try {
+        await axios.post(urls.createReservation,
+            JSON.stringify({
+                reservation: reservation
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+
+    return {ok: false};
 }
 
-export const getReservations = async (startingArrival, endingArrival,
-                                    startingDeparture, endingDeparture) => {
-    // TODO: Hit backend
-    // temporarily return this list
-    return [
-        {
-            owner: "Markos Kostogiannis",
-            expected_arrival: "19/07/2022 12:00",
-            expected_departure: "19/07/2022 12:40",
-            charger: "Charger 1",
-            state: "Completed",
-            id: 1
-        }
-    ];
+export const updateReservation = async (token, reservation) => {
+    try {
+        await axios.post(urls.updateReservation,
+            JSON.stringify({
+                reservation: reservation
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+
+    return {ok: false};
+}
+
+export const deleteReservation = async (token, station_id, reservation_id) => {
+    try {
+        await axios.post(urls.deleteReservation,
+            JSON.stringify({
+                station_id: station_id,
+                reservation_id: reservation_id
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+
+    return {ok: false};
+}
+
+export const cancelReservation = async (token, station_id, reservation_id) => {
+    try {
+        await axios.post(urls.cancelReservation,
+            JSON.stringify({
+                station_id: station_id,
+                reservation_id: reservation_id
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+
+    return {ok: false};
+}
+
+export const vehicleArrived = async (token, station_id, reservation_id, actual_arrival,
+                            current_battery, desired_final_batter) => {
+    try {
+        await axios.post(urls.vehicleArrived,
+            JSON.stringify({
+                station_id: station_id,
+                reservation_id: reservation_id,
+                desired_final_batter: desired_final_batter,
+                current_battery: current_battery,
+                actual_arrival: actual_arrival
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+    return {ok: false};
+}
+
+export const reservationEnd = async (token, station_id, reservation_id,
+                            total_power_transmitted, actual_departure) => {
+    try {
+        await axios.post(urls.reservationEnd,
+            JSON.stringify({
+                station_id: station_id,
+                reservation_id: reservation_id,
+                total_power_transmitted: total_power_transmitted,
+                actual_departure: actual_departure
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+    return {ok: false};
+}
+
+export const getReservations = async (token, station_id, startingArrival, endingArrival,
+                                    startingDeparture, endingDeparture, states) => {
+    try {
+        let obj = {
+            station_id: station_id,
+            states: states
+        };
+        if (startingArrival !== null) obj["from_arrival"] = startingArrival;
+        if (endingArrival !== null) obj["to_arrival"] = endingArrival;
+        if (startingDeparture !== null) obj["from_departure"] = startingDeparture;
+        if (endingDeparture !== null) obj["to_departure"] = endingDeparture;
+
+        const response = await axios.post(urls.getReservations,
+            JSON.stringify(obj),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
 export const getVehicleState = async (vehicleStateId) => {

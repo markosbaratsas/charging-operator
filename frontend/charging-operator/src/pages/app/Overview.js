@@ -154,7 +154,7 @@ const Overview = ({title}) => {
                                         return (
                                             <li key={price.id} className="flex-column-center-center">
                                                 <h3>{price.name}</h3>
-                                                <h5>{price.current_price} €/kWh</h5>
+                                                <h5>{price.current_price} €/KW</h5>
                                             </li>
                                         );
                                     })}
@@ -180,7 +180,7 @@ const Overview = ({title}) => {
                                                     <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
                                                     <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
                                                     <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
-                                                    <h5>Charger: <span>{reservation.charger}</span></h5>
+                                                    <h5>Charger: <span>{reservation.charger.name}</span></h5>
                                                 </li>
                                             );
                                         })}
@@ -197,7 +197,7 @@ const Overview = ({title}) => {
                                                         <h5>Owner: <span>{reservation.owner}</span></h5>
                                                         <h5>Expected Departure: <span>{reservation.expected_arrival}</span></h5>
                                                         <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
-                                                        <h5>Charger: <span>{reservation.charger}</span></h5>
+                                                        <h5>Charger: <span>{reservation.charger.name}</span></h5>
                                                     </li>
                                                 );
                                             })}

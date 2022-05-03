@@ -2765,20 +2765,33 @@
   color: #E5467E;
 }
 
-.station-chargers-buttons-edit {
+.blue-button-transparent {
   color: #7272CC;
   margin-bottom: 2px;
+}
+
+.blue-button-transparent:hover {
+  cursor: pointer;
+  text-shadow: 0px 1px 1px #c3c3c3;
 }
 
 /* station reservations page */
 .station-reservations {
   width: 100%;
+  padding-bottom: 50px;
 }
 .station-reservations h1 {
   line-height: 70px;
   font-size: 20px;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
+  color: #202020;
+}
+.station-reservations h3 {
+  line-height: 40px;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
   color: #202020;
 }
 
@@ -2951,4 +2964,171 @@
 .edit-pricing-group:hover {
   cursor: pointer;
   text-shadow: 0px 1px 1px #c3c3c3;
+}
+
+.green-button-transparent {
+  background-color: transparent;
+  border: none;
+  color: #25903a;
+}
+
+.green-button-transparent:hover {
+  cursor: pointer;
+  text-shadow: 0px 1px 1px #c3c3c3;
+}
+
+.vehicle-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #d3d3d3;
+  border: 1px solid #c3c3c3;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  min-width: 400px;
+}
+
+.vehicle-info h2 {
+  line-height: 40px;
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #202020;
+  text-align: center;
+  width: 100%;
+}
+
+.vehicle-info h4 {
+  line-height: 24px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #202020;
+}
+
+.vehicle-info h3 {
+  line-height: 24px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #404040;
+}
+
+.black-button-transparent {
+  background-color: transparent;
+  border: none;
+  color: #202020;
+}
+
+.black-button-transparent:hover {
+  cursor: pointer;
+  text-shadow: 0px 1px 1px #404040;
+}
+
+.span-state-black {
+  color: #202020;
+  padding-left: 5px;
+  font-weight: 500;
+}
+
+.span-state-blue {
+  color: #7272CC;
+  padding-left: 5px;
+  font-weight: 500;
+}
+
+.span-state-green {
+  color: #5e8e60;
+  padding-left: 10px;
+  font-weight: 500;
+}
+
+.span-state-red {
+  color: #fa2626;
+  padding-left: 10px;
+  font-weight: 500;
+}
+
+.reservation-view h2 {
+  width: 100%;
+  text-align: left;
+  font-weight: 500;
+  font-size: 20px;
+  font-family: 'Raleway', sans-serif;
+  line-height: 35px;
+  padding-top: 10px;
+}
+
+.reservation-view h3 {
+  font-weight: 400;
+  line-height: 26px;
+  font-size: 17px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.reservation-view h4 {
+  line-height: 26px;
+  font-weight: 400;
+  font-size: 17px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.reservation-view p {
+  line-height: 22px;
+  font-weight: 400;
+  font-size: 15px;
+  padding: 3px 5px;
+  width: 500px;
+  text-align: center;
+  font-style: italic;
+  font-family: 'Raleway', sans-serif;
+}
+
+.reservation-view-titles {
+  width: 60%;
+}
+
+.reservation-view-numbers {
+  width: 40%;
+}
+
+.my-checkbox {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #aaa;
+  border-radius: 2px;
+  background-color: #f3f3f3;
+  margin-right: 5px;
+}
+
+.my-checkbox-checked {
+  width: 25px;
+  background-image: url('../public/icons/check2.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+
+.my-checkbox-all {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px 10px;
+  transition: 0.5s;
+}
+
+.my-checkbox-all:hover {
+  background-color: #d1d1d1;
+  cursor: pointer;
+}
+
+.my-checkbox-all p {
+  color: #202020;
 }

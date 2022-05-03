@@ -3,41 +3,50 @@ import { Modal } from 'react-bootstrap';
 import '../bootstrap.css';
 import { useAlert } from 'react-alert';
 
-import Select from "./Select/Select";
-import { addReservation, getAvailableChargers } from "../api/BackendCalls";
+import Select from "./Select2/Select";
+import { createReservation, updateReservation } from "../api/BackendCalls";
+import AuthProvider from "../context/AuthProvider";
+import { stringToDatetime } from "../utils/usefulFunctions";
 
-const ModalReservation = ({show, setShow, stationId}) => {
+
+const OWNER_REGEX = /^[A-z0-9_\ ]{2,31}$/;
+const VEHICLE_NAME_REGEX = /^[A-z0-9_\ ]{2,31}$/;
+const VEHICLE_MODEL_REGEX = /^[A-z0-9_\ ]{2,31}$/;
+const VEHICLE_LICENSE_PLATE = /^[A-z0-9\ ]{2,31}$/;
+
+
+const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime,
+    departureTime, setDepartureTime, owner, setOwner, charger, setCharger,
+    vehicleModel, setVehicleModel, vehicleName, setVehicleName, initializeInputState,
+    vehicleLicensePlate, setVehicleLicensePlate, getAvailables, smartV2G, setSmartV2G,
+    availableChargers, handleCancel, reservation, searchReservations}) => {
 
     const alert = useAlert();
+    const { getAuth } = AuthProvider();
 
-    // the following state variables are needed for error handling
-    const [arrivalTime, setArrivalTime] = useState("");
-    const [departureTime, setDepartureTime] = useState("");
-    const [owner, setOwner] = useState("");
-    const [charger, setCharger] = useState("");
-
-    const [availableChargers, setAvailableChargers] = useState([]);
-
-    const [error, setError] = useState(false);
+    const [arrivalTimeError, setArrivalTimeError] = useState(false);
+    const [departureTimeError, setDepartureTimeError] = useState(false);
     const [chargerError, setChargerError] = useState(false);
+    const [ownerError, setOwnerError] = useState(false);
+    const [vehicleModelError, setVehicleModelError] = useState(false);
+    const [vehicleNameError, setVehicleNameError] = useState(false);
+    const [vehicleLicensePlateError, setVehicleLicensePlateError] = useState(false);
 
     useEffect(async () => {
-        console.log(arrivalTime, departureTime)
-        if (!arrivalTime || !departureTime) {
-            setAvailableChargers([]);
-            return;
+        if (reservation !== null) {
+            const expected_arrival = stringToDatetime(reservation.expected_arrival);
+            const expected_departure = stringToDatetime(reservation.expected_departure);
+            if (new Date(arrivalTime) <= expected_arrival
+                    && expected_departure <= new Date(departureTime)) {
+                await getAvailables(arrivalTime, departureTime, reservation.charger);
+            }
+            else {
+                await getAvailables(arrivalTime, departureTime);
+            }
         }
-        console.log("hello")
-
-        try {
-            let data = await getAvailableChargers(stationId, arrivalTime, departureTime);
-            setAvailableChargers(data);
-            console.log("here", data)
-        } catch (err) {
-            console.error(err.message);
+        else {
+            await getAvailables(arrivalTime, departureTime);
         }
-
-
     }, [arrivalTime, departureTime])
 
     
@@ -45,41 +54,88 @@ const ModalReservation = ({show, setShow, stationId}) => {
         setShow(false);
         initializeInputState();
     }
-    const handleCreateReservation = async () => {
-        // TODO: Add more checks in the given input
-        try {
-            let data = await addReservation({
-                owner_name: owner,
+    const handleSubmit = async () => {
+        let errors = false;
+        if (!arrivalTime || !departureTime) {
+            setArrivalTimeError(true);
+            setDepartureTimeError(true);
+            errors = true;
+        }
+        if (!OWNER_REGEX.test(owner)) {
+            setOwnerError(true);
+            errors = true;
+        }
+        if (!VEHICLE_NAME_REGEX.test(vehicleName)) {
+            setVehicleNameError(true);
+            errors = true;
+        }
+        if (!VEHICLE_MODEL_REGEX.test(vehicleModel)) {
+            setVehicleModelError(true);
+            errors = true;
+        }
+        if (!VEHICLE_LICENSE_PLATE.test(vehicleLicensePlate)) {
+            setVehicleLicensePlateError(true);
+            errors = true;
+        }
+
+        if (errors) return;
+
+        if (reservation === null) {
+            const data = await createReservation(getAuth(), {
                 departure_time: departureTime,
                 arrival_time: arrivalTime,
-                charger: charger,
-                station: stationId
+                charger_id: charger.id,
+                station_id: stationId,
+                owner_name: owner,
+                vehicle_name: vehicleName,
+                vehicle_model: vehicleModel,
+                vehicle_license_plate: vehicleLicensePlate,
+                smart_vtg: smartV2G
             });
-        } catch (err) {
-            console.error(err.message);
-            return;
+            if (data.ok) {
+                alert.success('Reservation created successfully');
+                setShow(false);
+                initializeInputState();
+            }
+            else {
+                console.log("Something went wrong while creating reservation.");
+            }
+        } else {
+            const data = await updateReservation(getAuth(), {
+                reservation_id: reservation.id,
+                departure_time: departureTime,
+                arrival_time: arrivalTime,
+                charger_id: charger.id,
+                station_id: stationId,
+                owner_name: owner,
+                vehicle_name: vehicleName,
+                vehicle_model: vehicleModel,
+                vehicle_license_plate: vehicleLicensePlate,
+                smart_vtg: smartV2G
+            });
+
+            if (data.ok) {
+                alert.success('Reservation updated successfully');
+                setShow(false);
+                initializeInputState();
+            }
+            else {
+                console.log("Something went wrong while creating reservation.");
+            }
+            searchReservations();
         }
-        console.log("Added new Reservation:", {
-            owner_name: owner,
-            departure_time: departureTime,
-            arrival_time: arrivalTime,
-            charger: charger,
-            station: stationId
-        })
-        alert.success('Reservation added successfully');
-        setShow(false);
-        initializeInputState();
     }
 
-    const initializeInputState = () => {
-        setArrivalTime("");
-        setDepartureTime("");
-        setOwner("");
-        setCharger("");
-        setAvailableChargers([]);
-        setError(false);
+    useEffect(() => {
+        setArrivalTimeError(false);
+        setDepartureTimeError(false);
         setChargerError(false);
-    }
+        setOwnerError(false);
+        setVehicleModelError(false);
+        setVehicleNameError(false);
+        setVehicleLicensePlateError(false);
+    }, [arrivalTime, departureTime, charger, owner,
+        vehicleName, vehicleModel, vehicleLicensePlate])
     
 
     return (
@@ -96,23 +152,12 @@ const ModalReservation = ({show, setShow, stationId}) => {
             </Modal.Header>
             <Modal.Body>
                 <div className="charger-inputs">
-                    
-                    <div className="label-input-reservations1">
-                        <h5>Owner Name</h5>
-                        <input
-                            type="text"
-                            className={"my-classic-input"}
-                            placeholder="Input Owner's name"
-                            value={owner}
-                            onChange={(e) => setOwner(e.target.value)}
-                        />
-                    </div>
 
                     <div className="label-input-reservations1">
                         <h5>Expected Arrival Date & Time:</h5>
                         <input
                             type="datetime-local"
-                            className={"my-classic-input"}
+                            className={"my-classic-input" + " " + (arrivalTimeError ? "error-selected" : "")}
                             value={arrivalTime}
                             onChange={(e) => setArrivalTime(e.target.value)}
                         />
@@ -123,48 +168,135 @@ const ModalReservation = ({show, setShow, stationId}) => {
                             <h5>Expected Departure Date & Time:</h5>
                             <input
                                 type="datetime-local"
-                                className={"my-classic-input"}
+                                className={"my-classic-input" + " " + (departureTimeError ? "error-selected" : "")}
                                 value={departureTime}
                                 onChange={(e) => setDepartureTime(e.target.value)}
                             />
                         </div>
                     ) : null}
 
-                    {arrivalTime && departureTime ? (
-                        <div className="label-input-reservations1">
-                            <Select 
-                                initialText="Select Charger"
-                                options={availableChargers}
-                                label="Charger:"
-                                selected={charger}
-                                setSelected={setCharger}
-                                width="100%"
-                                error={chargerError}
-                                setError={setChargerError}
-                                tabIndex={0}
-                                reset={[]}
-                            />
-                        </div>
+                    {arrivalTimeError || departureTimeError ? (
+                        <p className="error-p">Arrival should be a later Date & Time than Departure Date & Time.
+                        Also, arrival should be a future date.</p>
                     ) : null}
 
-                    
+                    {arrivalTime && departureTime && availableChargers !== null ? (
+                        availableChargers.length > 0 ? (
+                            <div className="label-input-reservations1">
+                                <Select
+                                    initialText="Select Charger"
+                                    options={availableChargers}
+                                    label="Charger:"
+                                    selected={charger}
+                                    setSelected={setCharger}
+                                    width="100%"
+                                    error={chargerError}
+                                    setError={setChargerError}
+                                    tabIndex={0}
+                                    reset={[]}
+                                />
+                            </div>
+                        ) : (
+                            <p>Sorry, there are no available chargers for the given combination of arrival and departure.</p>
+                        )
+                    ) : null}
 
+                    {(arrivalTime && departureTime && availableChargers !== null
+                            && availableChargers.length > 0 && charger) ? (
+                        <>
+                            <div className="label-input-reservations1">
+                                <h5>Owner Name</h5>
+                                <input
+                                    type="text"
+                                    className={"my-classic-input" + " " + (ownerError ? "error-selected" : "")}
+                                    placeholder="Input Owner's name"
+                                    value={owner}
+                                    onChange={(e) => setOwner(e.target.value)}
+                                />
+                            </div>
+                            {ownerError ?
+                                <p className="error-p">Specify a Owner Name. 2-31 characters and
+                                can include letters, numbers, spaces and underscores.</p>
+                            : null}
 
+                            <div className="label-input-reservations1">
+                                <h5>Vehicle Name</h5>
+                                <input
+                                    type="text"
+                                    className={"my-classic-input" + " " + (vehicleNameError ? "error-selected" : "")}
+                                    placeholder="Input Vehicle's name"
+                                    value={vehicleName}
+                                    onChange={(e) => setVehicleName(e.target.value)}
+                                />
+                            </div>
+                            {vehicleNameError ?
+                                <p className="error-p">Specify a Vehicle Name. 2-31 characters and
+                                can include letters, numbers, spaces and underscores.</p>
+                            : null}
 
-                    {/* errors */}
-                    {(error) ?
-                        <p className="error-p-input">Please correct the errors highlighted with <br /> red color, and then resubmit the form.</p>
-                        : null}
+                            <div className="label-input-reservations1">
+                                <h5>Vehicle Model</h5>
+                                <input
+                                    type="text"
+                                    className={"my-classic-input" + " " + (vehicleModelError ? "error-selected" : "")}
+                                    placeholder="Input Vehicle's model"
+                                    value={vehicleModel}
+                                    onChange={(e) => setVehicleModel(e.target.value)}
+                                />
+                            </div>
+                            {vehicleModelError ?
+                                <p className="error-p">Specify a Vehicle Model. 2-31 characters and
+                                can include letters, numbers, spaces and underscores.</p>
+                            : null}
+
+                            <div className="label-input-reservations1">
+                                <h5>Vehicle License Plate</h5>
+                                <input
+                                    type="text"
+                                    className={"my-classic-input" + " " + (vehicleLicensePlateError ? "error-selected" : "")}
+                                    placeholder="Input Vehicle's License Plate"
+                                    value={vehicleLicensePlate}
+                                    onChange={(e) => setVehicleLicensePlate(e.target.value)}
+                                />
+                            </div>
+                            {vehicleLicensePlateError ?
+                                <p className="error-p">Specify the Vehicle's license plate. 2-31 characters and
+                                can include letters, numbers and spaces.</p>
+                            : null}
+
+                            <div className="flex-column-center-center full-width">
+                                <div
+                                    className="my-checkbox-all"
+                                    onClick={() => setSmartV2G(!smartV2G)}>
+                                    <div className={"my-checkbox" + " " + (smartV2G ? "my-checkbox-checked" : "")} />
+                                    <p>Participate in V2G</p>
+                                </div>
+                            </div>
+                        </>
+                    ) : null}
                 </div>
             </Modal.Body>
             <Modal.Footer className="modal-footer">
                 <>
                     <button className="cancel-charger" onClick={handleClose}>
-                        Cancel
+                        Close
                     </button>
-                    <button className="submit-charger" onClick={handleCreateReservation}>
-                        Add Reservation
-                    </button>
+                    {reservation === null ?(
+                        <>
+                            <button className="submit-charger" onClick={handleSubmit}>
+                                Add Reservation
+                            </button>
+                        </>
+                        ) : (
+                        <>
+                            <button className="delete-charger" onClick={() => handleCancel(reservation.id)}>
+                                Cancel Reservation
+                            </button>
+                            <button className="submit-charger" onClick={handleSubmit}>
+                                Update Reservation
+                            </button>
+                        </>
+                        )}
                 </>
             </Modal.Footer>
         </Modal>

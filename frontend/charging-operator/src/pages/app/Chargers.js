@@ -205,7 +205,7 @@ const Chargers = ({title}) => {
 
     return (
         <>
-        <Navbar4 stationName={station.name} stationId={id} active={"Overview"}/>
+        <Navbar4 stationName={station.name} stationId={id} active={"Chargers"}/>
         <div className="content">
             <div className="flex-column-center-center">
             <section className="wrapper">
@@ -236,7 +236,7 @@ const Chargers = ({title}) => {
                                                 </div>
                                                 <div className="station-chargers-buttons">
                                                     <button
-                                                        className="station-chargers-buttons-edit"
+                                                        className="blue-button-transparent"
                                                         onClick={() => handleEditCharger(charger, group)}
                                                     >
                                                         Edit Charger
