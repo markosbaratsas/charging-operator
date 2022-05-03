@@ -1,3 +1,4 @@
+from email import charset
 from django.contrib.auth.models import User
 from django.db import models
 import datetime
@@ -15,6 +16,17 @@ class Station(models.Model):
 
     def __str__(self):
         return f'{self.id}, {self.name}'
+
+    def get_chargers(self):
+        # probably notthe best way to avoid circular imports
+        from chargers.models import PricingGroup, Charger
+
+        chargers = []
+        for group in PricingGroup.objects.filter(station=self):
+            for c in Charger.objects.filter(pricing_group=group):
+                chargers.append(c)
+
+        return chargers
 
 
 class ParkingCostSnapshot(models.Model):

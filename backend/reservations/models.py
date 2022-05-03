@@ -58,6 +58,7 @@ class Reservation(models.Model):
         CANCELED = 'Canceled'
         SUCCESS = 'Success'
         FAILURE = 'Failure'
+        RESERVED = 'Reserved'
 
     id = models.AutoField(primary_key=True)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.SET_NULL, null=True)
@@ -82,9 +83,10 @@ class Reservation(models.Model):
                                     choices=ReservationState.choices)
     price_per_kwh = models.DecimalField(max_digits=6, decimal_places=3,
                                         default=0)
+    smart_vtg = models.BooleanField(default=True)
 
     # calculated when reservation is over
-    total_power_transmited = models.DecimalField(max_digits=7,
+    total_power_transmitted = models.DecimalField(max_digits=7,
                                                  decimal_places=3,
                                                  default=0)
     parking_cost = models.DecimalField(max_digits=6, decimal_places=3,
