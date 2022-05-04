@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'stations',
     'chargers',
     'reservations',
+    'gridprice',
 ]
 
 MIDDLEWARE = [

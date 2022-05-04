@@ -3,6 +3,8 @@ from django.db import models
 import datetime
 from pytz import timezone
 
+from gridprice.models import Location
+
 
 class Station(models.Model):
     id = models.AutoField(primary_key=True)
@@ -12,6 +14,8 @@ class Station(models.Model):
     address = models.CharField(max_length=63, default='')
     phone = models.CharField(max_length=15, default='')
     operators = models.ManyToManyField(User)
+    location = models.ForeignKey(Location, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
 
     def __str__(self):
         return f'{self.id}, {self.name}'
