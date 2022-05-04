@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -11,7 +12,8 @@ from reservations.serializers import (ReservationSerializer,
                                       VehiclesChargingNowSerializer)
 from reservations.useful_functions import (get_station_available_chargers,
                                            validate_dates)
-from stations.useful_functions import get_user_station
+from stations.useful_functions import (calculate_parking_cost,
+                                       find_parking_costs, get_user_station)
 
 
 @api_view(['POST', ])
@@ -472,7 +474,10 @@ def end_reservation(request):
     if ('reservation_id' not in request.data
             or 'station_id' not in request.data
             or 'total_power_transmitted' not in request.data
-            or 'actual_departure' not in request.data):
+            or 'actual_departure' not in request.data
+            or 'parking_cost_extra' not in request.data
+            or not validate_dates(request.data['actual_departure'],
+                              "%Y-%m-%d %H:%M:%S")):
         return Response({
                 "error": "Invalid format"
             }, status=status.HTTP_400_BAD_REQUEST)
@@ -504,7 +509,15 @@ def end_reservation(request):
     r.state = "Success"
     r.actual_departure = request.data["actual_departure"]
     r.total_power_transmitted = request.data["total_power_transmitted"]
-    # TODO: Update r.parking_cost and r.parking_cost_extra
+
+    actual_arival_str = datetime.strftime(r.actual_arrival,
+                                          "%Y-%m-%d %H:%M:%S")
+    actual_departure_str = request.data["actual_departure"]
+    pcs = find_parking_costs(station, actual_arival_str, actual_departure_str)
+    r.parking_cost = calculate_parking_cost(pcs, actual_arival_str, actual_departure_str)
+    # Parking Cost extra could be calculated in a different way... However,
+    # for now we let the user set it
+    r.parking_cost_extra = request.data["parking_cost_extra"]
     r.energy_cost = (float(r.price_per_kwh)
                         * float(request.data["total_power_transmitted"]))
     r.total_cost = (float(r.energy_cost) + float(r.parking_cost)

@@ -1,7 +1,9 @@
-from chargers.models import (Charger, MethodConstantBool, MethodConstantDecimal,
-                             MethodConstantInt, MethodConstantStation,
-                             PricingGroup)
-from stations.models import Station
+from datetime import datetime
+from django.db.models import Q
+from chargers.models import (Charger, MethodConstantBool,
+                             MethodConstantDecimal, MethodConstantInt,
+                             MethodConstantStation, PricingGroup)
+from stations.models import ParkingCost, Station
 
 
 def add_pricing_group_constants(pricing_group, group_dict):
@@ -118,3 +120,73 @@ def get_user_station(user, station_id):
 
     except:
         return None
+
+
+def find_parking_costs(station, from_datetime, to_datetime):
+    """Return the parking costs for a given datetime period
+
+    Args:
+        station (Station): The given Station Object
+        from_datetime (str): The start datetime in "%Y-%m-%d %H:%M:%S" format
+        to_datetime (str): The end datetime in "%Y-%m-%d %H:%M:%S" format
+
+    Returns:
+        list of ParkingCosts: A list for all the parking costs that apply to
+            this period
+    """
+
+    parking_costs = ParkingCost.objects.filter(((
+            Q(from_datetime__range=[from_datetime, to_datetime])
+            | Q(to_datetime__range=[from_datetime, to_datetime])
+        ) | (
+            Q(from_datetime__lte=from_datetime)
+            & Q(to_datetime__gte=to_datetime)
+        )),
+        station=station)
+
+    if len(parking_costs) == 0:
+
+        # If we assume that every datetime period has a parking cost,
+        # then the ParkingCost for this period has a from_datetime smaller than
+        # our from_datetime and a to_datetime greater than our to_datetime.
+        # So we can retrieve this ParkingCost by the following query
+
+        parking_costs = ParkingCost.objects\
+                                   .filter(station=station,
+                                       from_datetime__lte=from_datetime)\
+                                   .order_by('-from_datetime')\
+                                   .first()
+        return [parking_costs]
+
+    return list(parking_costs)
+
+
+def calculate_parking_cost(parking_costs, from_datetime, to_datetime):
+    """Calculate the parking cost for a specific datetime period, with given
+    parking costs
+
+    Args:
+        parking_costs (list of ParkingCost): The parking costs for this period
+        from_datetime (str): The start datetime in "%Y-%m-%d %H:%M:%S" format
+        to_datetime (str): The end datetime in "%Y-%m-%d %H:%M:%S" format
+
+    Returns:
+        float: The actual cost for this time period
+    """
+    total_cost = 0
+    start = datetime.strptime(from_datetime, "%Y-%m-%d %H:%M:%S")
+    to_datetime = datetime.strptime(to_datetime, "%Y-%m-%d %H:%M:%S")
+
+    i = 0
+    while start < to_datetime:
+        parking_cost_end = parking_costs[i].to_datetime
+        end = min(parking_cost_end, to_datetime)
+
+        period = end - start
+        total_cost += (period.total_seconds()/3600
+                        * float(parking_costs[i].parking_cost_snapshot.value))
+
+        i += 1
+        start = end
+
+    return total_cost

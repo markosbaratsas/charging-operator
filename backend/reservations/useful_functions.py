@@ -33,9 +33,9 @@ def get_station_available_chargers(station, from_datetime, to_datetime):
         list of Chargers or None: if successful return the available chargers,
             else if an error occurs return None
     """
-    # validate that dates have the expected format
-    validate_dates(from_datetime, "%Y-%m-%d %H:%M:%S")
-    validate_dates(to_datetime, "%Y-%m-%d %H:%M:%S")
+    if not (validate_dates(from_datetime, "%Y-%m-%d %H:%M:%S")
+            and validate_dates(to_datetime, "%Y-%m-%d %H:%M:%S")):
+        return None
 
     try:
         reservations = set(Reservation.objects.filter((

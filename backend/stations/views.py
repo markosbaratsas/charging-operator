@@ -2,12 +2,15 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from reservations.useful_functions import validate_dates
 from stations.useful_functions import (add_charger, add_pricing_group,
-                                get_user_station)
+                                       find_parking_costs, get_user_station)
 
-from stations.models import Station
+from stations.models import ParkingCost, ParkingCostSnapshot, Station
 from stations.serializers import (DashboardStationSerializer,
-                        StationInformationSerializer, StationMarkersSerializer)
+                                  ParkingCostSerializer,
+                                  StationInformationSerializer,
+                                  StationMarkersSerializer)
 
 
 @api_view(['POST', ])
@@ -137,6 +140,24 @@ def create_station(request):
                         "error": "step2"
                     },status=status.HTTP_400_BAD_REQUEST)
 
+    # Add Parking Cost. For now we have only one Parking Cost per Station,
+    # which means every day, every hour we have this specific parking cost,
+    # and we set it to last practically forever...
+    # However, we could have different parking costs per weekday, hour or
+    # whatever...
+    # TODO: Implement this functionality
+    pcs = ParkingCostSnapshot.objects.create(
+        station=station,
+        name="Default Parking Cost",
+        value=0.0
+    )
+    ParkingCost.objects.create(
+        parking_cost_snapshot=pcs,
+        station=station,
+        from_datetime="2000-01-01 00:00:00",
+        to_datetime="2100-01-01 00:00:00"
+    )
+
     return Response({
             "success": "Successfully created a new station!"
         }, status=status.HTTP_200_OK)
@@ -162,3 +183,89 @@ def get_station(request):
     serializer = StationInformationSerializer(station)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_parking_costs(request):
+    """Get Station's parking cost for a specific date range
+
+    Returns:
+        data, status: if successful returns station's information along with
+            HTTP_200_OK status, else it returns an error message along with
+            an HTTP_401_UNAUTHORIZED status
+    """
+    if ('station_id' not in request.data
+            or 'from_datetime' not in request.data
+            or 'to_datetime' not in request.data
+            or not validate_dates(request.data["from_datetime"],
+                               "%Y-%m-%d %H:%M:%S")
+            or not validate_dates(request.data["to_datetime"],
+                               "%Y-%m-%d %H:%M:%S")):
+        return Response({
+                "error": "Invalid format."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    from_datetime = request.data["from_datetime"]
+    to_datetime = request.data["to_datetime"]
+
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    parking_costs = find_parking_costs(station, from_datetime, to_datetime)
+    serializer = ParkingCostSerializer(parking_costs, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def set_parking_cost(request):
+    """Set the default parking cost
+
+    Returns:
+        data, status: if successful returns station's information along with
+            HTTP_200_OK status, else it returns an error message along with
+            an HTTP_401_UNAUTHORIZED status
+    """
+    if ('station_id' not in request.data
+            or 'parking_cost_value' not in request.data):
+        return Response({
+                "error": "Invalid format."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    pcss = ParkingCostSnapshot.objects.filter(station=station)
+    for i in pcss:
+        i.delete()
+    # the correspondent ParkingCost objects is deleted automatically due to
+    # on_delete=models.CASCADE
+
+    try:
+        pcs = ParkingCostSnapshot.objects.create(
+            station=station,
+            name="Default Parking Cost",
+            value=float(request.data["parking_cost_value"])
+        )
+        ParkingCost.objects.create(
+            parking_cost_snapshot=pcs,
+            station=station,
+            from_datetime="2000-01-01 00:00:00",
+            to_datetime="2100-01-01 00:00:00"
+        )
+    except:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_200_OK)
