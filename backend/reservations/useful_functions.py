@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.db.models import Q
+from django.utils.timezone import make_aware
 from pytz import timezone
 
 from reservations.models import Reservation
@@ -33,8 +34,9 @@ def get_station_available_chargers(station, from_datetime, to_datetime):
         list of Chargers or None: if successful return the available chargers,
             else if an error occurs return None
     """
-    if not (validate_dates(from_datetime, "%Y-%m-%d %H:%M:%S")
-            and validate_dates(to_datetime, "%Y-%m-%d %H:%M:%S")):
+    from_datetime = str_to_datetime(from_datetime)
+    to_datetime = str_to_datetime(to_datetime)
+    if from_datetime == None or to_datetime == None:
         return None
 
     try:
@@ -63,5 +65,22 @@ def get_station_available_chargers(station, from_datetime, to_datetime):
 
         return available_chargers
 
+    except:
+        return None
+
+def str_to_datetime(given_datetime, given_format="%Y-%m-%d %H:%M:%S"):
+    """Function that accepts a string and returns a datetime object
+    that is aware of the DJANGO Timezone
+
+    Args:
+        given_datetime (str): The given str datetime
+        given_format (str, optional): The format in which the str datetime is
+
+    Returns:
+        datetime or None: The aware datetime or None if the datetime is not in
+            the expected format
+    """
+    try:
+        return make_aware(datetime.strptime(given_datetime, given_format))
     except:
         return None

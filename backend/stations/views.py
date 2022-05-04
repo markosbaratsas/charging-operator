@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from reservations.useful_functions import validate_dates
+from reservations.useful_functions import str_to_datetime, validate_dates
 from stations.useful_functions import (add_charger, add_pricing_group,
                                        find_parking_costs, get_user_station)
 
@@ -205,8 +205,8 @@ def get_parking_costs(request):
                 "error": "Invalid format."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-    from_datetime = request.data["from_datetime"]
-    to_datetime = request.data["to_datetime"]
+    from_datetime = str_to_datetime(request.data["from_datetime"])
+    to_datetime = str_to_datetime(request.data["to_datetime"])
 
     station = get_user_station(request.user, request.data["station_id"])
 

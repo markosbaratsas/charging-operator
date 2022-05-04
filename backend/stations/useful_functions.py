@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.db.models import Q
 from chargers.models import (Charger, MethodConstantBool,
                              MethodConstantDecimal, MethodConstantInt,
@@ -127,8 +126,8 @@ def find_parking_costs(station, from_datetime, to_datetime):
 
     Args:
         station (Station): The given Station Object
-        from_datetime (str): The start datetime in "%Y-%m-%d %H:%M:%S" format
-        to_datetime (str): The end datetime in "%Y-%m-%d %H:%M:%S" format
+        from_datetime (datetime): The start datetime
+        to_datetime (datetime): The end datetime
 
     Returns:
         list of ParkingCosts: A list for all the parking costs that apply to
@@ -167,15 +166,14 @@ def calculate_parking_cost(parking_costs, from_datetime, to_datetime):
 
     Args:
         parking_costs (list of ParkingCost): The parking costs for this period
-        from_datetime (str): The start datetime in "%Y-%m-%d %H:%M:%S" format
-        to_datetime (str): The end datetime in "%Y-%m-%d %H:%M:%S" format
+        from_datetime (datetime): The start datetime
+        to_datetime (datetime): The end datetime
 
     Returns:
         float: The actual cost for this time period
     """
     total_cost = 0
-    start = datetime.strptime(from_datetime, "%Y-%m-%d %H:%M:%S")
-    to_datetime = datetime.strptime(to_datetime, "%Y-%m-%d %H:%M:%S")
+    start = from_datetime
 
     i = 0
     while start < to_datetime:

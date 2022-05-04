@@ -1,8 +1,9 @@
+from datetime import datetime
 from django.test import TestCase
-
+from django.utils.timezone import make_aware
 from django.contrib.auth.models import User
-from chargers.models import Charger, MethodConstantDecimal, PricingGroup
 
+from chargers.models import Charger, MethodConstantDecimal, PricingGroup
 from stations.models import ParkingCost, ParkingCostSnapshot, Station
 from stations.useful_functions import (calculate_parking_cost,
                                        find_parking_costs)
@@ -46,14 +47,18 @@ class TestStations(TestCase):
         self.pc = ParkingCost.objects.create(
             parking_cost_snapshot=self.pcs,
             station=self.station,
-            from_datetime="2000-01-01 00:00:00",
-            to_datetime="2100-01-01 00:00:00"
+            from_datetime=make_aware(datetime.strptime("2000-01-01 00:00:00",
+                                                       "%Y-%m-%d %H:%M:%S")),
+            to_datetime=make_aware(datetime.strptime("2100-01-01 00:00:00",
+                                                     "%Y-%m-%d %H:%M:%S"))
         )
 
 
     def test_calculate_parking_cost(self):
-        actual_arival_str = "2022-05-04 00:00:00"
-        actual_departure_str = "2022-05-05 00:00:00"
+        actual_arival_str = make_aware(
+            datetime.strptime("2022-05-04 00:00:00", "%Y-%m-%d %H:%M:%S"))
+        actual_departure_str = make_aware(
+            datetime.strptime("2022-05-05 00:00:00", "%Y-%m-%d %H:%M:%S"))
         pcs = find_parking_costs(self.station,
                                  actual_arival_str,
                                  actual_departure_str)
@@ -63,8 +68,10 @@ class TestStations(TestCase):
 
         self.assertEquals(cost, 24.0)
 
-        actual_arival_str = "2022-05-04 00:00:00"
-        actual_departure_str = "2022-05-04 13:00:00"
+        actual_arival_str = make_aware(
+            datetime.strptime("2022-05-04 00:00:00", "%Y-%m-%d %H:%M:%S"))
+        actual_departure_str = make_aware(
+            datetime.strptime("2022-05-04 13:00:00", "%Y-%m-%d %H:%M:%S"))
         pcs = find_parking_costs(self.station,
                                  actual_arival_str,
                                  actual_departure_str)
@@ -73,8 +80,10 @@ class TestStations(TestCase):
                                actual_departure_str)
         self.assertEquals(cost, 13.0)
 
-        actual_arival_str = "2022-05-04 00:00:00"
-        actual_departure_str = "2022-05-04 17:00:00"
+        actual_arival_str = make_aware(
+            datetime.strptime("2022-05-04 00:00:00", "%Y-%m-%d %H:%M:%S"))
+        actual_departure_str = make_aware(
+            datetime.strptime("2022-05-04 17:00:00", "%Y-%m-%d %H:%M:%S"))
         pcs = find_parking_costs(self.station,
                                  actual_arival_str,
                                  actual_departure_str)

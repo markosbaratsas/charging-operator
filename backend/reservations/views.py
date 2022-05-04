@@ -1,4 +1,3 @@
-from datetime import datetime
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +10,7 @@ from reservations.models import Owner, Reservation, Vehicle, VehicleState
 from reservations.serializers import (ReservationSerializer,
                                       VehiclesChargingNowSerializer)
 from reservations.useful_functions import (get_station_available_chargers,
+                                           str_to_datetime,
                                            validate_dates)
 from stations.useful_functions import (calculate_parking_cost,
                                        find_parking_costs, get_user_station)
@@ -97,28 +97,27 @@ def get_reservations(request):
                 "error": "You do not have access to this station"
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-    from_arrival = "2000-01-01 00:00:00"
-    to_arrival = "2100-01-01 00:00:00"
-    from_departure = "2000-01-01 00:00:00"
-    to_departure = "2100-01-01 00:00:00"
+    from_arrival = str_to_datetime("2000-01-01 00:00:00")
+    to_arrival = str_to_datetime("2100-01-01 00:00:00")
+    from_departure = str_to_datetime("2000-01-01 00:00:00")
+    to_departure = str_to_datetime("2100-01-01 00:00:00")
 
     if "from_arrival" in request.data:
-        from_arrival = request.data["from_arrival"]
+        from_arrival = str_to_datetime(request.data["from_arrival"])
 
     if "to_arrival" in request.data:
-        to_arrival = request.data["to_arrival"]
+        to_arrival = str_to_datetime(request.data["to_arrival"])
 
     if "from_departure" in request.data:
-        from_departure = request.data["from_departure"]
+        from_departure = str_to_datetime(request.data["from_departure"])
 
     if "to_departure" in request.data:
-        to_departure = request.data["to_departure"]
+        to_departure = str_to_datetime(request.data["to_departure"])
+
 
     # validate that dates have the expected format
-    if not (validate_dates(from_arrival, "%Y-%m-%d %H:%M:%S")
-            and validate_dates(to_arrival, "%Y-%m-%d %H:%M:%S")
-            and validate_dates(from_departure, "%Y-%m-%d %H:%M:%S")
-            and validate_dates(to_departure, "%Y-%m-%d %H:%M:%S")):
+    if (from_arrival == None or to_arrival == None
+            or from_departure == None or to_departure == None):
         return Response({
                 "error": "Invalid format"
             }, status=status.HTTP_400_BAD_REQUEST)
@@ -512,14 +511,11 @@ def end_reservation(request):
         charger.save()
 
     r.state = "Success"
-    r.actual_departure = request.data["actual_departure"]
+    r.actual_departure = str_to_datetime(request.data["actual_departure"])
     r.total_power_transmitted = request.data["total_power_transmitted"]
 
-    actual_arival_str = datetime.strftime(r.actual_arrival,
-                                          "%Y-%m-%d %H:%M:%S")
-    actual_departure_str = request.data["actual_departure"]
-    pcs = find_parking_costs(station, actual_arival_str, actual_departure_str)
-    r.parking_cost = calculate_parking_cost(pcs, actual_arival_str, actual_departure_str)
+    pcs = find_parking_costs(station, r.actual_arrival, r.actual_departure)
+    r.parking_cost = calculate_parking_cost(pcs, r.actual_arrival, r.actual_departure)
     # Parking Cost extra could be calculated in a different way... However,
     # for now we let the user set it
     r.parking_cost_extra = request.data["parking_cost_extra"]
