@@ -9,8 +9,7 @@ from stations.useful_functions import (add_charger, add_pricing_group,
 from stations.models import ParkingCost, ParkingCostSnapshot, Station
 from stations.serializers import (DashboardStationSerializer,
                                   ParkingCostSerializer,
-                                  StationInformationSerializer,
-                                  StationMarkersSerializer)
+                                  StationInformationSerializer)
 
 
 @api_view(['POST', ])
@@ -39,7 +38,7 @@ def get_station_markers(_):
             HTTP_200_OK status
     """
     stations = Station.objects.all()
-    serializer = StationMarkersSerializer(stations, many=True)
+    serializer = StationInformationSerializer(stations, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 

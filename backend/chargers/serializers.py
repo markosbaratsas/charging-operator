@@ -5,7 +5,7 @@ from chargers.models import (Charger, MethodConstantBool,
                              MethodConstantDecimal, MethodConstantInt,
                              MethodConstantStation, PricingGroup)
 from chargers.useful_functions import get_charging_price
-from stations.serializers import StationMarkersSerializer
+from stations.serializers import StationInformationSerializer
 
 
 class PricingGroupInfoSerializer(serializers.ModelSerializer):
@@ -97,7 +97,7 @@ class MethodConstantStationSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'value']
 
     def get_value(self, obj):
-        return StationMarkersSerializer(obj.value).data
+        return StationInformationSerializer(obj.value).data
 
 
 class PricingGroupSerializer(serializers.ModelSerializer):

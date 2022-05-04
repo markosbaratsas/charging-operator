@@ -32,20 +32,13 @@ class DashboardStationSerializer(serializers.ModelSerializer):
         return occupied
 
 
-class StationMarkersSerializer(serializers.ModelSerializer):
+class StationInformationSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField()
     longitude = serializers.FloatField()
 
     class Meta:
         model = Station
         fields = ['id', 'name', 'address', 'latitude', 'longitude']
-
-
-class StationInformationSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Station
-        fields = ['id', 'name', 'latitude', 'longitude', 'address']
 
 
 class ParkingCostSerializer(serializers.ModelSerializer):
