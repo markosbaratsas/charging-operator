@@ -88,7 +88,7 @@ class Reservation(models.Model):
     smart_vtg = models.BooleanField(default=True)
 
     # calculated when reservation is over
-    total_power_transmitted = models.DecimalField(max_digits=7,
+    total_energy_transmitted = models.DecimalField(max_digits=7,
                                                  decimal_places=3,
                                                  default=0)
     parking_cost = models.DecimalField(max_digits=6, decimal_places=3,

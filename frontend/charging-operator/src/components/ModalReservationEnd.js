@@ -84,7 +84,7 @@ const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepa
                             <div className="full-width flex-row-between-center"><h3>Vehicle Model:</h3> <h4>{reservation.model}</h4></div>
                             <div className="full-width flex-row-between-center"><h3>Vehicle License Plate:</h3> <h4>{reservation.license_plate}</h4></div>
                             <div className="full-width flex-row-between-center"><h3>Charger:</h3> <h4>{reservation.charger.name}</h4></div>
-                            <div className="full-width flex-row-between-center"><h3>Energy Cost:</h3> <h4>{reservation.energy_cost} €/KW</h4></div>
+                            <div className="full-width flex-row-between-center"><h3>Energy Cost:</h3> <h4>{reservation.energy_cost} €/KWh</h4></div>
                         </div>
                     : null}
 

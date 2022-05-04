@@ -444,14 +444,14 @@ export const vehicleArrived = async (token, station_id, reservation_id, actual_a
 }
 
 export const reservationEnd = async (token, station_id, reservation_id,
-                            total_power_transmitted, actual_departure,
+                            total_energy_transmitted, actual_departure,
                             parking_cost_extra) => {
     try {
         await axios.post(urls.reservationEnd,
             JSON.stringify({
                 station_id: station_id,
                 reservation_id: reservation_id,
-                total_power_transmitted: total_power_transmitted,
+                total_energy_transmitted: total_energy_transmitted,
                 actual_departure: actual_departure,
                 parking_cost_extra: parking_cost_extra
             }),

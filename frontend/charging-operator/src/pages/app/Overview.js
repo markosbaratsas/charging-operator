@@ -154,7 +154,7 @@ const Overview = ({title}) => {
                                         return (
                                             <li key={price.id} className="flex-column-center-center">
                                                 <h3>{price.name}</h3>
-                                                <h5>{price.current_price} €/KW</h5>
+                                                <h5>{price.current_price} €/KWh</h5>
                                             </li>
                                         );
                                     })}

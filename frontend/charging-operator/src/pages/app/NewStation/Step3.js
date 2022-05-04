@@ -606,7 +606,7 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                         <div className="all-expenses-calc">
                                             Current expenses calculation: {" "}
                                             <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
                                         </div>
                                         
                                         <div className="label-input">
@@ -661,7 +661,7 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                         <div className="all-expenses-calc">
                                             Current expenses calculation: {" "}
                                             <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
                                         </div>
 
                                         <div className="label-input">
@@ -749,7 +749,7 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                         <div className="all-expenses-calc">
                                             Current expenses calculation: {" "}
                                             <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KW</span>
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
                                         </div>
 
                                         

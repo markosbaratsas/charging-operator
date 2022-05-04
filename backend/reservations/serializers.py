@@ -62,7 +62,7 @@ class ReservationSerializer(serializers.ModelSerializer):
                     'expected_arrival', 'actual_arrival', 'expected_departure',
                     'actual_departure', 'price_per_kwh', 'parking_cost',
                     'parking_cost_extra', 'energy_cost', 'total_cost',
-                    'charger', 'total_power_transmitted', 'vehicle_name',
+                    'charger', 'total_energy_transmitted', 'vehicle_name',
                     'owner_phone']
 
     def get_vehicle_name(self, obj):

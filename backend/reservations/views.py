@@ -477,7 +477,7 @@ def end_reservation(request):
     """
     if ('reservation_id' not in request.data
             or 'station_id' not in request.data
-            or 'total_power_transmitted' not in request.data
+            or 'total_energy_transmitted' not in request.data
             or 'actual_departure' not in request.data
             or 'parking_cost_extra' not in request.data
             or not validate_dates(request.data['actual_departure'],
@@ -512,7 +512,7 @@ def end_reservation(request):
 
     r.state = "Success"
     r.actual_departure = str_to_datetime(request.data["actual_departure"])
-    r.total_power_transmitted = request.data["total_power_transmitted"]
+    r.total_energy_transmitted = request.data["total_energy_transmitted"]
 
     pcs = find_parking_costs(station, r.actual_arrival, r.actual_departure)
     r.parking_cost = calculate_parking_cost(pcs, r.actual_arrival, r.actual_departure)
@@ -520,7 +520,7 @@ def end_reservation(request):
     # for now we let the user set it
     r.parking_cost_extra = request.data["parking_cost_extra"]
     r.energy_cost = (float(r.price_per_kwh)
-                        * float(request.data["total_power_transmitted"]))
+                        * float(request.data["total_energy_transmitted"]))
     r.total_cost = (float(r.energy_cost) + float(r.parking_cost)
                         + float(r.parking_cost_extra))
     r.save()

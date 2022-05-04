@@ -70,18 +70,18 @@ const ModalReservationView = ({ show, setShow, reservation, initializeInputState
 
                     <h2>Cost Information</h2>
                     <TableRow
-                        description={"Total Power Transmitted:"}
-                        value={parseFloat(reservation.total_power_transmitted).toFixed(1) + " KW"}
+                        description={"Total Energy Transmitted:"}
+                        value={parseFloat(reservation.total_energy_transmitted).toFixed(1) + " KWh"}
                     />
                     <TableRow
-                        description={"Price per KW:"}
-                        value={parseFloat(reservation.price_per_kwh).toFixed(2) + " €/KW"}
+                        description={"Price per KWh:"}
+                        value={parseFloat(reservation.price_per_kwh).toFixed(2) + " €/KWh"}
                     />
                     <TableRow
                         description={"Total Energy Cost:"}
                         value={parseFloat(reservation.energy_cost).toFixed(2) + " €"}
                         help={`Total Energy Cost is calculated by multiplying the
-                        amount of the total power transmitted and the price per KW.`}
+                        amount of the total power transmitted and the price per KWh.`}
                     />
                     <TableRow
                         description={"Parking Cost:"}

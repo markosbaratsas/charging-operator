@@ -204,13 +204,13 @@ const Reservations = ({title}) => {
             let newAvailableChargers = [];
             if (extra_charger !== null) {
                 newAvailableChargers.push({
-                    name: `${extra_charger["name"]}, ${extra_charger["current_price"]} €/KW`,
+                    name: `${extra_charger["name"]}, ${extra_charger["current_price"]} €/KWh`,
                     id: extra_charger["id"]
                 });
             }
             for (let i=0; i<req.data.length; i++) {
                 newAvailableChargers.push({
-                    name: `${req.data[i]["name"]}, ${req.data[i]["current_price"]} €/KW`,
+                    name: `${req.data[i]["name"]}, ${req.data[i]["current_price"]} €/KWh`,
                     id: req.data[i]["id"]
                 });
             }
