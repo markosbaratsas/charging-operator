@@ -3175,3 +3175,7 @@
   background-color: #303030;
   border: 1px solid #aaa;
 }
+
+.light-red-background {
+  background-color: #f5caca !important;
+}

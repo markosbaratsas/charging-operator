@@ -171,20 +171,50 @@ const Overview = ({title}) => {
                             {!reservations ? <ReactLoading type="spin" color="#202020" height={30} width={30} className="loading"/>
                             : (
                                 <>
-                                    <p>For the next 12 hours</p>
-                                    <ul className="overview-station-ul2 flex-column-start-center">
-                                        {reservations.filter(reservation => next_hours(reservation.expected_arrival, 12)).map(reservation => {
-                                            return (
-                                                <li key={reservation.id} className="flex-column-start-start">
-                                                    <h4>{upTo(reservation.model, 30)}, {reservation.license_plate}</h4>
-                                                    <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
-                                                    <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
-                                                    <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
-                                                    <h5>Charger: <span>{reservation.charger.name}</span></h5>
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
+
+                                    {(reservations.filter(reservation => next_hours(reservation.expected_arrival, 0)).length > 0) ? (
+                                    <>
+                                        <p>Overdue (in the past hour)</p>
+                                        <ul className="overview-station-ul2 flex-column-start-center">
+                                            {reservations.filter(reservation => next_hours(reservation.expected_arrival, 0)).map(reservation => {
+                                                return (
+                                                    <li key={reservation.id} className="flex-column-start-start light-red-background">
+                                                        <h4>{upTo(reservation.model, 30)}, {reservation.license_plate}</h4>
+                                                        <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
+                                                        <h5>Owner's Phone: <span>{upTo(reservation.owner_phone, 30)}</span></h5>
+                                                        <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
+                                                        <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
+                                                        <h5>Charger: <span>{reservation.charger.name}</span></h5>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </>
+                                    ) : null}
+
+                                    {(reservations.filter(reservation => (
+                                        ! next_hours(reservation.expected_arrival, 0) && next_hours(reservation.expected_arrival, 12)
+                                    )).length > 0) ? (
+                                    <>
+                                        <p>For the next 12 hours</p>
+                                        <ul className="overview-station-ul2 flex-column-start-center">
+                                            {reservations.filter(reservation => (
+                                                ! next_hours(reservation.expected_arrival, 0) && next_hours(reservation.expected_arrival, 12)
+                                            )).map(reservation => {
+                                                return (
+                                                    <li key={reservation.id} className="flex-column-start-start">
+                                                        <h4>{upTo(reservation.model, 30)}, {reservation.license_plate}</h4>
+                                                        <h5>Owner: <span>{upTo(reservation.owner, 30)}</span></h5>
+                                                        <h5>Owner's Phone: <span>{upTo(reservation.owner_phone, 30)}</span></h5>
+                                                        <h5>Expected Arrival: <span>{reservation.expected_arrival}</span></h5>
+                                                        <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
+                                                        <h5>Charger: <span>{reservation.charger.name}</span></h5>
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </>
+                                    ) : null}
 
                                     {reservations.filter(reservation =>( ! next_hours(reservation.expected_arrival, 12) && next_hours(reservation.expected_arrival, 24))).length > 0 ? (
                                     <>
@@ -195,6 +225,7 @@ const Overview = ({title}) => {
                                                     <li key={reservation.id} className="flex-column-start-start">
                                                         <h4>{reservation.model}, {reservation.license_plate}</h4>
                                                         <h5>Owner: <span>{reservation.owner}</span></h5>
+                                                        <h5>Owner's Phone: <span>{upTo(reservation.owner_phone, 30)}</span></h5>
                                                         <h5>Expected Departure: <span>{reservation.expected_arrival}</span></h5>
                                                         <h5>Expected Departure: <span>{reservation.expected_departure}</span></h5>
                                                         <h5>Charger: <span>{reservation.charger.name}</span></h5>
@@ -203,6 +234,13 @@ const Overview = ({title}) => {
                                             })}
                                         </ul>
                                     </>
+                                    ) : null}
+
+                                    {reservations.length === 0 ? (
+                                        <>
+                                            <p>There are no reservations in the next 24 hours.</p>
+                                            <br />
+                                        </>
                                     ) : null}
                                 </>
                             )}

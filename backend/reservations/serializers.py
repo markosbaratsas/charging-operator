@@ -49,6 +49,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     model = serializers.SerializerMethodField()
     license_plate = serializers.SerializerMethodField()
     owner = serializers.SerializerMethodField()
+    owner_phone = serializers.SerializerMethodField()
     charger = serializers.SerializerMethodField()
     expected_arrival = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
     actual_arrival = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
@@ -61,7 +62,8 @@ class ReservationSerializer(serializers.ModelSerializer):
                     'expected_arrival', 'actual_arrival', 'expected_departure',
                     'actual_departure', 'price_per_kwh', 'parking_cost',
                     'parking_cost_extra', 'energy_cost', 'total_cost',
-                    'charger', 'total_power_transmitted', 'vehicle_name']
+                    'charger', 'total_power_transmitted', 'vehicle_name',
+                    'owner_phone']
 
     def get_vehicle_name(self, obj):
         return obj.vehicle.name
@@ -76,6 +78,11 @@ class ReservationSerializer(serializers.ModelSerializer):
         if not obj.vehicle.owner:
             return "Uknown Owner's name"
         return obj.vehicle.owner.name
+
+    def get_owner_phone(self, obj):
+        if not obj.vehicle.owner.phone:
+            return "Uknown Owner's phone"
+        return str(obj.vehicle.owner.phone)
 
     def get_charger(self, obj):
         return ChargerReservationSerializer(obj.charger).data

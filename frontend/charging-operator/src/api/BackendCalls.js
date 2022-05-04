@@ -190,7 +190,7 @@ export const getStationVehicles = async (token, station_id) => {
 export const getStationReservations = async (token, station_id) => {
     try {
         // now
-        let from_date = new Date();
+        let from_date = new Date(new Date().getTime() - 60 * 60 * 1 * 1000);
         let from_str = getTimeString(from_date);
         // 24 hours later
         let to_date = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
@@ -199,7 +199,7 @@ export const getStationReservations = async (token, station_id) => {
         const response = await axios.post(urls.getReservations,
             JSON.stringify({
                 station_id: station_id,
-                states: ["Charging"],
+                states: ["Reserved"],
                 from_arrival: from_str,
                 to_arrival: to_str
             }),

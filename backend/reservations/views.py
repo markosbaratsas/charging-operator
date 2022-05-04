@@ -197,6 +197,10 @@ def create_reservation(request):
     available_chargers = set(get_station_available_chargers(station,
                                     reservation_dict["arrival_time"],
                                     reservation_dict["departure_time"]))
+    if available_chargers == None:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         charger = Charger.objects.get(id=int(reservation_dict["charger_id"]))
@@ -213,7 +217,8 @@ def create_reservation(request):
     try:
         # TODO: Perform better checks in given input
         owner = Owner.objects.create(
-            name=reservation_dict["owner_name"]
+            name=reservation_dict["owner_name"],
+            phone="6912345678"
         )
         vehicle = Vehicle.objects.create(
             owner=owner,

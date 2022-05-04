@@ -6,7 +6,7 @@ import { useAlert } from 'react-alert';
 import Select from "./Select2/Select";
 import { createReservation, updateReservation } from "../api/BackendCalls";
 import AuthProvider from "../context/AuthProvider";
-import { stringToDatetime } from "../utils/usefulFunctions";
+import { getTimeString, stringToDatetime } from "../utils/usefulFunctions";
 
 
 const OWNER_REGEX = /^[A-z0-9_\ ]{2,31}$/;
@@ -80,10 +80,13 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
 
         if (errors) return;
 
+        let departure_time = getTimeString(new Date(departureTime));
+        let arrival_time = getTimeString(new Date(arrivalTime));
+
         if (reservation === null) {
             const data = await createReservation(getAuth(), {
-                departure_time: departureTime,
-                arrival_time: arrivalTime,
+                departure_time: departure_time,
+                arrival_time: arrival_time,
                 charger_id: charger.id,
                 station_id: stationId,
                 owner_name: owner,
