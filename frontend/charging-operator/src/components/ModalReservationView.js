@@ -1,5 +1,6 @@
 import { Modal } from 'react-bootstrap';
 import '../bootstrap.css';
+import TableRow from './TableRow';
 
 const ModalReservationView = ({ show, setShow, reservation, initializeInputState}) => {
 
@@ -24,64 +25,79 @@ const ModalReservationView = ({ show, setShow, reservation, initializeInputState
                 {reservation !== null ?
                 <div className="full-width flex-column-center-center reservation-view">
                     <h2>General Information</h2>
-                    <div className="full-width flex-row-between-center">
-                        <div className="flex-column-start-start reservation-view-titles">
-                            <h3>Reservation ID:</h3>
-                            <h3>State:</h3>
-                            <h3>Charger:</h3>
-                            <h3>Arrival Time:</h3>
-                            <h3>Departure Time:</h3>
-                        </div>
-                        <div className="flex-column-start-start reservation-view-numbers">
-                            <h4>{reservation.id}</h4>
-                            <h4>{reservation.state}</h4>
-                            <h4>{reservation.charger.name}</h4>
-                            <h4>{reservation.actual_arrival}</h4>
-                            <h4>{reservation.actual_departure}</h4>
-                        </div>
-                    </div>
+                    <TableRow
+                        description={"Reservation ID:"}
+                        value={reservation.id}
+                    />
+                    <TableRow
+                        description={"State:"}
+                        value={reservation.state}
+                    />
+                    <TableRow
+                        description={"Charger:"}
+                        value={reservation.charger.name}
+                    />
+                    <TableRow
+                        description={"Expected Arrival Time:"}
+                        value={reservation.expected_arrival}
+                    />
+                    <TableRow
+                        description={"Actual Arrival Time:"}
+                        value={reservation.actual_arrival}
+                    />
+                    <TableRow
+                        description={"Expected Departure Time:"}
+                        value={reservation.expected_departure}
+                    />
+                    <TableRow
+                        description={"Actual Departure Time:"}
+                        value={reservation.actual_departure}
+                    />
 
                     <h2>Vehicle Information</h2>
-                    <div className="full-width flex-row-between-center">
-                        <div className="flex-column-start-start reservation-view-titles">
-                            <h3>Vehicle Model:</h3>
-                            <h3>Vehicle Lisence Plate:</h3>
-                            <h3>Vehicle Owner:</h3>
-                        </div>
-                        <div className="flex-column-start-start reservation-view-numbers">
-                            <h4>{reservation.model}</h4>
-                            <h4>{reservation.license_plate}</h4>
-                            <h4>{reservation.owner}</h4>
-                        </div>
-                    </div>
+                    <TableRow
+                        description={"Vehicle Model:"}
+                        value={reservation.model}
+                    />
+                    <TableRow
+                        description={"Vehicle Lisence Plate:"}
+                        value={reservation.license_plate}
+                    />
+                    <TableRow
+                        description={"Vehicle Owner:"}
+                        value={reservation.owner}
+                    />
 
                     <h2>Cost Information</h2>
-                    <div className="full-width flex-row-between-center">
-                        <div className="flex-column-start-start reservation-view-titles">
-                            <h3>Total Power Transmitted:</h3>
-                            <h3>Price per KW:</h3>
-                            <h3>Total Energy Cost:</h3>
-                        </div>
-                        <div className="flex-column-start-start reservation-view-numbers">
-                            <h4>{parseFloat(reservation.total_power_transmitted).toFixed(1)} KW</h4>
-                            <h4>{parseFloat(reservation.price_per_kwh).toFixed(2)} €/KW</h4>
-                            <h4>{parseFloat(reservation.energy_cost).toFixed(2)} €</h4>
-                        </div>
-                    </div>
-                    <p>Total Energy Cost is calculated by multiplying the
-                        amount of the total power transmitted and the price per KW.</p>
-
-                    <div className="full-width flex-row-between-center">
-                        <div className="flex-column-start-start reservation-view-titles">
-                                <h3>Total Parking Cost:</h3>
-                                <h3>Total Cost:</h3>
-                            </div>
-                        <div className="flex-column-start-start reservation-view-numbers">
-                            <h4>{parseFloat(reservation.parking_cost).toFixed(2)}€</h4>
-                            <h4>{parseFloat(reservation.total_cost).toFixed(2)} €</h4>
-                        </div>
-                    </div>
-
+                    <TableRow
+                        description={"Total Power Transmitted:"}
+                        value={parseFloat(reservation.total_power_transmitted).toFixed(1) + " KW"}
+                    />
+                    <TableRow
+                        description={"Price per KW:"}
+                        value={parseFloat(reservation.price_per_kwh).toFixed(2) + " €/KW"}
+                    />
+                    <TableRow
+                        description={"Total Energy Cost:"}
+                        value={parseFloat(reservation.energy_cost).toFixed(2) + " €"}
+                        help={`Total Energy Cost is calculated by multiplying the
+                        amount of the total power transmitted and the price per KW.`}
+                    />
+                    <TableRow
+                        description={"Parking Cost:"}
+                        value={parseFloat(reservation.parking_cost).toFixed(2) + " €"}
+                    />
+                    <TableRow
+                        description={"Parking Cost Extra:"}
+                        value={parseFloat(reservation.parking_cost_extra).toFixed(2) + " €"}
+                        help={`Parking Cost Extra is an extra cost, that arises when the vehicle arrived 
+                        at and/or left from the station on a different hour than the reserved hour.`}
+                    />
+                    <TableRow
+                        description={"Total Cost:"}
+                        value={parseFloat(reservation.total_cost).toFixed(2) + " €"}
+                        help={`Total Cost is calculated by adding all of the above costs.`}
+                    />
                 </div>
                 : null}
             </Modal.Body>

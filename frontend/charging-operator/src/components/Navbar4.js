@@ -25,6 +25,9 @@ const Navbar3 = ({stationName, stationId, active}) => {
                         <li className={active === "Reservations" ? "item-active": null}>
                             <Link to={`/app/station-${stationId}/reservations`}>Reservations</Link>
                         </li>
+                        <li className={active === "Parking" ? "item-active": null}>
+                            <Link to={`/app/station-${stationId}/parking`}>Parking</Link>
+                        </li>
                     </ul>
                     <OnClickMenu />
                 </nav>

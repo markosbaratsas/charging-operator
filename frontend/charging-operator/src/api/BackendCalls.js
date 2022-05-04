@@ -31,6 +31,8 @@ const urls = {
     vehicleArrived: 'reservations/vehicle-state/create',
     reservationEnd: 'reservations/end-reservation',
     getVehicleState: 'reservations/vehicle-state/get',
+    getParkingCosts: 'stations/parking-costs',
+    setParkingCost: 'stations/parking-cost/set_default',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -112,6 +114,38 @@ export const getStation = async (token, station_id) => {
         return {ok: false, data: null};
     }
     return {ok: true, data: null};
+}
+
+export const getParkingCosts = async (token, station_id, from_datetime, to_datetime) => {
+    try {
+        const response = await axios.post(urls.getParkingCosts,
+            JSON.stringify({
+                station_id: station_id,
+                from_datetime: from_datetime,
+                to_datetime: to_datetime
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+    } catch (err) {}
+
+    return {ok: false};
+}
+
+export const setParkingCosts = async (token, station_id, parking_cost_value) => {
+    try {
+        await axios.post(urls.setParkingCost,
+            JSON.stringify({
+                station_id: station_id,
+                parking_cost_value: parking_cost_value
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
 }
 
 export const getStationChargerGroupsInfo = async (token, station_id) => {
@@ -410,14 +444,16 @@ export const vehicleArrived = async (token, station_id, reservation_id, actual_a
 }
 
 export const reservationEnd = async (token, station_id, reservation_id,
-                            total_power_transmitted, actual_departure) => {
+                            total_power_transmitted, actual_departure,
+                            parking_cost_extra) => {
     try {
         await axios.post(urls.reservationEnd,
             JSON.stringify({
                 station_id: station_id,
                 reservation_id: reservation_id,
                 total_power_transmitted: total_power_transmitted,
-                actual_departure: actual_departure
+                actual_departure: actual_departure,
+                parking_cost_extra: parking_cost_extra
             }),
             getAuthorizedHeaders(token.accessToken)
         );

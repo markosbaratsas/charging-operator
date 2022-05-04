@@ -62,6 +62,7 @@ const Reservations = ({title}) => {
     const [show3, setShow3] = useState(false);
     const [actualDepartureTime, setActualDepartureTime] = useState("");
     const [totalPowerTransmitted, setTotalPowerTransmitted] = useState("");
+    const [parkingCostExtra, setParkingCostExtra] = useState("");
 
     // the following state variables are needed for ModalReservationView
     const [show4, setShow4] = useState(false);
@@ -439,6 +440,8 @@ const Reservations = ({title}) => {
             setActualDepartureTime={setActualDepartureTime}
             totalPowerTransmitted={totalPowerTransmitted}
             setTotalPowerTransmitted={setTotalPowerTransmitted}
+            parkingCostExtra={parkingCostExtra}
+            setParkingCostExtra={setParkingCostExtra}
             searchReservations={searchReservations}
             initializeInputState={initializeInputState}
         />

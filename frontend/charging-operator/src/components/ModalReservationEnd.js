@@ -5,17 +5,19 @@ import { useAlert } from 'react-alert';
 
 import AuthProvider from "../context/AuthProvider";
 import { reservationEnd } from "../api/BackendCalls";
+import { getTimeString } from '../utils/usefulFunctions';
 
 
 const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepartureTime,
     setActualDepartureTime, totalPowerTransmitted, setTotalPowerTransmitted,
-    searchReservations, initializeInputState}) => {
+    parkingCostExtra, setParkingCostExtra, searchReservations, initializeInputState}) => {
 
     const alert = useAlert();
     const { getAuth } = AuthProvider();
 
     const [actualDepartureTimeError, setActualDepartureTimeError] = useState(false);
     const [totalPowerTransmittedError, setTotalPowerTransmittedError] = useState(false);
+    const [parkingCostExtraError, setParkingCostExtraError] = useState(false);
 
     const handleClose = () => {
         setShow(false);
@@ -27,6 +29,10 @@ const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepa
             setTotalPowerTransmittedError(true);
             errors = true;
         }
+        if (parkingCostExtra === "" || parkingCostExtra*1.0 > 500 || parkingCostExtra*1.0 < 0) {
+            setParkingCostExtraError(true);
+            errors = true;
+        }
         if (!actualDepartureTime) {
             setActualDepartureTimeError(true);
             errors = true;
@@ -34,9 +40,11 @@ const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepa
 
         if (errors) return;
 
+        let actual_departure = getTimeString(new Date(actualDepartureTime));
+
         const req = await reservationEnd(getAuth(), stationId, 
                         reservation.id, totalPowerTransmitted,
-                        actualDepartureTime);
+                        actual_departure, parkingCostExtra);
         if (req.ok) {
             alert.success('Reservation ended successfully');
             setShow(false);
@@ -51,7 +59,8 @@ const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepa
     useEffect(() => {
         setActualDepartureTimeError(false);
         setTotalPowerTransmittedError(false);
-    }, [actualDepartureTime, totalPowerTransmitted])
+        setParkingCostExtraError(false);
+    }, [actualDepartureTime, totalPowerTransmitted, parkingCostExtra])
 
     return (
         <Modal
@@ -96,6 +105,25 @@ const ModalReservationEnd = ({ show, setShow, stationId, reservation, actualDepa
                         <p className="error-p">Total power transmitted should be a number between 1 and 500.
                         It is the difference between the initial battery of the vehicle before the charging begins
                         and the battery after the charging session ends.</p>
+                        : null}
+
+                    <div className="label-input-reservations1">
+                        <h5>Parking Cost Extra</h5>
+                        <input
+                            type="number"
+                            min="0"
+                            max="500"
+                            step="0.1"
+                            className={"my-classic-input" + " " + (parkingCostExtraError ? "error-selected" : "")}
+                            placeholder="Input Parking Cost Extra"
+                            value={parkingCostExtra}
+                            onChange={(e) => setParkingCostExtra(e.target.value)}
+                        />
+                    </div>
+                    {parkingCostExtraError ?
+                        <p className="error-p">Parking Cost Extra should be a number between 0 and 500.
+                        It is a cost that you can optionally apply if the vehicle did not arrive or leave at the
+                        expected time. You can set it 0, if you do not want to apply any.</p>
                         : null}
 
                     <div className="label-input-reservations1">
