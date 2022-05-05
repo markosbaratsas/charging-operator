@@ -7,3 +7,10 @@ db.sqlite3
 **/__pycache__/**
 
 secrets.json
+
+# logs
+celery.beat.log
+celery.log
+
+# celery beat schedule file
+celerybeat-schedule
