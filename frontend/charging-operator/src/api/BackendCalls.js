@@ -33,6 +33,8 @@ const urls = {
     getVehicleState: 'reservations/vehicle-state/get',
     getParkingCosts: 'stations/parking-costs',
     setParkingCost: 'stations/parking-cost/set_default',
+    getRecentPrice: 'gridprice/get-recent-prices',
+    getLocations: 'gridprice/locations',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -57,8 +59,22 @@ export const getMarkers = async (token) => {
 
     } catch (err) {
         console.log(err);
-        return null;
     }
+    return null;
+}
+
+export const getLocations = async (token) => {
+    try {
+        const response = await axios.post(urls.getLocations,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+    return null;
 }
 
 export const addStation = async (token, station_id) => {
@@ -74,12 +90,40 @@ export const addStation = async (token, station_id) => {
     }
 }
 
-export const getGridPrice = () => {
-    // TODO: Hit backend
-    // temporarily return this object
-    return {
-        "grid_price": 0.158
-    };
+export const getGridPrice = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getRecentPrice,
+            JSON.stringify({
+                station_id: station_id,
+                amount: 1
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data[0];
+    } catch (err) {
+        console.log(err, err?.response?.data);
+    }
+
+    return null;
+}
+
+export const getGridPriceLocation = async (token, location_id) => {
+    try {
+        const response = await axios.post(urls.getRecentPrice,
+            JSON.stringify({
+                location_id: location_id,
+                amount: 1
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data[0];
+    } catch (err) {
+        console.log(err, err?.response?.data);
+    }
+
+    return null;
 }
 
 export const createStation = async (token, station_dict) => {
@@ -225,28 +269,20 @@ export const getPricingGroups = async (token, station_id) => {
     return null;
 }
 
-export const getGridPrices = async () => {
-    // TODO: Hit backend
-    // temporarily return this dict
-    const grid_price = {
-        grid_price: 0.189,
-        previous_values: [
-            {
-                date: "19/05/2022 18:00",
-                price: 0.179
-            },
-            {
-                date: "19/05/2022 17:45",
-                price: 0.172
-            },
-            {
-                date: "19/05/2022 17:30",
-                price: 0.177
-            }
-        ]
-    }
+export const getGridPrices = async (token, station_id, amount) => {
+    try {
+        const response = await axios.post(urls.getRecentPrice,
+            JSON.stringify({
+                station_id: station_id,
+                amount: amount
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
 
-    return grid_price;
+    return null;
 }
 
 export const createPricingGroup = async (token, station_id, group) => {

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Modal } from 'react-bootstrap';
 
 import Select from "../../../components/Select/Select";
-import { getGridPrice, getMarkers } from "../../../api/BackendCalls";
+import { getGridPriceLocation, getMarkers } from "../../../api/BackendCalls";
 import Map from "../../../components/Map3/Map";
 import { upTo } from "../../../utils/usefulFunctions";
 import AuthProvider from "../../../context/AuthProvider";
@@ -93,12 +93,12 @@ const pricingMethods = [
 
 
 const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
-                zoom, setZoom, center, setCenter, marker, setMarker}) => {
+                zoom, setZoom, center, setCenter, marker, setMarker, location}) => {
     const { getAuth } = AuthProvider();
     const [stationsMarkers, setStationsMarkers] = useState([]);
 
     const [gridPrice, setGridPrice] = useState(true);
-    const { grid_price: currentGridPrice } = getGridPrice();
+    const [currentGridPrice, setCurrentGridPrice] = useState(null);
 
     const [groupId, setGroupId] = useState(null);
     const [errorNextStep, setErrorNextStep] = useState(false);
@@ -127,13 +127,15 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
     const [competitorsError, setCompetitorsError] = useState(false);
 
     useEffect(async () => {
+        if (location.id === null) return;
         const mark = await getMarkers(getAuth());
         setStationsMarkers(mark);
-    }, [])
+        const data = await getGridPriceLocation(getAuth(), location.id);
+        setCurrentGridPrice(data.price);
+    }, [location])
 
     const handleEdit = (group_id) => {
         let this_group = chargerGroups.find(g => g.id === group_id);
-        console.log(this_group);
         if (!this_group) return;
 
         setGroupId(this_group.id);
@@ -393,7 +395,6 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
     }, [pricingMethod, constant, allExpenses, constant2, n, competitors])
 
     useEffect(() => {
-        console.log(prevPricingMethod)
         if (prevPricingMethod !== "") {
             setConstant("");
             setAllExpenses("");
@@ -603,11 +604,13 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                             />
 
                                         </div>
-                                        <div className="all-expenses-calc">
-                                            Current expenses calculation: {" "}
-                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                        </div>
+                                        {currentGridPrice ?
+                                            <div className="all-expenses-calc">
+                                                Current expenses calculation: {" "}
+                                                <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                        + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                            </div>
+                                        :null}
                                         
                                         <div className="label-input">
                                             <h5>Set c</h5>
@@ -658,11 +661,13 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                             />
 
                                         </div>
-                                        <div className="all-expenses-calc">
-                                            Current expenses calculation: {" "}
-                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                        </div>
+                                        {currentGridPrice ?
+                                            <div className="all-expenses-calc">
+                                                Current expenses calculation: {" "}
+                                                <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                        + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                            </div>
+                                        :null}
 
                                         <div className="label-input">
                                             <h5>Set c1</h5>
@@ -746,11 +751,13 @@ const Step3 = ({chargers, setChargers, chargerGroups, setChargerGroups, setStep,
                                             />
 
                                         </div>
-                                        <div className="all-expenses-calc">
-                                            Current expenses calculation: {" "}
-                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                        </div>
+                                        {currentGridPrice ?
+                                            <div className="all-expenses-calc">
+                                                Current expenses calculation: {" "}
+                                                <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                        + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                            </div>
+                                        :null}
 
                                         
                                         <div className="label-input">

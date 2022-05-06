@@ -81,7 +81,7 @@ const ModalVehicleState = ({ show2, setShow2, stationId, reservation, currentBat
                             <div className="full-width flex-row-between-center"><h3>Vehicle Model:</h3> <h4>{reservation.model}</h4></div>
                             <div className="full-width flex-row-between-center"><h3>Vehicle License Plate:</h3> <h4>{reservation.license_plate}</h4></div>
                             <div className="full-width flex-row-between-center"><h3>Charger:</h3> <h4>{reservation.charger.name}</h4></div>
-                            <div className="full-width flex-row-between-center"><h3>Energy Cost:</h3> <h4>{reservation.energy_cost} €/KWh</h4></div>
+                            <div className="full-width flex-row-between-center"><h3>Reserved Price per KWh:</h3> <h4>{reservation.price_per_kwh} €/KWh</h4></div>
                         </div>
                     : null}
 
@@ -103,6 +103,19 @@ const ModalVehicleState = ({ show2, setShow2, stationId, reservation, currentBat
                         : null}
 
                     <div className="label-input-reservations1">
+                        <h5>Actual Arrival Date & Time:</h5>
+                        <input
+                            type="datetime-local"
+                            className={"my-classic-input" + " " + (actualArrivalTimeError ? "error-selected" : "")}
+                            value={actualArrivalTime}
+                            onChange={(e) => setActualArrivalTime(e.target.value)}
+                        />
+                    </div>
+                    {actualArrivalTimeError ?
+                        <p className="error-p">Please select date and time.</p>
+                    : null}
+
+                    <div className="label-input-reservations1">
                         <h5>Desired Final Battery</h5>
                         <input
                             type="number"
@@ -119,17 +132,8 @@ const ModalVehicleState = ({ show2, setShow2, stationId, reservation, currentBat
                         <p className="error-p">Desired Final Battery should be a number between 1 and 500.</p>
                         : null}
 
-                    <div className="label-input-reservations1">
-                        <h5>Actual Arrival Date & Time:</h5>
-                        <input
-                            type="datetime-local"
-                            className={"my-classic-input" + " " + (actualArrivalTimeError ? "error-selected" : "")}
-                            value={actualArrivalTime}
-                            onChange={(e) => setActualArrivalTime(e.target.value)}
-                        />
-                    </div>
-                    {actualArrivalTimeError ?
-                        <p className="error-p">Please select date and time.</p>
+                    {reservation ?
+                    <h4 className="comment-h4">Expected energy cost: {reservation.price_per_kwh} * {desiredFinalBattery} = <span>{(reservation.price_per_kwh * desiredFinalBattery).toFixed(2)} €</span></h4>
                     : null}
                 </div>
             </Modal.Body>

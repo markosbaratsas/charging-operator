@@ -17,6 +17,7 @@ import Map4 from "../../components/Map4/Map";
 import Map3 from "../../components/Map3/Map";
 import { upTo } from '../../utils/usefulFunctions';
 import AuthProvider from '../../context/AuthProvider';
+import GridPriceChart from '../../components/GridPriceChart';
 
 
 const pricingMethods = [
@@ -108,10 +109,11 @@ const Prices = ({title}) => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [station, setStation] = useState({name: ""});
+    const [station, setStation] = useState({name: "", id: null});
     const [groupSelected, setGroupSelected] = useState(null);
     const [groups, setGroups] = useState(null);
     const [gridPrice2, setGridPrice2] = useState(null);
+    const [gridPricesList, setGridPricesList] = useState(null);
 
     const [stationLocation, setStationLocation] = useState({lat: 0, lng: 0, id: 0});
     const [center, setCenter] = useState({lat: 0, lng: 0});
@@ -133,7 +135,7 @@ const Prices = ({title}) => {
     const [constantError, setConstantError] = useState(false);
 
     const [gridPrice, setGridPrice] = useState(true);
-    const { grid_price: currentGridPrice } = getGridPrice();
+    const [currentGridPrice, setCurrentGridPrice] = useState(null);
 
     const [allExpenses, setAllExpenses] = useState("");
     const [allExpensesError, setAllExpensesError] = useState(false);
@@ -148,9 +150,12 @@ const Prices = ({title}) => {
     const [competitorsError, setCompetitorsError] = useState(false);
 
     useEffect(async () => {
+        if (station.id === null) return;
         const mark = await getMarkers(getAuth());
         setStationsMarkers(mark);
-    }, [])
+        const data = await getGridPrice(getAuth(), station.id);
+        setCurrentGridPrice(data.price);
+    }, [station])
 
     const handleEdit = () => {
         let thisGroup = JSON.parse(JSON.stringify(groups[groupSelected]));
@@ -430,10 +435,14 @@ const Prices = ({title}) => {
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(groups)) setGroups(data);
             
-            data = await getGridPrices(getAuth(), id);
+            data = await getGridPrice(getAuth(), id);
             // check if data changed
-            if (JSON.stringify(data) !== JSON.stringify(gridPrice2)) setGridPrice2(data);
+            if (data && JSON.stringify(data) !== JSON.stringify(gridPrice2)) setGridPrice2(data);
 
+            data = await getGridPrices(getAuth(), id, 10);
+            if (data && JSON.stringify(data) !== JSON.stringify(gridPricesList)) {
+                setGridPricesList(data);
+            }
         } catch (err) {
             console.error(err.message);
         }
@@ -551,15 +560,25 @@ const Prices = ({title}) => {
                                         </div>
                                         
                                         <div className="station-prices-grid">
-                                            <h5>Grid Price:</h5>
-                                            <h6>{gridPrice2 ? gridPrice2.grid_price : "?"} €/KWh</h6>
-                                            {/* diagram?? */}
+                                            <h5>Current Grid Price:</h5>
+                                            {gridPrice2 ?
+                                                <>
+                                                    <h3>{gridPrice2.price.toFixed(3)} €/KWh</h3>
+                                                    <h4>From: {gridPrice2.start_time}</h4>
+                                                    <h4>To: {gridPrice2.end_time}</h4>
+                                                    {/* diagram?? */}
+                                                </>
+                                            : null}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </>
                     )}
+
+                    <GridPriceChart
+                        gridPricesList={gridPricesList}
+                    />
                 </div>
             </section>
             </div>
@@ -653,11 +672,13 @@ const Prices = ({title}) => {
                                         />
 
                                     </div>
-                                    <div className="all-expenses-calc">
-                                        Current expenses calculation: {" "}
-                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                    </div>
+                                    {currentGridPrice ?
+                                        <div className="all-expenses-calc">
+                                            Current expenses calculation: {" "}
+                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                        </div>
+                                    :null}
                                     
                                     <div className="label-input">
                                         <h5>Set c</h5>
@@ -708,11 +729,13 @@ const Prices = ({title}) => {
                                         />
 
                                     </div>
-                                    <div className="all-expenses-calc">
-                                        Current expenses calculation: {" "}
-                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                    </div>
+                                    {currentGridPrice ?
+                                        <div className="all-expenses-calc">
+                                            Current expenses calculation: {" "}
+                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                        </div>
+                                    :null}
 
                                     <div className="label-input">
                                         <h5>Set c1</h5>
@@ -796,11 +819,13 @@ const Prices = ({title}) => {
                                         />
 
                                     </div>
-                                    <div className="all-expenses-calc">
-                                        Current expenses calculation: {" "}
-                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                    </div>
+                                    {currentGridPrice ?
+                                        <div className="all-expenses-calc">
+                                            Current expenses calculation: {" "}
+                                            <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                    + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                        </div>
+                                    :null}
 
                                     
                                     <div className="label-input">

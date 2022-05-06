@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
+import Select from "../../../components/Select2/Select";
 import Map from "../../../components/Map2/Map";
-import { getMarkers } from "../../../api/BackendCalls";
+import { getLocations, getMarkers } from "../../../api/BackendCalls";
 import AuthProvider from "../../../context/AuthProvider";
 
 
@@ -10,7 +11,7 @@ const ADDRESS_REGEX = /^[A-z][A-z0-9_\ ,]{2,64}$/;
 const PHONE_REGEX = /^[0-9]{10}$/;
 
 const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, setZoom,
-            center, setCenter, address, setAddress, phone, setPhone}) => {
+            center, setCenter, address, setAddress, phone, setPhone, location, setLocation}) => {
 
     const { getAuth } = AuthProvider();
     const [stationsMarkers, setStationsMarkers] = useState([]);
@@ -20,6 +21,14 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
     const [validName, setValidName] = useState(false);
     const [validAddress, setValidAddress] = useState(false);
     const [validPhone, setValidPhone] = useState(false);
+    const [locationError, setLocationError] = useState(false);
+
+    const [locations, setLocations] = useState([]);
+
+    useEffect(async () => {
+        const loc = await getLocations(getAuth());
+        setLocations(loc);
+    }, [])
 
     useEffect(() => {
         setValidName(true);
@@ -37,6 +46,10 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
         setValidMarker(true);
     }, [marker])
 
+    useEffect(() => {
+        setLocationError(false);
+    }, [location])
+
     useEffect(async () => {
         const mark = await getMarkers(getAuth());
         setStationsMarkers(mark);
@@ -50,7 +63,6 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
             all_valid = false;
         }
         if (!ADDRESS_REGEX.test(address)) {
-            console.log("hello")
             setValidAddress(false);
             all_valid = false;
         }
@@ -60,6 +72,10 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
         }
         if (!marker) {
             setValidMarker(false);
+            all_valid = false;
+        }
+        if (!location) {
+            setLocationError(true);
             all_valid = false;
         }
 
@@ -100,7 +116,7 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
                         value={stationName}
                     />
                     {!validName ?
-                    <p className="error-p">Station name should be 2-31 characters, starting with a letter and can contain letters, digits, underscores and spaces.</p>
+                    <p className="error-p step1-column-p">Station name should be 2-31 characters, starting with a letter and can contain letters, digits, underscores and spaces.</p>
                     : null}
 
                     <h2>Input desired Charging Station Address</h2>
@@ -113,7 +129,7 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
                         value={address}
                     />
                     {!validAddress ?
-                    <p className="error-p">Station address should be 2-31 characters, starting with a letter and can contain letters, digits, underscores, commas and spaces.</p>
+                    <p className="error-p step1-column-p">Station address should be 2-31 characters, starting with a letter and can contain letters, digits, underscores, commas and spaces.</p>
                     : null}
 
                     <h2>Input desired Charging Station Phone</h2>
@@ -127,8 +143,29 @@ const Step1 = ({stationName, setStationName, marker, setMarker, setStep, zoom, s
                         value={phone}
                     />
                     {!validPhone ?
-                    <p className="error-p">Station phone should have exactly 10 digits (numerical characters only).</p>
+                    <p className="error-p step1-column-p">Station phone should have exactly 10 digits (numerical characters only).</p>
                     : null}
+
+                    <h2>Select Station Location</h2>
+                    <div className="label-input-reservations1">
+                        <Select
+                            initialText="Select Location"
+                            options={locations}
+                            selected={location}
+                            setSelected={setLocation}
+                            width="100%"
+                            widthSelect="100%"
+                            error={locationError}
+                            setError={setLocationError}
+                            tabIndex={3}
+                            reset={[]}
+                        />
+                    </div>
+                    {locationError ?
+                    <p className="error-p step1-column-p">Please select a location.</p>
+                    : null}
+
+
                     <h4>You will be this station's operator. Other operators can be added after the station is created.</h4>
                 </div>
             </div>

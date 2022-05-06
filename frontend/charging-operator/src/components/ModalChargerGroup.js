@@ -106,7 +106,7 @@ const ModalChargerGroup = ({show, setShow, station, marker, zoom, center, pricin
 
     const alert = useAlert();
 
-    const { grid_price: currentGridPrice } = getGridPrice();
+    const [currentGridPrice, setCurrentGridPrice] = useState(null);
     const { getAuth } = AuthProvider();
 
     const [stationsMarkers, setStationsMarkers] = useState([]);
@@ -120,9 +120,13 @@ const ModalChargerGroup = ({show, setShow, station, marker, zoom, center, pricin
     const [competitorsError, setCompetitorsError] = useState(false);
 
     useEffect(async () => {
+        if (station.id === null) return;
         const mark = await getMarkers(getAuth());
         setStationsMarkers(mark);
-    }, [])
+        const data = await getGridPrice(getAuth(), station.id);
+        setCurrentGridPrice(data.price);
+    }, [station])
+
     const handleClose = () => {
         setShow(false);
         initializeInputState();
@@ -494,11 +498,13 @@ const ModalChargerGroup = ({show, setShow, station, marker, zoom, center, pricin
                                     />
 
                                 </div>
-                                <div className="all-expenses-calc">
-                                    Current expenses calculation: {" "}
-                                    <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                            + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                </div>
+                                {currentGridPrice ?
+                                    <div className="all-expenses-calc">
+                                        Current expenses calculation: {" "}
+                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                    </div>
+                                :null}
                                 
                                 <div className="label-input">
                                     <h5>Set c</h5>
@@ -549,11 +555,13 @@ const ModalChargerGroup = ({show, setShow, station, marker, zoom, center, pricin
                                     />
 
                                 </div>
-                                <div className="all-expenses-calc">
-                                    Current expenses calculation: {" "}
-                                    <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                            + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                </div>
+                                {currentGridPrice ?
+                                    <div className="all-expenses-calc">
+                                        Current expenses calculation: {" "}
+                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                    </div>
+                                :null}
 
                                 <div className="label-input">
                                     <h5>Set c1</h5>
@@ -637,11 +645,13 @@ const ModalChargerGroup = ({show, setShow, station, marker, zoom, center, pricin
                                     />
 
                                 </div>
-                                <div className="all-expenses-calc">
-                                    Current expenses calculation: {" "}
-                                    <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
-                                            + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
-                                </div>
+                                {currentGridPrice ?
+                                    <div className="all-expenses-calc">
+                                        Current expenses calculation: {" "}
+                                        <span>{parseFloat(( gridPrice ? parseFloat(currentGridPrice) : 0)
+                                                + ( allExpenses ? parseFloat(allExpenses): 0)).toFixed(4)} €/KWh</span>
+                                    </div>
+                                :null}
 
                                 
                                 <div className="label-input">

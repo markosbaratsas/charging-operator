@@ -22,6 +22,7 @@ const NewStation = ({title}) => {
     const [stationName, setStationName] = useState("");
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
+    const [location, setLocation] = useState({name: "", id: null});
 
     const [chargers, setChargers] = useState([{
         current: "AC",
@@ -45,7 +46,6 @@ const NewStation = ({title}) => {
                 ]
             }
         }]);
-        console.log(chargerGroups)
 
     // STEP 2 - counts so that we have unique ids in our arrays
     const [chargerCount, setChargerCount] = useState(0);
@@ -129,6 +129,8 @@ const NewStation = ({title}) => {
                         setZoom={setZoom}
                         center={center}
                         setCenter={setCenter}
+                        location={location}
+                        setLocation={setLocation}
                     />
                 ) : step === 2 ? (
                     <Step2
@@ -155,6 +157,7 @@ const NewStation = ({title}) => {
                         setZoom={setZoom}
                         center={center}
                         setCenter={setCenter}
+                        location={location}
                     />
                 ) : step === 4 ? (
                     <Step4
@@ -162,6 +165,7 @@ const NewStation = ({title}) => {
                         stationName={stationName}
                         address={address}
                         phone={phone}
+                        location={location}
                         chargerGroups={chargerGroups}
                         setStep={setStep}
                         marker={marker}

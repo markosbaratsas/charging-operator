@@ -61,6 +61,11 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
             setDepartureTimeError(true);
             errors = true;
         }
+        if (new Date(arrivalTime).getTime() >= new Date(departureTime).getTime()) {
+            setArrivalTimeError(true);
+            setDepartureTimeError(true);
+            errors = true;
+        }
         if (!OWNER_REGEX.test(owner)) {
             setOwnerError(true);
             errors = true;
@@ -130,15 +135,25 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
     }
 
     useEffect(() => {
-        setArrivalTimeError(false);
-        setDepartureTimeError(false);
+        console.log("checking")
+        if (new Date(arrivalTime).getTime() >= new Date(departureTime).getTime()) {
+            setArrivalTimeError(true);
+            setDepartureTimeError(true);
+            console.log("problem")
+        }
+        else {
+            setArrivalTimeError(false);
+            setDepartureTimeError(false);
+        }
+    }, [arrivalTime, departureTime])
+
+    useEffect(() => {
         setChargerError(false);
         setOwnerError(false);
         setVehicleModelError(false);
         setVehicleNameError(false);
         setVehicleLicensePlateError(false);
-    }, [arrivalTime, departureTime, charger, owner,
-        vehicleName, vehicleModel, vehicleLicensePlate])
+    }, [charger, owner, vehicleName, vehicleModel, vehicleLicensePlate])
     
 
     return (
@@ -183,7 +198,7 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
                         Also, arrival should be a future date.</p>
                     ) : null}
 
-                    {arrivalTime && departureTime && availableChargers !== null ? (
+                    {!(arrivalTimeError || departureTimeError) && arrivalTime && departureTime && availableChargers !== null ? (
                         availableChargers.length > 0 ? (
                             <div className="label-input-reservations1">
                                 <Select

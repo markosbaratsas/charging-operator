@@ -6,13 +6,12 @@ import Map from "../../../components/Map4/Map";
 import { getMarkers, createStation } from "../../../api/BackendCalls";
 import AuthProvider from "../../../context/AuthProvider";
 
-const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationName, address, phone}) => {
+const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationName, address, phone, location}) => {
     const { getAuth } = AuthProvider();
     const [stationsMarkers, setStationsMarkers] = useState([]);
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/app/dashboard";
+    const from = "/app/dashboard";
     const alert = useAlert();
 
     useEffect(async () => {
@@ -39,7 +38,8 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
                 address: address,
                 phone: phone,
                 latitude: marker.latitude.toFixed(5),
-                longitude: marker.longitude.toFixed(5)
+                longitude: marker.longitude.toFixed(5),
+                location_id: location.id
             },
             step2: {
                 chargers: chargers,
@@ -48,7 +48,6 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
                 charger_groups: requestChargerGroups
             }
         });
-        console.log(ok, errors)
         if (!ok && !errors) console.log("Sth is clearly wrong...")
 
         if (ok) {
@@ -88,6 +87,11 @@ const Step4 = ({chargers, chargerGroups, setStep, zoom, center, marker, stationN
                                 <div className="step-4-station-info">
                                     <h3>Station Phone: <br /> <span>{phone}</span></h3>
                                 </div>
+                                {location ?
+                                    <div className="step-4-station-info">
+                                        <h3>Station Location: <br /> <span>{location.name}</span></h3>
+                                    </div>
+                                : null}
                             </div>
                         </div>
                         <button onClick={moveToStep1}>
