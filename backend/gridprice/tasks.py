@@ -32,25 +32,29 @@ def get_fingrid_prices():
         end_time = make_aware(datetime.strptime(i["end_time"],
                                                 "%Y-%m-%dT%H:%M:%S+0300"))
         value = float(i["value"])
-        
-        print(value, start_time, end_time)
-        
+
         location, _ = Location.objects.get_or_create(
             name="Finland"
         )
-        
+
         if value != 0:
-            _, created = GridPrice.objects.get_or_create(
-                location=location,
-                start_time=start_time,
-                end_time=end_time,
-                price=value
-            )
-            
-            if not created:
-                print("already exists:")
-            else:
+            try:
+                GridPrice.objects.get(
+                    location=location,
+                    start_time=start_time,
+                    end_time=end_time,
+                    price=value
+                )
+                print("already exists")
+
+            except:
+                GridPrice.objects.create(
+                    location=location,
+                    start_time=start_time,
+                    end_time=end_time,
+                    price=value
+                )
                 print("added")
-                
+
         else:
             print("not_adding")

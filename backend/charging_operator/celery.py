@@ -27,7 +27,7 @@ def debug_task(self):
 app.conf.beat_schedule = {
     'get-fingrid-prices-30-minutes': {
         'task': 'get_fingrid_prices',  
-        'schedule': 1800.0,
+        'schedule': 300.0,
         'args': () 
     }
 }  
