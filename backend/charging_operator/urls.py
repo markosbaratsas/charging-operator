@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('stations.urls')),
     path('', include('chargers.urls')),
     path('', include('reservations.urls')),
+    path('', include('gridprice.urls')),
 ]
 
 if settings.DEBUG:

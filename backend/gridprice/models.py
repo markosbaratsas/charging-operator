@@ -27,3 +27,6 @@ class GridPrice(models.Model):
 
     def __str__(self):
         return f'{self.price}€/MWh, from: {self.start_time}, to: {self.end_time}'
+
+    def get_kw_price(self):
+        return float(self.price)/1000
