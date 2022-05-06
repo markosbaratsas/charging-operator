@@ -85,4 +85,9 @@ class ReservationSerializer(serializers.ModelSerializer):
         return str(obj.vehicle.owner.phone)
 
     def get_charger(self, obj):
-        return ChargerReservationSerializer(obj.charger).data
+        return ChargerReservationSerializer(
+                    obj.charger,
+                    context={
+                        'arrival_time': obj.actual_arrival,
+                        'departure_time': obj.actual_departure,
+                    }).data

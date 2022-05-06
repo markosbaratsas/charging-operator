@@ -155,17 +155,24 @@ def get_available_chargers(request):
             with an error status
     """
     station = get_user_station(request.user, request.data["station_id"])
+    arrival_time = str_to_datetime(request.data["arrival_time"])
+    departure_time = str_to_datetime(request.data["departure_time"])
 
-    if station == None:
+    if station == None or arrival_time == None or departure_time == None:
         return Response({
                 "error": "You do not have access to this station"
             }, status=status.HTTP_401_UNAUTHORIZED)
 
     available_chargers = get_station_available_chargers(station,
-                                    request.data["arrival_time"],
-                                    request.data["departure_time"])
+                                                        arrival_time,
+                                                        departure_time)
 
-    serializer = ChargerReservationSerializer(available_chargers, many=True)
+    serializer = ChargerReservationSerializer(available_chargers,
+                                              many=True,
+                                              context={
+                                                  'arrival_time': arrival_time,
+                                                  'departure_time': departure_time,
+                                                })
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -187,15 +194,17 @@ def create_reservation(request):
     reservation_dict = request.data["reservation"]
 
     station = get_user_station(request.user, reservation_dict["station_id"])
+    arrival_time = str_to_datetime(reservation_dict["arrival_time"])
+    departure_time = str_to_datetime(reservation_dict["departure_time"])
 
-    if station == None:
+    if station == None or arrival_time == None or departure_time == None:
         return Response({
                 "error": "You do not have access to this station"
             }, status=status.HTTP_401_UNAUTHORIZED)
 
     available_chargers = set(get_station_available_chargers(station,
-                                    reservation_dict["arrival_time"],
-                                    reservation_dict["departure_time"]))
+                                                            arrival_time,
+                                                            departure_time))
     if available_chargers == None:
         return Response({
                 "error": "Invalid format"
@@ -230,15 +239,15 @@ def create_reservation(request):
             charger=charger,
             station=station,
             vehicle_state=None,
-            expected_arrival=reservation_dict["arrival_time"],
-            actual_arrival=reservation_dict["arrival_time"],
-            expected_departure=reservation_dict["departure_time"],
-            actual_departure=reservation_dict["departure_time"],
+            expected_arrival=arrival_time,
+            actual_arrival=arrival_time,
+            expected_departure=departure_time,
+            actual_departure=departure_time,
             state="Reserved",
             price_per_kwh=get_charging_price(charger.pricing_group,
                                             set(),
-                                            reservation_dict["arrival_time"],
-                                            reservation_dict["departure_time"]),
+                                            arrival_time,
+                                            departure_time),
             smart_vtg=reservation_dict["smart_vtg"]
         )
 
@@ -267,8 +276,10 @@ def update_reservation(request):
     reservation_dict = request.data["reservation"]
 
     station = get_user_station(request.user, reservation_dict["station_id"])
+    arrival_time = str_to_datetime(reservation_dict["arrival_time"])
+    departure_time = str_to_datetime(reservation_dict["departure_time"])
 
-    if station == None:
+    if station == None or arrival_time == None or departure_time == None:
         return Response({
                 "error": "You do not have access to this station"
             }, status=status.HTTP_401_UNAUTHORIZED)
@@ -282,8 +293,8 @@ def update_reservation(request):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
     available_chargers = set(get_station_available_chargers(station,
-                                    reservation_dict["arrival_time"],
-                                    reservation_dict["departure_time"]))
+                                                            arrival_time,
+                                                            departure_time))
 
     try:
         charger = Charger.objects.get(id=int(reservation_dict["charger_id"]))
@@ -313,15 +324,15 @@ def update_reservation(request):
             charger=charger,
             station=station,
             vehicle_state=None,
-            expected_arrival=reservation_dict["arrival_time"],
-            actual_arrival=reservation_dict["arrival_time"],
-            expected_departure=reservation_dict["departure_time"],
-            actual_departure=reservation_dict["departure_time"],
+            expected_arrival=arrival_time,
+            actual_arrival=arrival_time,
+            expected_departure=departure_time,
+            actual_departure=departure_time,
             state="Reserved",
             price_per_kwh=get_charging_price(charger.pricing_group,
                                             set(),
-                                            reservation_dict["arrival_time"],
-                                            reservation_dict["departure_time"]),
+                                            arrival_time,
+                                            departure_time),
             smart_vtg=reservation_dict["smart_vtg"]
         )
 

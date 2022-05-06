@@ -2,16 +2,8 @@ from random import random
 from unicodedata import name
 
 from chargers.models import Charger, MethodConstantBool, MethodConstantDecimal, MethodConstantInt, MethodConstantStation, PricingGroup
+from gridprice.useful_functions import get_grid_price
 from reservations.useful_functions import get_station_available_chargers
-
-
-def get_grid_price():
-    """Return grid price. For the time being, return a random number, but we
-    could hit an external API that would provide us this data.
-    
-    TODO: Hit external API and use caching in some way
-    """
-    return 0.123
 
 
 def get_occupied_chargers(group):
@@ -39,11 +31,13 @@ def get_all_chargers(group):
     return int(Charger.objects.filter(pricing_group=group).count())
 
 
-def competitor_method_get_min(group):
+def competitor_method_get_min(group, from_datetime, to_datetime):
     """Get all_expenses + c1 for a a group that used competitor-centered profit
     
     Args:
         group (PricingGroup): The given group
+        from_datetime (datetime): the given from datetime
+        to_datetime (datetime): the given to datetime
     
     Returns:
         float: (all_expenses + c1) price
@@ -59,7 +53,7 @@ def competitor_method_get_min(group):
                                                     name="c1")[0]
         
         if grid_price.value:
-            price += get_grid_price()
+            price += get_grid_price(from_datetime, to_datetime)
         
         price += float(all_expenses.value) + float(c1.value)
     except:
@@ -83,6 +77,8 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
         set_groups (set of PricingGroups): a set of groups, we have already
             visited. It is used so as to avoid infinite loops in
             `Competitor-centered Profit`
+        from_datetime (datetime): the given from datetime
+        to_datetime (datetime): the given to datetime
 
     Returns:
         float: The price of this PricingGroup
@@ -105,7 +101,7 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
                                         filter(pricing_group=group)[0]
 
             if grid_price.value:
-                ret += get_grid_price()
+                ret += get_grid_price(from_datetime, to_datetime)
 
             ret += float(all_expenses.value) + float(c.value)
 
@@ -130,7 +126,7 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
             occupied = all_chargers - available_chargers
 
             if grid_price.value:
-                ret += get_grid_price()
+                ret += get_grid_price(from_datetime, to_datetime)
 
             ret += (float(all_expenses.value) + float(c1.value)
                         + float(c2.value) * ((occupied) ** int(n.value))/all_chargers)

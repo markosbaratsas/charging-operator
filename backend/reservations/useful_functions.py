@@ -27,17 +27,13 @@ def get_station_available_chargers(station, from_datetime, to_datetime):
 
     Args:
         station (Station): Given Station Object
-        from_datetime (str): The given from datetime
-        to_datetime (str): The given to datetime
+        from_datetime (datetime): The given from datetime
+        to_datetime (datetime): The given to datetime
 
     Returns:
         list of Chargers or None: if successful return the available chargers,
             else if an error occurs return None
     """
-    from_datetime = str_to_datetime(from_datetime)
-    to_datetime = str_to_datetime(to_datetime)
-    if from_datetime == None or to_datetime == None:
-        return None
 
     try:
         reservations = set(Reservation.objects.filter((

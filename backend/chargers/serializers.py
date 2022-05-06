@@ -33,7 +33,7 @@ class PricingGroupPricesSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'current_price']
 
     def get_current_price(self, obj):
-        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        datetime_now = timezone.now()
         return get_charging_price(obj,
                                   set(),
                                   datetime_now,
@@ -58,11 +58,12 @@ class ChargerReservationSerializer(serializers.ModelSerializer):
                   'current_price']
 
     def get_current_price(self, obj):
-        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        arrival_time = self.context.get('arrival_time')
+        departure_time = self.context.get('departure_time')
         return get_charging_price(obj.pricing_group,
                                   set(),
-                                  datetime_now,
-                                  datetime_now)
+                                  arrival_time,
+                                  departure_time)
 
 
 class MethodConstantIntSerializer(serializers.ModelSerializer):
@@ -110,7 +111,7 @@ class PricingGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'current_price', 'chargers', 'pricing_method']
 
     def get_current_price(self, obj):
-        datetime_now = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+        datetime_now = timezone.now()
         return get_charging_price(obj,
                                   set(),
                                   datetime_now,

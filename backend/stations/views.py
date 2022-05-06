@@ -10,6 +10,7 @@ from stations.models import ParkingCost, ParkingCostSnapshot, Station
 from stations.serializers import (DashboardStationSerializer,
                                   ParkingCostSerializer,
                                   StationInformationSerializer)
+from gridprice.models import Location
 
 
 @api_view(['POST', ])
@@ -96,12 +97,22 @@ def create_station(request):
                     "error": "step1"
                 },status=status.HTTP_400_BAD_REQUEST)
 
+    try:
+        location = Location.objects.get(
+            id=int(request.data['station']['step1']['location_id'])
+        )
+    except:
+        return Response({
+            "error": "step1"
+        },status=status.HTTP_400_BAD_REQUEST)
+
     station = Station.objects.create(
         name=request.data['station']['step1']['name'],
         address=request.data['station']['step1']['address'],
         latitude=request.data['station']['step1']['latitude'],
         longitude=request.data['station']['step1']['longitude'],
-        phone=request.data['station']['step1']['phone']
+        phone=request.data['station']['step1']['phone'],
+        location=location,
     )
     station.operators.add(request.user)
 
