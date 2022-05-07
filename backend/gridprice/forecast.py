@@ -44,6 +44,6 @@ def simple_forecast(start, end):
         mean_forecasted_price += times[counter.hour]
         counter += timedelta(hours=1)
 
-    hours = ((end - start).seconds)//3600
+    hours = ((end - start).total_seconds())//3600
 
     return mean_forecasted_price / hours
