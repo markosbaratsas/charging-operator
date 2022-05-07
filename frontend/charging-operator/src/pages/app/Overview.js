@@ -12,8 +12,9 @@ import useTitle from "../../hooks/useTitle";
 import { next_hours, upTo } from '../../utils/usefulFunctions';
 import AuthProvider from '../../context/AuthProvider';
 
-const Overview = ({title, station, setStation}) => {
+const Overview = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
+    setActivePage("Overview");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -65,9 +66,7 @@ const Overview = ({title, station, setStation}) => {
 
     return (
     <>
-        <Navbar4 stationName={station.name} stationId={id} active={"Overview"}/>
-        <div className="content">
-            <div className="flex-column-center-center">
+        <div className="flex-column-center-center">
             <section className="wrapper">
                 <div className="flex-row-around-start station-overview">
                     <div className="flex-column-start-start">
@@ -244,17 +243,9 @@ const Overview = ({title, station, setStation}) => {
                                 </>
                             )}
                         </div>
-                        
                     </div>
                 </div>
-
             </section>
-
-            </div>
-
-
-            
-            
         </div>
     </>
     );

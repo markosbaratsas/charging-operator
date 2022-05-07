@@ -46,7 +46,7 @@ const VehicleState = ({title, station, setStation}) => {
 
     return (
     <>
-        <Navbar5 stationName={station.name} stationId={stationId} active={"Overview"}/>
+        <Navbar5 stationName={station.name} stationId={stationId} active={"Vehicle State"}/>
             <div className="content">
                 <div className="flex-column-center-center">
                     <section className="wrapper">

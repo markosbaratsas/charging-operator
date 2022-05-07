@@ -14,8 +14,9 @@ import ModalVehicleState from '../../components/ModalVehicleState';
 import ModalReservationEnd from '../../components/ModalReservationEnd';
 import ModalReservationView from '../../components/ModalReservationView';
 
-const Reservations = ({title, station, setStation}) => {
+const Reservations = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
+    setActivePage("Reservations");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -232,9 +233,7 @@ const Reservations = ({title, station, setStation}) => {
 
     return (
         <>
-        <Navbar4 stationName={station.name} stationId={id} active={"Reservations"}/>
-        <div className="content">
-            <div className="flex-column-center-center">
+        <div className="flex-column-center-center">
             <section className="wrapper">
                 <div className="flex-column-center-center station-reservations">
                     <h1>View Reservations</h1>
@@ -383,7 +382,6 @@ const Reservations = ({title, station, setStation}) => {
                     ) : null}
                 </div>
             </section>
-            </div>
         </div>
 
         <ModalReservation

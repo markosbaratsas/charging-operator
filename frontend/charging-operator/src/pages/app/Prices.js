@@ -17,7 +17,7 @@ import Map4 from "../../components/Map4/Map";
 import Map3 from "../../components/Map3/Map";
 import { upTo } from '../../utils/usefulFunctions';
 import AuthProvider from '../../context/AuthProvider';
-import GridPriceChart from '../../components/GridPriceChart';
+import GridPriceChart from '../../components/charts/GridPriceChart';
 
 
 const pricingMethods = [
@@ -104,8 +104,9 @@ const pricingMethods = [
 ]
 
 
-const Prices = ({title, station, setStation}) => {
+const Prices = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
+    setActivePage("Prices");
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -462,125 +463,122 @@ const Prices = ({title, station, setStation}) => {
 
     return (
     <>
-        <Navbar4 stationName={station.name} stationId={id} active={"Prices"}/>
-        <div className="content">
-            <div className="flex-column-center-center">
-            <section className="wrapper">
-                <div className="flex-column-center-center station-prices">
-                    <h1>Select Pricing Group</h1>
-                    <ul className="station-prices-ul1">
-                        {!groups ? <ReactLoading type="balls" color="#202020" height={30} width={30} className="loading"/>
-                        : (Object.entries(groups).map(([groupId, price]) => {
-                                return (
-                                    <li key={groupId}
-                                        onClick={() => setGroupSelected(groupId)}
-                                        className={(groupSelected === groupId)
-                                                    ? "station-prices-selected"
-                                                    : "station-prices-not-selected"}>
-                                        <h3>{price.name}</h3>
-                                        <h4>{price.current_price} €/KWh</h4>
-                                    </li>
-                                );
-                            })
-                        )}
-                    </ul>
+        <div className="flex-column-center-center">
+        <section className="wrapper">
+            <div className="flex-column-center-center station-prices">
+                <h1>Select Pricing Group</h1>
+                <ul className="station-prices-ul1">
+                    {!groups ? <ReactLoading type="balls" color="#202020" height={30} width={30} className="loading"/>
+                    : (Object.entries(groups).map(([groupId, price]) => {
+                            return (
+                                <li key={groupId}
+                                    onClick={() => setGroupSelected(groupId)}
+                                    className={(groupSelected === groupId)
+                                                ? "station-prices-selected"
+                                                : "station-prices-not-selected"}>
+                                    <h3>{price.name}</h3>
+                                    <h4>{price.current_price} €/KWh</h4>
+                                </li>
+                            );
+                        })
+                    )}
+                </ul>
 
-                    {!(groups && (groupSelected in groups)) ? (<ReactLoading type="balls" color="#202020" height={50} width={50} className="loading"/>
-                    ) : (
-                        <>
+                {!(groups && (groupSelected in groups)) ? (<ReactLoading type="balls" color="#202020" height={50} width={50} className="loading"/>
+                ) : (
+                    <>
 
-                            <div className="station-prices-current-price">
-                                <h2>Current price: <span>{groups[groupSelected].current_price} €/KW</span></h2>
-                            </div>
+                        <div className="station-prices-current-price">
+                            <h2>Current price: <span>{groups[groupSelected].current_price} €/KW</span></h2>
+                        </div>
 
-                            <div className="station-prices-div1">
-                                <h3>Pricing Strategy for 50 kW Chargers</h3>
-                                <div className="flex-row-around-start station-prices-div2">
-                                    <div className="station-prices-pricing-method">
-                                        <h2>{groups[groupSelected].pricing_method.name}</h2>
+                        <div className="station-prices-div1">
+                            <h3>Pricing Strategy for 50 kW Chargers</h3>
+                            <div className="flex-row-around-start station-prices-div2">
+                                <div className="station-prices-pricing-method">
+                                    <h2>{groups[groupSelected].pricing_method.name}</h2>
 
-                                        <div className="method_images">
-                                            {(groups[groupSelected].pricing_method.name === "Fixed Price") ? (
-                                                <img src="/img/pricing_methods/fixed-price-method.png" alt="" />
-                                            ) : (groups[groupSelected].pricing_method.name === "Fixed Profit")  ? (
-                                                <img src="/img/pricing_methods/fixed-profit-method.png" alt="" />
-                                            ) : (groups[groupSelected].pricing_method.name === "Demand-centered Profit")  ? (
-                                                <img src="/img/pricing_methods/demand-centered-method.png" alt="" />
-                                            ) : (groups[groupSelected].pricing_method.name === "Competitor-centered Profit")  ? (
-                                                <img src="/img/pricing_methods/competitor-centered-profit-method.png" alt="" />
-                                            ) : null}
-                                        </div>
-                                        <h4>Where you defined:</h4>
-                                        {groups[groupSelected].pricing_method.variables.filter(elem => (
-                                                elem.name !== "competitors_coordinates"
-                                                && elem.name !== "grid_price"
-                                            )).map(elem => {
-                                            return (
-                                                <p key={elem.id}>{elem.name}: <span>{elem.value}</span></p>
-                                            );
-                                        })}
-                                        {groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "grid_price").map(elem => {
-                                            return (
-                                                <p key={elem.id}>Grid Price: <span>{elem.value ? "Yes" : "No"}</span></p>
-                                            );
-                                        })}
-
-                                        {(groups[groupSelected].pricing_method.name === "Competitor-centered Profit"
-                                                && station && station.latitude && station.longitude && groups[groupSelected].pricing_method
-                                                && groups[groupSelected].pricing_method.variables)  ? (
-                                            <>
-                                                <p>Number of competitors selected: <span>{groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").length}</span></p>
-                                                <p><span>See the competitors on the map below:</span></p>
-                                                <div className="map-div2">
-                                                    <Map4
-                                                        marker={stationLocation}
-                                                        markers={groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").map(elem => elem.value)}
-                                                        center={center}
-                                                        zoom={10}
-                                                    />
-                                                </div>
-                                            </>
+                                    <div className="method_images">
+                                        {(groups[groupSelected].pricing_method.name === "Fixed Price") ? (
+                                            <img src="/img/pricing_methods/fixed-price-method.png" alt="" />
+                                        ) : (groups[groupSelected].pricing_method.name === "Fixed Profit")  ? (
+                                            <img src="/img/pricing_methods/fixed-profit-method.png" alt="" />
+                                        ) : (groups[groupSelected].pricing_method.name === "Demand-centered Profit")  ? (
+                                            <img src="/img/pricing_methods/demand-centered-method.png" alt="" />
+                                        ) : (groups[groupSelected].pricing_method.name === "Competitor-centered Profit")  ? (
+                                            <img src="/img/pricing_methods/competitor-centered-profit-method.png" alt="" />
                                         ) : null}
-
-                                        <button onClick={handleEdit}>Edit Pricing Strategy</button>
                                     </div>
+                                    <h4>Where you defined:</h4>
+                                    {groups[groupSelected].pricing_method.variables.filter(elem => (
+                                            elem.name !== "competitors_coordinates"
+                                            && elem.name !== "grid_price"
+                                        )).map(elem => {
+                                        return (
+                                            <p key={elem.id}>{elem.name}: <span>{elem.value}</span></p>
+                                        );
+                                    })}
+                                    {groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "grid_price").map(elem => {
+                                        return (
+                                            <p key={elem.id}>Grid Price: <span>{elem.value ? "Yes" : "No"}</span></p>
+                                        );
+                                    })}
 
-                                    <div className="flex-column-center-center station-prices-right">
-                                        <div className="station-prices-chargers">
-                                            <h5>Chargers in this Group</h5>
-                                            <Link to={`/app/station-${id}/chargers`}>Edit Chargers</Link>
-                                            <ul>
-                                                {groups[groupSelected].chargers.map((charger) => {
-                                                    return (
-                                                        <li key={charger.id}>{charger.name}</li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        </div>
-                                        
-                                        <div className="station-prices-grid">
-                                            <h5>Current Grid Price:</h5>
-                                            {gridPrice2 ?
-                                                <>
-                                                    <h3>{gridPrice2.price.toFixed(3)} €/KWh</h3>
-                                                    <h4>From: {gridPrice2.start_time}</h4>
-                                                    <h4>To: {gridPrice2.end_time}</h4>
-                                                    {/* diagram?? */}
-                                                </>
-                                            : null}
-                                        </div>
+                                    {(groups[groupSelected].pricing_method.name === "Competitor-centered Profit"
+                                            && station && station.latitude && station.longitude && groups[groupSelected].pricing_method
+                                            && groups[groupSelected].pricing_method.variables)  ? (
+                                        <>
+                                            <p>Number of competitors selected: <span>{groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").length}</span></p>
+                                            <p><span>See the competitors on the map below:</span></p>
+                                            <div className="map-div2">
+                                                <Map4
+                                                    marker={stationLocation}
+                                                    markers={groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").map(elem => elem.value)}
+                                                    center={center}
+                                                    zoom={10}
+                                                />
+                                            </div>
+                                        </>
+                                    ) : null}
+
+                                    <button onClick={handleEdit}>Edit Pricing Strategy</button>
+                                </div>
+
+                                <div className="flex-column-center-center station-prices-right">
+                                    <div className="station-prices-chargers">
+                                        <h5>Chargers in this Group</h5>
+                                        <Link to={`/app/station-${id}/chargers`}>Edit Chargers</Link>
+                                        <ul>
+                                            {groups[groupSelected].chargers.map((charger) => {
+                                                return (
+                                                    <li key={charger.id}>{charger.name}</li>
+                                                );
+                                            })}
+                                        </ul>
+                                    </div>
+                                    
+                                    <div className="station-prices-grid">
+                                        <h5>Current Grid Price:</h5>
+                                        {gridPrice2 ?
+                                            <>
+                                                <h3>{gridPrice2.price.toFixed(3)} €/KWh</h3>
+                                                <h4>From: {gridPrice2.start_time}</h4>
+                                                <h4>To: {gridPrice2.end_time}</h4>
+                                                {/* diagram?? */}
+                                            </>
+                                        : null}
                                     </div>
                                 </div>
                             </div>
-                        </>
-                    )}
+                        </div>
+                    </>
+                )}
 
-                    <GridPriceChart
-                        gridPricesList={gridPricesList}
-                    />
-                </div>
-            </section>
+                <GridPriceChart
+                    gridPricesList={gridPricesList}
+                />
             </div>
+        </section>
         </div>
 
         <Modal

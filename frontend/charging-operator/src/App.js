@@ -28,6 +28,7 @@ import VehicleState from './pages/app/VehicleState';
 import AppNotAuthorized from './pages/app/AppNotAuthorized';
 import Parking from './pages/app/Parking';
 import Layout4 from './components/Layout4';
+import Statistics from './pages/app/Statistics';
 
 
 const options = {
@@ -70,6 +71,7 @@ function App() {
                     <Route element={<Layout3 />}>
                         <Route path="/app/add-station" element={<AddStation title="Add an Existing Station - Charging Operator" />} />
                         <Route path="/app/new-station" element={<NewStation title="Create a new Charging Station - Charging Operator" />} />
+                        <Route path="/app/statistics" element={<Statistics title="Statistics - Charging Operator" />} />
                     </Route>
 
                     <Route element={<Layout4 activePage={activePage} station={station} />}>
@@ -108,14 +110,13 @@ function App() {
                             setStation={setStation}
                             title="Station Parking - Charging Operator" />
                         } />
-                        <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={
-                            <VehicleState
-                            setActivePage={setActivePage}
-                            station={station}
-                            setStation={setStation}
-                            title="Vehicle State - Charging Operator" />
-                        } />
                     </Route>
+                    <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={
+                        <VehicleState
+                        station={station}
+                        setStation={setStation}
+                        title="Vehicle State - Charging Operator" />
+                    } />
 
 
                     <Route element={<Layout2 />}>

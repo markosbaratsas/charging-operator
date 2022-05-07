@@ -13,8 +13,9 @@ import AuthProvider from '../../context/AuthProvider';
 import ModalChargerGroup from '../../components/ModalChargerGroup';
 
 
-const Chargers = ({title, station, setStation}) => {
+const Chargers = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
+    setActivePage("Chargers");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -203,10 +204,7 @@ const Chargers = ({title, station, setStation}) => {
     }, [pricingGroups])
 
     return (
-        <>
-        <Navbar4 stationName={station.name} stationId={id} active={"Chargers"}/>
-        <div className="content">
-            <div className="flex-column-center-center">
+        <div className="flex-column-center-center">
             <section className="wrapper">
                 <div className="flex-column-center-center station-chargers">
                     <h1>All Station Chargers</h1>
@@ -313,9 +311,7 @@ const Chargers = ({title, station, setStation}) => {
 
                 </div>
             </section>
-            </div>
         </div>
-    </>
     );
 }
  
