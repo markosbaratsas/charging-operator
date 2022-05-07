@@ -51,10 +51,10 @@ def competitor_method_get_min(group, from_datetime, to_datetime):
                                     filter(pricing_group=group)[0]
         c1 = MethodConstantDecimal.objects.filter(pricing_group=group,
                                                     name="c1")[0]
-        
+
         if grid_price.value:
             price += get_grid_price(from_datetime, to_datetime)
-        
+
         price += float(all_expenses.value) + float(c1.value)
     except:
         print("Something is wrong in competitor_method_get_min")
@@ -161,10 +161,14 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
                         # Avoid infinite loops
                         min_competitor_price = min(
                             min_competitor_price,
-                            competitor_method_get_min(this_group)
+                            competitor_method_get_min(this_group,
+                                                      from_datetime,
+                                                      to_datetime)
                         )
                 
-            ret += max(competitor_method_get_min(group),
+            ret += max(competitor_method_get_min(group,
+                                                 from_datetime,
+                                                 to_datetime),
                       min_competitor_price + float(c2.value))
 
     except:

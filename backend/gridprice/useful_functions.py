@@ -47,7 +47,7 @@ def find_average_grid_price(start, end):
             price = float(GridPrice.objects.get(start_time=start).get_kw_price())
             return price
         except:
-            return -123
+            return -123.0
     
 
 def get_grid_price(start_time, end_time):
@@ -58,7 +58,7 @@ def get_grid_price(start_time, end_time):
         end_datetime (datetime): The end datetime of the period
     """
     if end_time < start_time:
-        return -123
+        return -123.0
 
     start = make_aware(datetime(
         start_time.year,
@@ -123,4 +123,4 @@ def get_grid_price(start_time, end_time):
         return simple_forecast(start, end)
 
     # TODO: find better values to return
-    return -123
+    return -123.0
