@@ -9,15 +9,13 @@ import useTitle from "../../hooks/useTitle";
 import AuthProvider from '../../context/AuthProvider';
 import { getTimeString } from '../../utils/usefulFunctions';
 
-const Parking = ({title}) => {
+const Parking = ({title, station, setStation}) => {
     useTitle({title});
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
     const navigate = useNavigate();
     const alert = useAlert();
-
-    const [station, setStation] = useState({name: "", id: -1});
 
     const [currentParkingCost, setCurrentParkingCost] = useState(null);
 

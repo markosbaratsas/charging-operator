@@ -7,14 +7,13 @@ import Navbar5 from '../../components/Navbar5';
 import useTitle from "../../hooks/useTitle";
 import AuthProvider from "../../context/AuthProvider";
 
-const VehicleState = ({title}) => {
+const VehicleState = ({title, station, setStation}) => {
     useTitle({title});
 
     const { id: stationId,  vehicleStateId } = useParams();
     const { getAuth } = AuthProvider();
     const navigate = useNavigate();
 
-    const [station, setStation] = useState({name: ""});
     const [vehicleState, setVehicleState] = useState(null);
 
     const fetchData = async () => {

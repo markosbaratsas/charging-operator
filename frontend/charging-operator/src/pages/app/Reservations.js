@@ -14,11 +14,10 @@ import ModalVehicleState from '../../components/ModalVehicleState';
 import ModalReservationEnd from '../../components/ModalReservationEnd';
 import ModalReservationView from '../../components/ModalReservationView';
 
-const Reservations = ({title}) => {
+const Reservations = ({title, station, setStation}) => {
     useTitle({title});
 
     const { id } = useParams();
-    const [station, setStation] = useState({name: "", id: -1});
     const { getAuth } = AuthProvider();
     const alert = useAlert();
     const navigate = useNavigate();
@@ -130,7 +129,7 @@ const Reservations = ({title}) => {
     }
 
     useEffect(() => {
-        if (station.id === -1) return;
+        if (station.id === null) return;
         searchReservations();
     }, [station])
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Route,
     Routes,
@@ -26,6 +27,7 @@ import RequireAuth from './components/RequireAuth';
 import VehicleState from './pages/app/VehicleState';
 import AppNotAuthorized from './pages/app/AppNotAuthorized';
 import Parking from './pages/app/Parking';
+import Layout4 from './components/Layout4';
 
 
 const options = {
@@ -38,6 +40,9 @@ const options = {
 }
 
 function App() {
+
+    const [activePage, setActivePage] = useState(null);
+    const [station, setStation] = useState({name: "", id: null});
 
     return (
         <AlertProvider template={AlertTemplate} {...options}>
@@ -66,12 +71,51 @@ function App() {
                         <Route path="/app/add-station" element={<AddStation title="Add an Existing Station - Charging Operator" />} />
                         <Route path="/app/new-station" element={<NewStation title="Create a new Charging Station - Charging Operator" />} />
                     </Route>
-                    <Route path="/app/station-:id" element={<Overview title="Station Overview - Charging Operator" />} />
-                    <Route path="/app/station-:id/prices" element={<Prices title="Station Prices - Charging Operator" />} />
-                    <Route path="/app/station-:id/chargers" element={<Chargers title="Station Chargers - Charging Operator" />} />
-                    <Route path="/app/station-:id/reservations" element={<Reservations title="Station Reservations - Charging Operator" />} />
-                    <Route path="/app/station-:id/parking" element={<Parking title="Station Parking - Charging Operator" />} />
-                    <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={<VehicleState title="Vehicle State - Charging Operator" />} />
+
+                    <Route element={<Layout4 activePage={activePage} station={station} />}>
+                        <Route path="/app/station-:id" element={
+                            <Overview
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Station Overview - Charging Operator" />
+                        } />
+                        <Route path="/app/station-:id/prices" element={
+                            <Prices
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Station Prices - Charging Operator" />
+                        } />
+                        <Route path="/app/station-:id/chargers" element={
+                            <Chargers
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Station Chargers - Charging Operator" />
+                        } />
+                        <Route path="/app/station-:id/reservations" element={
+                            <Reservations
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Station Reservations - Charging Operator" />
+                        } />
+                        <Route path="/app/station-:id/parking" element={
+                            <Parking
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Station Parking - Charging Operator" />
+                        } />
+                        <Route path="/app/station-:id/vehicle-state/:vehicleStateId" element={
+                            <VehicleState
+                            setActivePage={setActivePage}
+                            station={station}
+                            setStation={setStation}
+                            title="Vehicle State - Charging Operator" />
+                        } />
+                    </Route>
 
 
                     <Route element={<Layout2 />}>

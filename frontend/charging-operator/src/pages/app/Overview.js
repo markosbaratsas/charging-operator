@@ -12,14 +12,13 @@ import useTitle from "../../hooks/useTitle";
 import { next_hours, upTo } from '../../utils/usefulFunctions';
 import AuthProvider from '../../context/AuthProvider';
 
-const Overview = ({title}) => {
+const Overview = ({title, station, setStation}) => {
     useTitle({title});
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
     const navigate = useNavigate();
 
-    const [station, setStation] = useState({name: ""});
     const [chargers, setChargers] = useState(null);
     const [prices, setPrices] = useState(null);
     const [reservations, setReservations] = useState(null);

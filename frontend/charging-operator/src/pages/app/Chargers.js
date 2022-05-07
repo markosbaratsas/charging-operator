@@ -13,7 +13,7 @@ import AuthProvider from '../../context/AuthProvider';
 import ModalChargerGroup from '../../components/ModalChargerGroup';
 
 
-const Chargers = ({title}) => {
+const Chargers = ({title, station, setStation}) => {
     useTitle({title});
 
     const { id } = useParams();
@@ -21,7 +21,6 @@ const Chargers = ({title}) => {
     const navigate = useNavigate();
 
     const [pricingGroups, setPricingGroups] = useState(null);
-    const [station, setStation] = useState({name: "", id: null});
 
     const alert = useAlert();
 

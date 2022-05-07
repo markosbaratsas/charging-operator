@@ -104,12 +104,11 @@ const pricingMethods = [
 ]
 
 
-const Prices = ({title}) => {
+const Prices = ({title, station, setStation}) => {
     useTitle({title});
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [station, setStation] = useState({name: "", id: null});
     const [groupSelected, setGroupSelected] = useState(null);
     const [groups, setGroups] = useState(null);
     const [gridPrice2, setGridPrice2] = useState(null);
