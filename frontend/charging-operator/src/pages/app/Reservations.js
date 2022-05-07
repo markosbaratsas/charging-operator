@@ -16,7 +16,6 @@ import ModalReservationView from '../../components/ModalReservationView';
 
 const Reservations = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
-    setActivePage("Reservations");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -133,6 +132,10 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
         if (station.id === null) return;
         searchReservations();
     }, [station])
+
+    useEffect(() => {
+        setActivePage("Reservations");
+    }, [])
 
     const fetchData = async () => {
         try {

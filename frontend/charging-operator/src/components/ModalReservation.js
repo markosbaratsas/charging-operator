@@ -135,11 +135,9 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
     }
 
     useEffect(() => {
-        console.log("checking")
         if (new Date(arrivalTime).getTime() >= new Date(departureTime).getTime()) {
             setArrivalTimeError(true);
             setDepartureTimeError(true);
-            console.log("problem")
         }
         else {
             setArrivalTimeError(false);

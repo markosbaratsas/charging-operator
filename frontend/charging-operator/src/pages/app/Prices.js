@@ -106,7 +106,6 @@ const pricingMethods = [
 
 const Prices = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
-    setActivePage("Prices");
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -115,7 +114,7 @@ const Prices = ({title, station, setStation, setActivePage}) => {
     const [gridPrice2, setGridPrice2] = useState(null);
     const [gridPricesList, setGridPricesList] = useState(null);
 
-    const [stationLocation, setStationLocation] = useState({lat: 0, lng: 0, id: 0});
+    const [stationLocation, setStationLocation] = useState({lat: 0, lng: 0, id: null});
     const [center, setCenter] = useState({lat: 0, lng: 0});
 
     // for the modal
@@ -156,6 +155,10 @@ const Prices = ({title, station, setStation, setActivePage}) => {
         const data = await getGridPrice(getAuth(), station.id);
         setCurrentGridPrice(data.price);
     }, [station])
+
+    useEffect(() => {
+        setActivePage("Prices");
+    }, [])
 
     const handleEdit = () => {
         let thisGroup = JSON.parse(JSON.stringify(groups[groupSelected]));
@@ -427,6 +430,8 @@ const Prices = ({title, station, setStation, setActivePage}) => {
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(station)) {
                 setStation(data);
+            }
+            if (data.id !== stationLocation.id) {
                 setStationLocation({ latitude: parseFloat(data.latitude), longitude: parseFloat(data.longitude), id: data.id });
                 setCenter({ lat: parseFloat(data.latitude), lng: parseFloat(data.longitude) });
             }
@@ -525,7 +530,7 @@ const Prices = ({title, station, setStation, setActivePage}) => {
                                     })}
 
                                     {(groups[groupSelected].pricing_method.name === "Competitor-centered Profit"
-                                            && station && station.latitude && station.longitude && groups[groupSelected].pricing_method
+                                            && station && stationLocation.id !== null && station.latitude && station.longitude && groups[groupSelected].pricing_method
                                             && groups[groupSelected].pricing_method.variables)  ? (
                                         <>
                                             <p>Number of competitors selected: <span>{groups[groupSelected].pricing_method.variables.filter(elem => elem.name === "competitors_coordinates").length}</span></p>

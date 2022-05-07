@@ -14,7 +14,6 @@ import AuthProvider from '../../context/AuthProvider';
 
 const Overview = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
-    setActivePage("Overview");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -63,6 +62,9 @@ const Overview = ({title, station, setStation, setActivePage}) => {
         return () => clearInterval(interval);
     }, [station, chargers, prices, reservations, vehicles])
 
+    useEffect(() => {
+        setActivePage("Overview");
+    }, [])
 
     return (
     <>

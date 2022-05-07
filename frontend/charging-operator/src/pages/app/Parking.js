@@ -11,7 +11,6 @@ import { getTimeString } from '../../utils/usefulFunctions';
 
 const Parking = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
-    setActivePage("Parking");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -72,6 +71,10 @@ const Parking = ({title, station, setStation, setActivePage}) => {
     useEffect(() => {
         setParkingCostError(false);
     }, [parkingCost])
+
+    useEffect(() => {
+        setActivePage("Parking");
+    }, [])
 
     return (
         <>

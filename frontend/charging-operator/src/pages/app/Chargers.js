@@ -15,7 +15,6 @@ import ModalChargerGroup from '../../components/ModalChargerGroup';
 
 const Chargers = ({title, station, setStation, setActivePage}) => {
     useTitle({title});
-    setActivePage("Chargers");
 
     const { id } = useParams();
     const { getAuth } = AuthProvider();
@@ -202,6 +201,10 @@ const Chargers = ({title, station, setStation, setActivePage}) => {
         setChargerGroups(groups);
 
     }, [pricingGroups])
+
+    useEffect(() => {
+        setActivePage("Chargers");
+    }, [])
 
     return (
         <div className="flex-column-center-center">
