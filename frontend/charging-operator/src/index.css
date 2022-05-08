@@ -772,6 +772,8 @@
 .no-display {
   display: none;
   opacity: 0;
+  height: 0px;
+  width: 0px;
 }
 
 .three-lines-menu {
@@ -3224,7 +3226,7 @@
 }
 
 .gridprices-chart-chart {
-  margin-top: 10px;
+  margin: 10px 5px 10px 5px;
   background-color: #e9e9e9;
   padding: 10px 10px 10px 5px;
   border-radius: 2px;
@@ -3269,4 +3271,49 @@
 
 .statistics {
   width: 100%;
+}
+
+.statistics h1 {
+  font-size: 25px;
+  line-height: 90px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  font-family: 'Raleway', sans-serif;
+}
+
+.chart h3 {
+  text-align: center;
+  line-height: 30px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #202020;
+}
+
+.reservations-chart p {
+  padding-top: 10px;
+}
+
+.custom-tooltip2 {
+  background-color: #f3f3f3;
+  padding: 3px 5px;
+  opacity: 0.7;
+  border: 1px solid #aaa;
+  border: 1px solid #aaa;
+}
+
+.custom-tooltip2 p {
+  text-align: left;
+  line-height: 23px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  padding: 1px 2px;
+}
+
+.custom-tooltip2 p span {
+  font-weight: 600;
+  padding-left: 5px;
 }

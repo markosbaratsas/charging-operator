@@ -35,6 +35,7 @@ const urls = {
     setParkingCost: 'stations/parking-cost/set_default',
     getRecentPrice: 'gridprice/get-recent-prices',
     getLocations: 'gridprice/locations',
+    statsReservations: 'statistics/reservations',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -631,4 +632,26 @@ export const getStations = async (token) => {
         console.log(err)
         return null;
     }
+}
+
+export const statsReservations = async (token, station_id) => {
+    // 7 days ago
+    const from_date = getTimeString(new Date(new Date().getTime() - 7 * 60 * 60 * 24 * 1000));
+    // 3 days after
+    const to_date = getTimeString(new Date(new Date().getTime() + 3 * 60 * 60 * 24 * 1000));
+    try {
+        const response = await axios.post(urls.statsReservations,
+            JSON.stringify({
+                from_date: from_date,
+                to_date: to_date
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data) {
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+    return null;
 }

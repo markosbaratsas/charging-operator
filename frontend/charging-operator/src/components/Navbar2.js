@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import OnClickMenu from './OnClickMenu';
 
 const Navbar2 = () => {
     const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -17,18 +18,7 @@ const Navbar2 = () => {
                             <img src="/logo512.png" alt="Charging Operator Logo" />
                         </Link>
                     </div>
-                    <div onClick={openMenu} className={ menuIsOpen ? "three-lines-x" : "three-lines" }>
-                        <div className={ menuIsOpen ? "three-lines-menu" : "no-display"}>
-                            <ul>
-                                <li>
-                                    <Link to="/app/settings">Settings</Link>
-                                </li>
-                                <li>
-                                    <Link to="/logout">Logout</Link>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <OnClickMenu />
                 </nav>
             </div>
         </section>

@@ -16,6 +16,9 @@ const OnClickMenu = () => {
                         <Link to="/app/settings">Settings</Link>
                     </li>
                     <li>
+                        <Link to="/app/statistics">Statistics</Link>
+                    </li>
+                    <li>
                         <Link to="/logout">Logout</Link>
                     </li>
                 </ul>
