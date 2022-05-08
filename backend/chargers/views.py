@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from chargers.models import Charger, PricingGroup
-from chargers.serializers import (PricingGroupInfoSerializer,
+from chargers.serializers import (ChargerSerializer, PricingGroupInfoSerializer,
                                 PricingGroupPricesSerializer,
                                 PricingGroupSerializer)
 from chargers.useful_functions import update_existing_charger
@@ -288,6 +288,105 @@ def delete_charger(request):
     except:
         return Response({
                 "error": "Something went wrong while updating the Charger"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_not_healthy_chargers(request):
+    """Get a station's chargers that appear to have a not healthy status
+
+    Returns:
+        data, status: if successful returns all not healthy Chargers along with
+            an HTTP_200_OK status, else it returns an error message along
+            with an HTTP_401_UNAUTHORIZED status
+    """
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    chargers = []
+    pricing_groups = PricingGroup.objects.filter(station=station)
+    for i in pricing_groups:
+        for charger in Charger.objects.filter(pricing_group=i):
+            if not charger.is_healthy:
+                chargers.append(charger)
+
+    serializer = ChargerSerializer(chargers, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def set_not_healthy(request):
+    """Set a station's charger to be not healthy
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an error message along with an HTTP_401_UNAUTHORIZED status
+    """
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        charger = Charger.objects.get(id=request.data["charger_id"])
+
+        if charger.pricing_group.station != station:
+            return Response({
+                    "error": "You do not have access to this station"
+                }, status=status.HTTP_401_UNAUTHORIZED)
+
+        charger.is_healthy = False
+        charger.save()
+
+    except:
+        return Response({
+                "error": "This charger id is not valid"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def set_healthy(request):
+    """Set a station's charger to be healthy
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an error message along with an HTTP_401_UNAUTHORIZED status
+    """
+    station = get_user_station(request.user, request.data["station_id"])
+
+    if station == None:
+        return Response({
+                "error": "You do not have access to this station"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    try:
+        charger = Charger.objects.get(id=request.data["charger_id"])
+
+        if charger.pricing_group.station != station:
+            return Response({
+                    "error": "You do not have access to this station"
+                }, status=status.HTTP_401_UNAUTHORIZED)
+
+        charger.is_healthy = True
+        charger.save()
+
+    except:
+        return Response({
+                "error": "This charger id is not valid"
             }, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(status=status.HTTP_200_OK)

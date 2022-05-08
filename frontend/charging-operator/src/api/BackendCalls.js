@@ -36,6 +36,7 @@ const urls = {
     getRecentPrice: 'gridprice/get-recent-prices',
     getLocations: 'gridprice/locations',
     statsReservations: 'statistics/reservations',
+    getNotHealthyChargers: 'chargers/get-not-healthy',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -634,7 +635,7 @@ export const getStations = async (token) => {
     }
 }
 
-export const statsReservations = async (token, station_id) => {
+export const statsReservations = async (token) => {
     // 7 days ago
     const from_date = getTimeString(new Date(new Date().getTime() - 7 * 60 * 60 * 24 * 1000));
     // 3 days after
@@ -645,6 +646,21 @@ export const statsReservations = async (token, station_id) => {
                 from_date: from_date,
                 to_date: to_date
             }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data) {
+            return response.data;
+        }
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+    return null;
+}
+
+export const getNotHealthyChargers = async (token, station_id) => {
+    try {
+        const response = await axios.post(urls.getNotHealthyChargers,
+            JSON.stringify({station_id, station_id}),
             getAuthorizedHeaders(token.accessToken)
         );
         if (response && response.data) {

@@ -45,7 +45,8 @@ class ChargerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Charger
-        fields = ['id', 'name', 'current', 'connector_type', 'power']
+        fields = ['id', 'name', 'current', 'connector_type', 'power',
+                  'is_healthy']
 
 
 class ChargerReservationSerializer(serializers.ModelSerializer):

@@ -199,6 +199,7 @@ const Chargers = ({title, station, setStation, setActivePage}) => {
 
         setChargers(chargers);
         setChargerGroups(groups);
+        console.log(chargers);
 
     }, [pricingGroups])
 
@@ -233,6 +234,11 @@ const Chargers = ({title, station, setStation, setActivePage}) => {
                                                     <h2>{charger.name}</h2>
                                                     <p>{charger.power} kW | {charger.current}</p>
                                                     <p>{charger.connector_type}</p>
+                                                    {charger.is_healthy ? (
+                                                        <p className="healthy-charger">Healthy</p>
+                                                    ) : (
+                                                        <p className="not-healthy-charger">Not Healthy</p>
+                                                    )}
                                                 </div>
                                                 <div className="station-chargers-buttons">
                                                     <button

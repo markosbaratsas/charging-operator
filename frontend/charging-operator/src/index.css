@@ -3431,3 +3431,18 @@
   font-weight: 500;
   padding-left: 7px;
 }
+
+.healthy-charger {
+  color: #61c45e !important;
+  font-weight: 600 !important;
+}
+
+.not-healthy-charger {
+  color: #d14d4d !important;
+  font-weight: 600 !important;
+}
+
+.not-healthy-chargers h2 {
+  font-size: 17px;
+
+}

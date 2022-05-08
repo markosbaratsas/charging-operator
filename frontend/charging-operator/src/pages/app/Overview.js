@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
-import { getStation,
+import { getNotHealthyChargers, getStation,
     getStationChargerGroupsInfo,
     getStationPrices,
     getStationReservations,
@@ -23,6 +23,7 @@ const Overview = ({title, station, setStation, setActivePage}) => {
     const [prices, setPrices] = useState(null);
     const [reservations, setReservations] = useState(null);
     const [vehicles, setVehicles] = useState(null);
+    const [notHealthyChargers, setNotHealthyChargers] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -48,6 +49,12 @@ const Overview = ({title, station, setStation, setActivePage}) => {
             data = await getStationReservations(getAuth(), id);
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(reservations)) setReservations(data);
+
+            data = await getNotHealthyChargers(getAuth(), id);
+            // check if data changed
+            if (JSON.stringify(data) !== JSON.stringify(notHealthyChargers)) setNotHealthyChargers(data);
+
+            console.log(data);
 
         } catch (err) {
             console.error(err.message);
@@ -107,6 +114,31 @@ const Overview = ({title, station, setStation, setActivePage}) => {
                                 </ul>
                             )}
                         </div>
+
+                        <div className="overview-station-div1">
+                            {!notHealthyChargers ? (
+                                <ReactLoading type="spin" color="#202020" height={30} width={30} className="loading"/>
+                            ) : ( notHealthyChargers.length === 0 ) ? (
+                                <div className="flex-row-center-center text-icon">
+                                    <h2>All chargers appear to be healthy</h2>
+                                    <img src="/icons/check.png" alt="Check icon" />
+                                </div>
+                            ) : (
+                                <div className="flex-row-center-center text-icon not-healthy-chargers">
+                                    <h2>The following chargers appear as NOT healthy</h2>
+                                    <img src="/icons/warning.png" alt="Warning icon" />
+                                </div>
+                            )}
+                            {notHealthyChargers && notHealthyChargers.length > 0 && notHealthyChargers.map((charger, index) => {
+                                return (
+                                    <p key={charger.id}>Charger Name: <span className="not-healthy-charger">{charger.name}</span></p>
+                                );
+                            })}
+                            <br />
+                        </div>
+
+
+
                         <div className="overview-station-div1">
                             <div className="flex-row-center-center text-icon">
                                 <h2>Vehicles Charging Now</h2>

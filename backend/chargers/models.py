@@ -120,6 +120,7 @@ class Charger(models.Model):
     power = models.DecimalField(max_digits=8, decimal_places=4, default=0)
     description = models.CharField(max_length=255, default='')
     is_occupied = models.BooleanField(default=False)
+    is_healthy = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.id}, {self.name}, {self.pricing_group}'

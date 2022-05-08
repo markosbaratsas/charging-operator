@@ -19,4 +19,8 @@ urlpatterns = [
     path('chargers/create', views.create_charger, name="create_charger"),
     path('chargers/update', views.update_charger, name="update_charger"),
     path('chargers/delete', views.delete_charger, name="delete_charger"),
+    path('chargers/get-not-healthy', views.get_not_healthy_chargers,
+                            name="get_not_healthy_chargers"),
+    path('chargers/not-healthy', views.set_not_healthy, name="set_not_healthy"),
+    path('chargers/healthy', views.set_healthy, name="set_healthy"),
 ]
