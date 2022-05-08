@@ -199,7 +199,6 @@ const Chargers = ({title, station, setStation, setActivePage}) => {
 
         setChargers(chargers);
         setChargerGroups(groups);
-        console.log(chargers);
 
     }, [pricingGroups])
 

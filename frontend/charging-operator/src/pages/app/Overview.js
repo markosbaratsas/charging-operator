@@ -54,8 +54,6 @@ const Overview = ({title, station, setStation, setActivePage}) => {
             // check if data changed
             if (JSON.stringify(data) !== JSON.stringify(notHealthyChargers)) setNotHealthyChargers(data);
 
-            console.log(data);
-
         } catch (err) {
             console.error(err.message);
         }

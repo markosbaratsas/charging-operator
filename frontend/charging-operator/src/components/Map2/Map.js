@@ -25,8 +25,6 @@ const Map = ({marker, setMarker, markers, zoom, setZoom, center, setCenter}) => 
     const [map, setMap] = useState(null);
 
     const placeMarker = (event) => {
-        console.log(event)
-        console.log(event.latLng.lat())
         setMarker({
             latitude: event.latLng.lat(),
             longitude: event.latLng.lng()

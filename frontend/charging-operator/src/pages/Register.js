@@ -70,7 +70,6 @@ const Register = ({title}) => {
         }
 
         let [error, ok] = await registerUser(user, pwd, matchPwd);
-        console.log("registerUser", ok, error);
         if (error) {
             setErrMsg(error);
             errRef.current.focus();

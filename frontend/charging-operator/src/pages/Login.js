@@ -38,10 +38,8 @@ const Login = ({title}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(user, pwd)
 
         let [error, accessToken] = await loginUser(user, pwd);
-        console.log("loginUser", accessToken, error);
         if (error) {
             setErrMsg(error);
             errRef.current.focus();
