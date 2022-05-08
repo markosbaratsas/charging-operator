@@ -1,8 +1,5 @@
 import ReactLoading from 'react-loading';
 import {
-    LineChart, 
-    Line,
-    CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
@@ -10,21 +7,22 @@ import {
     BarChart,
     Legend,
  } from 'recharts';
- import { colors } from './common';
+import { colors } from './common';
 
 
 function CustomTooltip({ payload, active, stations }) {
     if (active) {
         return (
         <div className="custom-tooltip2">
+            <p style={{textAlign: "center"}}><span>{payload[0].payload["day"]}</span></p>
             {stations.map((station, index) => {
                 return (
                     <p
                         key={station.id}
                         style={{color: colors[index%stations.length]}}
                     >
-                        #reservations in {station.name}: 
-                        <span>{payload[0].payload[`${station.id}_number_reservations`]}</span>
+                        Total revenues in {station.name}:
+                        <span>{(payload[0].payload[`${station.id}_all`]).toFixed(3)} €</span>
                     </p>
                 );
             })}
@@ -34,7 +32,7 @@ function CustomTooltip({ payload, active, stations }) {
     return null;
 }
 
-const ReservationChart = ({ reservationsList, width, height, stations, stationCheck }) => {
+const RevenuesChart = ({ reservationsList, width, height, stations, stationCheck }) => {
 
     const findStationNameFromId = (id) => {
         id = parseInt(id)
@@ -46,30 +44,25 @@ const ReservationChart = ({ reservationsList, width, height, stations, stationCh
         return "not found";
     }
 
+    const getTotalRevenuesFromID = (id) => {
+        let ret = 0;
+        for(const day of reservationsList) {
+            ret += day[`${id}_all`]
+        }
+        return ret.toFixed(2);
+    }
+
     return (
         <section className="gridprices-chart reservations-chart">
-            <h3>Reservations per day for each station</h3>
+            <h3>Revenues per day for each station</h3>
             {reservationsList && stations && stations.length > 0 && reservationsList.length > 0 ? (
                 <>
-                    <LineChart
+                    <BarChart
                         className="gridprices-chart-chart"
                         width={width ? width : 900}
                         height={height ? height : 300}
                         data={reservationsList}>
 
-                        <CartesianGrid strokeDasharray="3 3" />
-
-                        {stationCheck && stations.map((station, index) => {
-                            if (stationCheck[station.id])
-                                return (
-                                    <Line
-                                        key={station.id}
-                                        type="monotone"
-                                        dataKey={`${station.id}_number_reservations`}
-                                        stroke={colors[index%stations.length]} 
-                                        fill={colors[index%stations.length]} />
-                                );
-                            })}
                         <XAxis dataKey="day" stroke="#444" tick={{stroke: "#444", strokeWidth: 0.01}} />
                         <YAxis stroke="#444" />
                         <Tooltip content={<CustomTooltip />} stations={stations} />
@@ -87,8 +80,26 @@ const ReservationChart = ({ reservationsList, width, height, stations, stationCh
                             height={36}
                             formatter={(value, entry, index) => (findStationNameFromId(value.split("_")[0]))}
                         />
-                    </LineChart>
-                    <p>Hover on the chart to see more information about the reservations.</p>
+                        {stationCheck && stations.map((station, index) => {
+                            if (stationCheck[station.id])
+                                return (
+                                    <Bar
+                                        key={station.id}
+                                        type="monotone"
+                                        dataKey={`${station.id}_all`}
+                                        stroke={colors[index%stations.length]} 
+                                        fill={colors[index%stations.length]} />
+                                );
+                            })}
+                    </BarChart>
+                    {stationCheck && stations.map((station, index) => {
+                        if (stationCheck[station.id])
+                            return (
+                                <p key={station.id}>
+                                    Total Revenues for {station.name}: <span>{getTotalRevenuesFromID(station.id)} €</span>
+                                </p>
+                            );
+                    })}
                 </>
             ) : (
                 <div
@@ -104,4 +115,4 @@ const ReservationChart = ({ reservationsList, width, height, stations, stationCh
     );
 }
 
-export default ReservationChart;
+export default RevenuesChart;

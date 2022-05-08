@@ -64,8 +64,15 @@ def get_reservations(request):
                                                         next_day])
 
             day_dict[f"{station.id}_number_reservations"] = len(reservations)
-            day_dict[f"{station.id}_total_revenues"] = sum(
-                                        [i.total_cost for i in reservations])
+            day_dict[f"{station.id}_all"] = sum(
+                                    [float(i.total_cost)
+                                    for i in reservations])
+            day_dict[f"{station.id}_parking"] = sum(
+                                    [float(i.parking_cost+i.parking_cost_extra)
+                                    for i in reservations])
+            day_dict[f"{station.id}_energy"] = sum(
+                                    [float(i.energy_cost)
+                                    for i in reservations])
 
         reservations_stats.append(day_dict)
         from_date = next_day

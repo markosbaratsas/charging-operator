@@ -638,7 +638,7 @@ export const statsReservations = async (token, station_id) => {
     // 7 days ago
     const from_date = getTimeString(new Date(new Date().getTime() - 7 * 60 * 60 * 24 * 1000));
     // 3 days after
-    const to_date = getTimeString(new Date(new Date().getTime() + 3 * 60 * 60 * 24 * 1000));
+    const to_date = getTimeString(new Date(new Date().getTime()));
     try {
         const response = await axios.post(urls.statsReservations,
             JSON.stringify({
