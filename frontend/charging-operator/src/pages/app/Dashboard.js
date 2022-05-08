@@ -46,6 +46,7 @@ const Dashboard = ({title}) => {
                 </>
                 )}
             </div>
+            <h5 className="view-statistics">View statistics regarding all of your stations in the <Link to='/app/statistics'>Statistics Page</Link></h5>
         </section>
     );
 }
