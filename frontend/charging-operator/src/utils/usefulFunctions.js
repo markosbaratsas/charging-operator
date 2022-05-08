@@ -39,7 +39,7 @@ export const getTimeString = (dt) => {
 
     let year = integerToFixedString(dt.getFullYear(), 4);
     let month = integerToFixedString(dt.getMonth() + 1, 2);
-    let day = integerToFixedString(dt.getDay() + 1, 2);
+    let day = integerToFixedString(dt.getDate(), 2);
     let hours = integerToFixedString(dt.getHours(), 2);
     let minutes = integerToFixedString(dt.getMinutes(), 2);
     let seconds = integerToFixedString(dt.getSeconds(), 2);
