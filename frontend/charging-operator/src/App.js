@@ -30,6 +30,7 @@ import Parking from './pages/app/Parking';
 import Layout4 from './components/Layout4';
 import Statistics from './pages/app/Statistics';
 import Settings from './pages/app/Settings';
+import PricingMethod from './pages/PricingMethods';
 
 
 const options = {
@@ -54,15 +55,11 @@ function App() {
                     <Route path="/" element={<Home title="Charging Operator - Home" />} />
                     <Route path="/about" element={<About title="Charging Operator- About" />} />
                     <Route path="/contact" element={<Contact title="Charging Operator - Contact" />} />
+                    <Route path="/pricing-methods" element={<PricingMethod title="Pricing Methods - Charging Operator" />} />
                     <Route path="/login" element={<Login title="Charging Operator - Login" />} />
                     <Route path="/register" element={<Register title="Charging Operator - Register" />} />
                     <Route path="/logout" element={<Logout title="Charging Operator - Successfully logged out"/>} />
-
-                    {/* <Route path="/pricing-methods" element={<Logout title="Charging Operator - Pricing methods"/>} /> */}
                 </Route>
-                    {/* <Route path="register" element={<Register />} />
-                    <Route path="linkpage" element={<LinkPage />} />
-                    <Route path="unauthorized" element={<Unauthorized />} /> */}
 
                 {/* we want to protect these routes */}
                 <Route element={<RequireAuth />}>
@@ -125,10 +122,6 @@ function App() {
                         <Route path="/app/not-authorized" element={<AppNotAuthorized title="Not Authorized - Charging Operator" />} />
                     </Route>
                 </Route>
-
-                    {/* <Route element={<RequireAuth />}>
-                        <Route path="editor" element={<Editor />} />
-                    </Route> */}
 
                 {/* catch all */}
                 <Route path="*" element={<Page404 />} />
