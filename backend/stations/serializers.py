@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from chargers.models import Charger, PricingGroup
-from stations.models import ParkingCost, Station
+from stations.models import ParkingCost, Station, StationRequests
 
 
 class DashboardStationSerializer(serializers.ModelSerializer):
@@ -63,3 +63,18 @@ class ParkingCostSerializer(serializers.ModelSerializer):
 
     def get_is_default(self, obj):
         return obj.parking_cost_snapshot.is_default
+
+
+class StationRequestSerializer(serializers.ModelSerializer):
+    station = serializers.SerializerMethodField()
+    user = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StationRequests
+        fields = ['id', 'user', 'station']
+
+    def get_station(self, obj):
+        return StationInformationSerializer(obj.station).data
+
+    def get_user(self, obj):
+        return obj.operator.username

@@ -25,8 +25,8 @@ const AddStation = ({title}) => {
         const ok = await addStation(getAuth(), stationSelected.id);
 
         if (ok) {
-            alert.success('Station added successfully');
-            navigate("/app/dashboard", { replace: true });
+            alert.success('Successfully created request to join this station');
+            navigate("/app/settings", { replace: true });
             return;
         }
         setError(true);

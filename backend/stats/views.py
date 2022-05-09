@@ -60,7 +60,7 @@ def get_reservations(request):
         for station in stations:
             reservations = Reservation.objects.filter(
                                 station=station,
-                                expected_departure__range=[from_date,
+                                actual_departure__range=[from_date,
                                                         next_day])
 
             day_dict[f"{station.id}_number_reservations"] = len(reservations)

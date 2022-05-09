@@ -6,10 +6,12 @@ from reservations.useful_functions import str_to_datetime, validate_dates
 from stations.useful_functions import (add_charger, add_pricing_group,
                                        find_parking_costs, get_user_station)
 
-from stations.models import ParkingCost, ParkingCostSnapshot, Station
+from stations.models import (ParkingCost, ParkingCostSnapshot, Station,
+                             StationRequests)
 from stations.serializers import (DashboardStationSerializer,
                                   ParkingCostSerializer,
-                                  StationInformationSerializer)
+                                  StationInformationSerializer,
+                                  StationRequestSerializer)
 from gridprice.models import Location
 
 
@@ -50,8 +52,8 @@ def add_station(request):
     """Add an operator to a station
 
     Returns:
-        data, status: if successful returns a list of station markers, with an
-            HTTP_200_OK status
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an Error message along with an error status
     """
     given_id = int(request.data['station_id'])
     try:
@@ -61,10 +63,83 @@ def add_station(request):
             "error": "No station with this id"
         }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-    station.operators.add(request.user)
-    station.save()
+    station_req, _ = StationRequests.objects.get_or_create(
+        station=station,
+        operator=request.user
+    )
 
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def answer_station_request(request):
+    """Endpoint so that an operator can accept/reject a user's request to join
+    a station
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an Error message along with an error status
+    """
+    given_id = int(request.data['station_request_id'])
+    try:
+        station_req = StationRequests.objects.get(id=given_id)
+    except:
+        return Response(data={
+            "error": "No station request with this id"
+        }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    if request.user not in station_req.station.operators.all():
+        return Response(data={
+            "error": "No station request with this id"
+        }, status=status.HTTP_401_UNAUTHORIZED)
+
+    state = request.data['state']
+
+    if state == "Approve":
+        station_req.station.operators.add(station_req.operator)
+        station_req.station.save()
+
+    station_req.delete()
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_station_requests(request):
+    """Get StationRequests for all the stations that a user belongs to. This
+    endpoint is used so that operators can retrieve all the StationRequests
+    that they are authorized to accept/reject.
+
+    Returns:
+        data, status: returns a list with all the StationRequests for this
+            operator, along with an HTTP_200_OK status
+    """
+    user_stations = Station.objects.filter(operators__id=request.user.id)
+
+    station_requests = []
+    for i in user_stations:
+        for req in StationRequests.objects.filter(station=i):
+            station_requests.append(req)
+
+    serializer = StationRequestSerializer(station_requests, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def get_personal_station_requests(request):
+    """Get StationRequests that an operator has requested
+
+    Returns:
+        data, status: returns a list with all the StationRequests for this
+            operator, along with an HTTP_200_OK status
+    """
+    reqs = StationRequests.objects.filter(operator=request.user)
+    serializer = StationRequestSerializer(reqs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST', ])

@@ -60,3 +60,11 @@ class ParkingCost(models.Model):
         return f'{self.id}, {self.parking_cost_snapshot},\
 from {str(self.from_datetime)}, to {str(self.to_datetime)}'
 
+
+class StationRequests(models.Model):
+    id = models.AutoField(primary_key=True)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    operator = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}, {self.station.name}, {self.operator.username}'

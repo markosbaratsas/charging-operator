@@ -37,6 +37,9 @@ const urls = {
     getLocations: 'gridprice/locations',
     statsReservations: 'statistics/reservations',
     getNotHealthyChargers: 'chargers/get-not-healthy',
+    answerStationRequest: 'stations/answer-request',
+    getStationRequests: 'stations/requests',
+    getPersonalStationRequests: 'stations/personal-requests',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -631,8 +634,52 @@ export const getStations = async (token) => {
 
     } catch (err) {
         console.log(err)
-        return null;
     }
+    return null;
+}
+
+export const getStationsRequests = async (token) => {
+    try {
+        const response = await axios.post(urls.getStationRequests,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {
+        console.log(err)
+    }
+    return null;
+}
+
+export const getStationsPersonalRequests = async (token) => {
+    try {
+        const response = await axios.post(urls.getPersonalStationRequests,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {
+        console.log(err)
+    }
+    return null;
+}
+
+export const answerStationRequest = async (token, station_request_id, state) => {
+    try {
+        await axios.post(urls.answerStationRequest,
+            JSON.stringify({
+                station_request_id: station_request_id,
+                state: state
+            }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return true;
+    } catch (err) {
+        console.log(err?.response?.data)
+    }
+    return false;
 }
 
 export const statsReservations = async (token) => {

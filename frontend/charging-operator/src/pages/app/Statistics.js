@@ -81,7 +81,7 @@ const Statistics = ({title}) => {
                 <h1>General Statistics</h1>
                 <p className="statistics-info">
                     In this page you can find statistics for each one of your stations.
-                    Those statistics are relates to the reservations made during the past 7 days (as well as today).
+                    Those statistics are related to the reservations made during the past 7 days (as well as today).
                 </p>
 
                 <div className="flex-column-center-center statistics-stations">

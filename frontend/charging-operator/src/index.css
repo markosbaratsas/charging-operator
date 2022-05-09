@@ -737,6 +737,10 @@
   animation-direction: alternate;
 }
 
+.three-lines-notification {
+  background-image: url('../public/icons/three-lines-notification.png') !important;
+}
+
 @keyframes smoothopacity1 {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -3445,4 +3449,18 @@
 .not-healthy-chargers h2 {
   font-size: 17px;
 
+}
+
+.no-requests {
+  font-size: 18px;
+  font-weight: 400;
+  color: #aaa;
+  font-style: italic;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.notif-settings {
+  color: #d36262 !important;
+  font-style: italic;
 }
