@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from django.utils.timezone import make_aware
+from pytz import timezone
 
 from gridprice.forecast import simple_forecast
 from gridprice.models import GridPrice, Location
@@ -60,18 +61,18 @@ def get_grid_price(start_time, end_time):
     if end_time < start_time:
         return -123.0
 
-    start = make_aware(datetime(
+    start = datetime(
         start_time.year,
         start_time.month,
         start_time.day,
         start_time.hour,
-        0, 0, 0))
-    end = make_aware(datetime(
+        0, 0, 0).replace(tzinfo=timezone('UTC'))
+    end = datetime(
         end_time.year,
         end_time.month,
         end_time.day,
         end_time.hour,
-        0, 0, 0))
+        0, 0, 0).replace(tzinfo=timezone('UTC'))
 
     first = GridPrice.objects.all().order_by("start_time")[0].start_time
     latest = GridPrice.objects.all().order_by("-start_time")[0].end_time
@@ -119,8 +120,7 @@ def get_grid_price(start_time, end_time):
                 + ((t3-t2)/all) * simple_forecast(latest, end)
         )
 
-    elif (latest < start and latest < end):
+    # elif (latest < start and latest < end):
+    # in order to catch the cases where there is ==
+    else:
         return simple_forecast(start, end)
-
-    # TODO: find better values to return
-    return -123.0

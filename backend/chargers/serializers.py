@@ -1,3 +1,4 @@
+from datetime import date
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -46,7 +47,7 @@ class ChargerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Charger
         fields = ['id', 'name', 'current', 'connector_type', 'power',
-                  'is_healthy']
+                  'is_healthy', 'is_occupied']
 
 
 class ChargerReservationSerializer(serializers.ModelSerializer):
