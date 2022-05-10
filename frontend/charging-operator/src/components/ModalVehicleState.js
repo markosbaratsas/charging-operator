@@ -132,8 +132,8 @@ const ModalVehicleState = ({ show2, setShow2, stationId, reservation, currentBat
                         <p className="error-p">Desired Final Battery should be a number between 1 and 500.</p>
                         : null}
 
-                    {reservation ?
-                    <h4 className="comment-h4">Expected energy cost: {reservation.price_per_kwh} * {desiredFinalBattery} = <span>{(reservation.price_per_kwh * desiredFinalBattery).toFixed(2)} €</span></h4>
+                    {reservation && currentBattery && desiredFinalBattery ?
+                    <h4 className="comment-h4">Expected energy cost: {reservation.price_per_kwh} * ({desiredFinalBattery} - {currentBattery}) = <span>{(reservation.price_per_kwh * (desiredFinalBattery - currentBattery)).toFixed(2)} €</span></h4>
                     : null}
                 </div>
             </Modal.Body>

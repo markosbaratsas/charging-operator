@@ -494,7 +494,7 @@ const Prices = ({title, station, setStation, setActivePage}) => {
                     <>
 
                         <div className="station-prices-current-price">
-                            <h2>Current price: <span>{groups[groupSelected].current_price} €/KW</span></h2>
+                            <h2>Current price: <span>{groups[groupSelected].current_price} €/KWh</span></h2>
                         </div>
 
                         <div className="station-prices-div1">

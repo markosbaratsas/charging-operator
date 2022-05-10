@@ -3559,3 +3559,8 @@
   border-top: 2px solid #202020;
   width: 400px;
 }
+
+.blue-info {
+  color: #39397a !important;
+  font-style: italic;
+}

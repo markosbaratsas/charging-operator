@@ -126,6 +126,13 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
         setVehicleName("");
         setVehicleModel("");
         setVehicleLicensePlate("");
+        setSmartV2G(true);
+        setCurrentBattery("");
+        setDesiredFinalBattery("");
+        setActualArrivalTime("");
+        setActualDepartureTime("");
+        setTotalPowerTransmitted("");
+        setParkingCostExtra("");
     }
 
     useEffect(() => {

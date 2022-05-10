@@ -233,6 +233,11 @@ const Chargers = ({title, station, setStation, setActivePage}) => {
                                                     <h2>{charger.name}</h2>
                                                     <p>{charger.power} kW | {charger.current}</p>
                                                     <p>{charger.connector_type}</p>
+                                                    {charger.is_occupied ? (
+                                                        <p className="blue-info">Currently a vehicle is charging...</p>
+                                                    ) : (
+                                                        <p className="blue-info">Available for charging</p>
+                                                    )}
                                                     {charger.is_healthy ? (
                                                         <p className="healthy-charger">Healthy</p>
                                                     ) : (

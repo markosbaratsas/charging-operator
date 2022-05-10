@@ -111,8 +111,8 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
         } else {
             const data = await updateReservation(getAuth(), {
                 reservation_id: reservation.id,
-                departure_time: departureTime,
-                arrival_time: arrivalTime,
+                departure_time: departure_time,
+                arrival_time: arrival_time,
                 charger_id: charger.id,
                 station_id: stationId,
                 owner_name: owner,
