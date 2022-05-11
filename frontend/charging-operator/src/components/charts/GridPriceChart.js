@@ -11,7 +11,7 @@ function CustomTooltip({ payload, active }) {
     if (active) {
         return (
         <div className="custom-tooltip1">
-            <p><span>Price:</span> {payload[0].payload.price} €/KWh</p>
+            <p><span>Price:</span> {payload[0].payload.price.toFixed(4)} €/KWh</p>
             <p><span>From:</span> {payload[0].payload.start_time}</p>
             <p><span>To:</span> {payload[0].payload.end_time}</p>
         </div>
