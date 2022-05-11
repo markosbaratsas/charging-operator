@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -7,8 +9,28 @@ from gridprice.models import GridPrice, Location
 from gridprice.serializers import GridPriceSerializer, LocationSerializer
 from gridprice.useful_functions import get_location
 from reservations.useful_functions import str_to_datetime
+from users.body_parameters import AUTHENTICATION_HEADER
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'start_time', 'end_time', 'location_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'start_time': openapi.TYPE_STRING,
+            'end_time': openapi.TYPE_STRING,
+            'location_id': openapi.TYPE_INTEGER,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: GridPriceSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_grid_prices(request):
@@ -57,6 +79,24 @@ def get_grid_prices(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'amount', 'location_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'amount': openapi.TYPE_INTEGER,
+            'location_id': openapi.TYPE_INTEGER,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: GridPriceSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_recent_prices(request):
@@ -93,6 +133,15 @@ def get_recent_prices(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: LocationSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_locations(_):

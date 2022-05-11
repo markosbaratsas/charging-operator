@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -14,8 +16,24 @@ from reservations.useful_functions import (get_station_available_chargers,
                                            validate_dates)
 from stations.useful_functions import (calculate_parking_cost,
                                        find_parking_costs, get_user_station)
+from users.body_parameters import AUTHENTICATION_HEADER
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: VehiclesChargingNowSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_vehicle_states(request):
@@ -45,6 +63,21 @@ def get_vehicle_states(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: VehiclesChargingNowSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_vehicle_state(request):
@@ -79,6 +112,26 @@ def get_vehicle_state(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'from_arrival': openapi.TYPE_STRING,
+            'to_arrival': openapi.TYPE_STRING,
+            'from_departure': openapi.TYPE_STRING,
+            'to_departure': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ReservationSerializer,
+        400: 'Invalid Format',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_reservations(request):
@@ -144,6 +197,23 @@ def get_reservations(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'arrival_time', 'departure_time'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'arrival_time': openapi.TYPE_STRING,
+            'departure_time': openapi.TYPE_STRING,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ChargerReservationSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_available_chargers(request):
@@ -167,16 +237,34 @@ def get_available_chargers(request):
                                                         arrival_time,
                                                         departure_time)
 
-    serializer = ChargerReservationSerializer(available_chargers,
-                                              many=True,
-                                              context={
-                                                  'arrival_time': arrival_time,
-                                                  'departure_time': departure_time,
-                                                })
+    serializer = ChargerReservationSerializer(
+        available_chargers,
+        many=True,
+        context={
+            'arrival_time': arrival_time,
+            'departure_time': departure_time,
+        }
+    )
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['reservation'],
+        properties={
+            'reservation': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_reservation(request):
@@ -259,6 +347,22 @@ def create_reservation(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['reservation'],
+        properties={
+            'reservation': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def update_reservation(request):
@@ -344,6 +448,23 @@ def update_reservation(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'reservation_id'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'reservation_id': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def delete_reservation(request):
@@ -378,6 +499,23 @@ def delete_reservation(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'reservation_id'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'reservation_id': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def cancel_reservation(request):
@@ -413,6 +551,27 @@ def cancel_reservation(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'reservation_id', 'current_battery',
+                  'desired_final_battery', 'actual_arrival'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'reservation_id': openapi.TYPE_STRING,
+            'current_battery': openapi.TYPE_STRING,
+            'desired_final_battery': openapi.TYPE_STRING,
+            'actual_arrival': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def vehicle_state(request):
@@ -477,6 +636,27 @@ def vehicle_state(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'reservation_id', 'total_energy_transmitted',
+                  'actual_departure', 'parking_cost_extra'],
+        properties={
+            'station_id': openapi.TYPE_STRING,
+            'reservation_id': openapi.TYPE_STRING,
+            'total_energy_transmitted': openapi.TYPE_STRING,
+            'actual_departure': openapi.TYPE_STRING,
+            'parking_cost_extra': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ReservationSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def end_reservation(request):

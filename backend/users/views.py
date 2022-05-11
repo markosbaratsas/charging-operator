@@ -1,12 +1,22 @@
 from django.core.exceptions import ObjectDoesNotExist
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from users.body_parameters import AUTHENTICATION_HEADER
 from users.serializers import RegistrationSerializer
 
+
+@swagger_auto_schema(
+    methods=['POST'],
+    responses={
+        200: RegistrationSerializer,
+        403: 'Registration Failed'
+    }
+)
 @api_view(['POST', ])
 def register_user(request):
     serializer = RegistrationSerializer(data=request.data)
@@ -21,6 +31,15 @@ def register_user(request):
         data = serializer.errors
         return Response(data, status=status.HTTP_403_FORBIDDEN)
 
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def delete_token(request):
@@ -31,6 +50,15 @@ def delete_token(request):
 
     return Response(status=status.HTTP_200_OK)
 
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def validate_token(_):

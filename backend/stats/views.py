@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from django.utils.timezone import make_aware
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -8,9 +10,25 @@ from reservations.models import Reservation
 from reservations.useful_functions import str_to_datetime
 from stations.models import Station
 
-from stations.useful_functions import get_user_station
+from users.body_parameters import AUTHENTICATION_HEADER
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['from_date', 'to_date'],
+        properties={
+            'from_date': openapi.TYPE_STRING,
+            'to_date': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success along with list of statistics',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_reservations(request):

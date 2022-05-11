@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -11,8 +13,24 @@ from chargers.useful_functions import update_existing_charger
 from stations.useful_functions import (add_charger, add_pricing_group,
                                        add_pricing_group_constants,
                                        get_user_station)
+from users.body_parameters import AUTHENTICATION_HEADER
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: PricingGroupInfoSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_pricing_groups_information(request):
@@ -36,6 +54,21 @@ def get_pricing_groups_information(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: PricingGroupPricesSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_pricing_groups_prices(request):
@@ -59,6 +92,21 @@ def get_pricing_groups_prices(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: PricingGroupSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_pricing_groups(request):
@@ -83,6 +131,23 @@ def get_pricing_groups(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'group'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'group': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_pricing_group(request):
@@ -109,6 +174,22 @@ def create_pricing_group(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'group'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'group': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def update_pricing_group(request):
@@ -149,6 +230,22 @@ def update_pricing_group(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'group'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'group': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def delete_pricing_group(request):
@@ -180,6 +277,23 @@ def delete_pricing_group(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'charger'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'charger': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_charger(request):
@@ -215,6 +329,23 @@ def create_charger(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'charger'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'charger': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def update_charger(request):
@@ -256,6 +387,23 @@ def update_charger(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'charger'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'charger': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def delete_charger(request):
@@ -293,6 +441,22 @@ def delete_charger(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ChargerSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_not_healthy_chargers(request):
@@ -322,6 +486,23 @@ def get_not_healthy_chargers(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'charger_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'charger_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def set_not_healthy(request):
@@ -357,6 +538,23 @@ def set_not_healthy(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'charger_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'charger_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def set_healthy(request):

@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -13,8 +15,17 @@ from stations.serializers import (DashboardStationSerializer,
                                   StationInformationSerializer,
                                   StationRequestSerializer)
 from gridprice.models import Location
+from users.body_parameters import AUTHENTICATION_HEADER
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: DashboardStationSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_stations(request):
@@ -31,6 +42,14 @@ def get_stations(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: StationInformationSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_station_markers(_):
@@ -46,10 +65,25 @@ def get_station_markers(_):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def add_station(request):
-    """Add an operator to a station
+    """Create a StationRequest for an operator to be added to a station
 
     Returns:
         data, status: if successful returns an HTTP_200_OK status, else it
@@ -71,6 +105,22 @@ def add_station(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_request_id'],
+        properties={
+            'station_request_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized',
+        406: 'No station request with this id'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def answer_station_request(request):
@@ -91,7 +141,7 @@ def answer_station_request(request):
 
     if request.user not in station_req.station.operators.all():
         return Response(data={
-            "error": "No station request with this id"
+            "error": "Not Authorized"
         }, status=status.HTTP_401_UNAUTHORIZED)
 
     state = request.data['state']
@@ -105,6 +155,14 @@ def answer_station_request(request):
     return Response(status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: StationRequestSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_station_requests(request):
@@ -128,6 +186,14 @@ def get_station_requests(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: StationRequestSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_personal_station_requests(request):
@@ -142,6 +208,22 @@ def get_personal_station_requests(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station'],
+        properties={
+            'station': openapi.TYPE_OBJECT
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Successfully created a new station!',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def create_station(request):
@@ -248,6 +330,21 @@ def create_station(request):
         }, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: StationInformationSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_station(request):
@@ -270,6 +367,23 @@ def get_station(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'from_datetime', 'to_datetime'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'from_datetime': openapi.TYPE_STRING,
+            'to_datetime': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ParkingCostSerializer,
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def get_parking_costs(request):
@@ -307,6 +421,23 @@ def get_parking_costs(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['station_id', 'parking_cost_value'],
+        properties={
+            'station_id': openapi.TYPE_INTEGER,
+            'parking_cost_value': openapi.TYPE_INTEGER
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: "Success",
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
 def set_parking_cost(request):
