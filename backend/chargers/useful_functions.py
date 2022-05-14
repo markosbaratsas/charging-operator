@@ -1,7 +1,6 @@
-from random import random
-from unicodedata import name
-
-from chargers.models import Charger, MethodConstantBool, MethodConstantDecimal, MethodConstantInt, MethodConstantStation, PricingGroup
+from chargers.models import (Charger, MethodConstantBool,
+                             MethodConstantDecimal, MethodConstantInt,
+                             MethodConstantStation, PricingGroup)
 from gridprice.useful_functions import get_grid_price
 from reservations.useful_functions import get_station_available_chargers
 
@@ -53,7 +52,8 @@ def competitor_method_get_min(group, from_datetime, to_datetime):
                                                     name="c1")[0]
 
         if grid_price.value:
-            price += get_grid_price(from_datetime, to_datetime)
+            price += get_grid_price(from_datetime, to_datetime,
+                                    group.station.location)
 
         price += float(all_expenses.value) + float(c1.value)
     except:
@@ -101,7 +101,8 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
                                         filter(pricing_group=group)[0]
 
             if grid_price.value:
-                ret += get_grid_price(from_datetime, to_datetime)
+                ret += get_grid_price(from_datetime, to_datetime,
+                                      group.station.location)
 
             ret += float(all_expenses.value) + float(c.value)
 
@@ -126,7 +127,8 @@ def get_charging_price(group, set_groups, from_datetime, to_datetime):
             occupied = all_chargers - available_chargers
 
             if grid_price.value:
-                ret += get_grid_price(from_datetime, to_datetime)
+                ret += get_grid_price(from_datetime, to_datetime,
+                                      group.station.location)
 
             ret += (float(all_expenses.value) + float(c1.value)
                         + float(c2.value) * ((occupied) ** int(n.value))/all_chargers)

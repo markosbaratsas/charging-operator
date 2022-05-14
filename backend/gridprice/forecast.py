@@ -3,7 +3,7 @@ from datetime import timedelta
 from gridprice.models import GridPrice
 
 
-def simple_forecast(start, end):
+def simple_forecast(start, end, location):
     """Function to return a simple forecast regarding the average price of a
     datetime period. It simply finds the average of the prices for every hour
     of the most recent days, and then based on the given period it returns the
@@ -12,12 +12,14 @@ def simple_forecast(start, end):
     Args:
         start (datetime): the given start datetime
         end (datetime): the given end datetime
+        location (Location): The location to search for its grid price
 
     Returns:
         float: the predicted price
     """
     # get the most recent prices from the past 2 days
-    latest_prices = GridPrice.objects.all().order_by("-start_time")[:48]
+    latest_prices = GridPrice.objects.filter(location=location)\
+                                     .order_by("-start_time")[:48]
 
     # 24 hours in a day
     times = {i: 0.0 for i in range(24)}
@@ -41,8 +43,8 @@ def simple_forecast(start, end):
     mean_forecasted_price = 0
     counter = start
     while counter < end:
-        mean_forecasted_price += times[counter.hour]
         counter += timedelta(hours=1)
+        mean_forecasted_price += times[counter.hour]
 
     hours = ((end - start).total_seconds())//3600
 
