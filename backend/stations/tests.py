@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
-from django.contrib.auth.models import User
 
 from chargers.models import Charger, MethodConstantDecimal, PricingGroup
 from stations.models import ParkingCost, ParkingCostSnapshot, Station
@@ -10,12 +9,12 @@ from stations.useful_functions import (calculate_parking_cost,
 
 
 class TestStations(TestCase):
+    """Class created to test the stations app
+    """
 
     def setUp(self):
-        self.operator = User.objects.create(
-            username="test_operator",
-            password="1234"
-        )
+        """Set up environment to be used in all of the tests
+        """
         self.station = Station.objects.create(
             name="Test Station",
             latitude=23.333,
@@ -55,6 +54,8 @@ class TestStations(TestCase):
 
 
     def test_calculate_parking_cost(self):
+        """Test find_parking_costs and calculate_parking_cost functions
+        """
         actual_arival_str = make_aware(
             datetime.strptime("2022-05-04 00:00:00", "%Y-%m-%d %H:%M:%S"))
         actual_departure_str = make_aware(
