@@ -14,6 +14,7 @@ from stations.useful_functions import (add_charger, add_pricing_group,
                                        add_pricing_group_constants,
                                        get_user_station)
 from users.body_parameters import AUTHENTICATION_HEADER
+from users.decorators import operator_required
 
 
 @swagger_auto_schema(
@@ -33,6 +34,7 @@ from users.body_parameters import AUTHENTICATION_HEADER
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_pricing_groups_information(request):
     """Get PricingGroup Information for a specific station
 
@@ -71,6 +73,7 @@ def get_pricing_groups_information(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_pricing_groups_prices(request):
     """Get a station's PricingGroups prices
 
@@ -109,6 +112,7 @@ def get_pricing_groups_prices(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_pricing_groups(request):
     """Get a station's PricingGroups along with their chargers, current prices
     and pricing methods
@@ -150,6 +154,7 @@ def get_pricing_groups(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def create_pricing_group(request):
     """Create a PricingGroup's method and MethodConstants
 
@@ -192,6 +197,7 @@ def create_pricing_group(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def update_pricing_group(request):
     """Update a PricingGroup's method and MethodConstants
 
@@ -248,6 +254,7 @@ def update_pricing_group(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def delete_pricing_group(request):
     """Delete a new PricingGroup, along with its MethodConstants
 
@@ -296,6 +303,7 @@ def delete_pricing_group(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def create_charger(request):
     """Create a new charger
 
@@ -348,6 +356,7 @@ def create_charger(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def update_charger(request):
     """Update an existing charger
 
@@ -406,6 +415,7 @@ def update_charger(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def delete_charger(request):
     """Delete an existing charger
 
@@ -459,6 +469,7 @@ def delete_charger(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_not_healthy_chargers(request):
     """Get a station's chargers that appear to have a not healthy status
 
@@ -505,6 +516,7 @@ def get_not_healthy_chargers(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def set_not_healthy(request):
     """Set a station's charger to be not healthy
 
@@ -557,6 +569,7 @@ def set_not_healthy(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def set_healthy(request):
     """Set a station's charger to be healthy
 

@@ -17,6 +17,7 @@ from reservations.useful_functions import (get_station_available_chargers,
 from stations.useful_functions import (calculate_parking_cost,
                                        find_parking_costs, get_user_station)
 from users.body_parameters import AUTHENTICATION_HEADER
+from users.decorators import operator_required
 
 
 @swagger_auto_schema(
@@ -36,6 +37,7 @@ from users.body_parameters import AUTHENTICATION_HEADER
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_vehicle_states(request):
     """Get Vehicle States
 
@@ -80,6 +82,7 @@ def get_vehicle_states(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_vehicle_state(request):
     """Get Vehicle States
 
@@ -134,6 +137,7 @@ def get_vehicle_state(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_reservations(request):
     """Get Reservations of a station, for a specific period specified in
     request data
@@ -216,6 +220,7 @@ def get_reservations(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_available_chargers(request):
     """Get available chargers based on reservations made on this charger
 
@@ -267,6 +272,7 @@ def get_available_chargers(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def create_reservation(request):
     """Create a new Reservation
 
@@ -365,6 +371,7 @@ def create_reservation(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def update_reservation(request):
     """Update an existing Reservation
 
@@ -467,6 +474,7 @@ def update_reservation(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def delete_reservation(request):
     """Delete an existing Reservation
 
@@ -518,6 +526,7 @@ def delete_reservation(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def cancel_reservation(request):
     """Cancel an existing Reservation
 
@@ -574,6 +583,7 @@ def cancel_reservation(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def vehicle_state(request):
     """Create Vehicle State for a specified reservation
 
@@ -659,6 +669,7 @@ def vehicle_state(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def end_reservation(request):
     """Successfully end a reservation
 

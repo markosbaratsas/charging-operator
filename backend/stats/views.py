@@ -11,6 +11,7 @@ from reservations.useful_functions import str_to_datetime
 from stations.models import Station
 
 from users.body_parameters import AUTHENTICATION_HEADER
+from users.decorators import operator_required
 
 
 @swagger_auto_schema(
@@ -31,6 +32,7 @@ from users.body_parameters import AUTHENTICATION_HEADER
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_reservations(request):
     """Get reservations' statistics for a specified period organized per day
 

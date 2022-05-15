@@ -16,6 +16,7 @@ from stations.serializers import (DashboardStationSerializer,
                                   StationRequestSerializer)
 from gridprice.models import Location
 from users.body_parameters import AUTHENTICATION_HEADER
+from users.decorators import operator_required
 
 
 @swagger_auto_schema(
@@ -28,6 +29,7 @@ from users.body_parameters import AUTHENTICATION_HEADER
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_stations(request):
     """Return stations that belong to a user, along with some information
     regarding occupied and non-occupied chargers
@@ -52,6 +54,7 @@ def get_stations(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_station_markers(_):
     """Return stations markers, to be rendered on map
 
@@ -82,6 +85,7 @@ def get_station_markers(_):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def add_station(request):
     """Create a StationRequest for an operator to be added to a station
 
@@ -123,6 +127,7 @@ def add_station(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def answer_station_request(request):
     """Endpoint so that an operator can accept/reject a user's request to join
     a station
@@ -165,6 +170,7 @@ def answer_station_request(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_station_requests(request):
     """Get StationRequests for all the stations that a user belongs to. This
     endpoint is used so that operators can retrieve all the StationRequests
@@ -196,6 +202,7 @@ def get_station_requests(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_personal_station_requests(request):
     """Get StationRequests that an operator has requested
 
@@ -226,6 +233,7 @@ def get_personal_station_requests(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def create_station(request):
     """Create a new Station
 
@@ -347,6 +355,7 @@ def create_station(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_station(request):
     """Get Station information
 
@@ -386,6 +395,7 @@ def get_station(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_parking_costs(request):
     """Get Station's parking cost for a specific date range
 
@@ -440,6 +450,7 @@ def get_parking_costs(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def set_parking_cost(request):
     """Set the default parking cost
 

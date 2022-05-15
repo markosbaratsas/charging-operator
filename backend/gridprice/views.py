@@ -10,6 +10,7 @@ from gridprice.serializers import GridPriceSerializer, LocationSerializer
 from gridprice.useful_functions import get_location
 from reservations.useful_functions import str_to_datetime
 from users.body_parameters import AUTHENTICATION_HEADER
+from users.decorators import operator_required
 
 
 @swagger_auto_schema(
@@ -33,6 +34,7 @@ from users.body_parameters import AUTHENTICATION_HEADER
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_grid_prices(request):
     """Get grid prices that exist on the database, for a specific datetime
     period specified in the start_time and end_time in `request.data`.
@@ -99,6 +101,7 @@ def get_grid_prices(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_recent_prices(request):
     """Get the most recent grid prices that exist on the database, for a
     specific station with station_id, or for a specific location with a
@@ -144,6 +147,7 @@ def get_recent_prices(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
+@operator_required
 def get_locations(_):
     """Get locations
 
