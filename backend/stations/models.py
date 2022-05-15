@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import MyUser
 from django.db import models
 import datetime
 from pytz import timezone
@@ -13,7 +13,7 @@ class Station(models.Model):
     longitude = models.DecimalField(max_digits=8, decimal_places=5, default=0)
     address = models.CharField(max_length=63, default='')
     phone = models.CharField(max_length=15, default='')
-    operators = models.ManyToManyField(User)
+    operators = models.ManyToManyField(MyUser)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL,
                                  null=True, blank=True)
 
@@ -64,7 +64,7 @@ from {str(self.from_datetime)}, to {str(self.to_datetime)}'
 class StationRequests(models.Model):
     id = models.AutoField(primary_key=True)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
-    operator = models.ForeignKey(User, on_delete=models.CASCADE)
+    operator = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.id}, {self.station.name}, {self.operator.username}'

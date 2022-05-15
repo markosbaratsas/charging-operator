@@ -7,19 +7,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from users.body_parameters import AUTHENTICATION_HEADER
-from users.serializers import RegistrationSerializer
+from users.decorators import operator_required
+from users.serializers import RegistrationOperatorSerializer
 
 
 @swagger_auto_schema(
     methods=['POST'],
     responses={
-        200: RegistrationSerializer,
+        200: RegistrationOperatorSerializer,
         403: 'Registration Failed'
     }
 )
 @api_view(['POST', ])
-def register_user(request):
-    serializer = RegistrationSerializer(data=request.data)
+def register_operator(request):
+    serializer = RegistrationOperatorSerializer(data=request.data)
     data = {}
     if serializer.is_valid():
         user = serializer.save()
@@ -42,7 +43,8 @@ def register_user(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
-def delete_token(request):
+@operator_required
+def delete_token_operator(request):
     try:
         request.user.auth_token.delete()
     except (AttributeError, ObjectDoesNotExist):
@@ -61,7 +63,8 @@ def delete_token(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
-def validate_token(_):
+@operator_required
+def validate_token_operator(_):
     """Endpoint used to validate that a user's token is actually valid
 
     Returns:

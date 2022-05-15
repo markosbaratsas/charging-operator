@@ -1,7 +1,6 @@
 from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
-from django.contrib.auth.models import User
 
 from chargers.models import Charger, MethodConstantDecimal, PricingGroup
 from reservations.models import Reservation, Vehicle

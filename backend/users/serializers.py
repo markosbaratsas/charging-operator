@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from users.models import MyUser
 
-class RegistrationSerializer(serializers.ModelSerializer):
+class RegistrationOperatorSerializer(serializers.ModelSerializer):
     """Registration serializer, used when a new user is registered
     """
 
@@ -9,15 +9,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
                                       write_only=True)
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ['username', 'password', 'password2']
         extra_kwargs = {
             'password': {'write_only': True}
         }
     
     def save(self):
-        user = User(
-            username=self.validated_data['username']
+        user = MyUser(
+            username=self.validated_data['username'],
+            is_operator=True,
+            is_owner=False
         )
         password = self.validated_data['password']
         password2 = self.validated_data['password2']

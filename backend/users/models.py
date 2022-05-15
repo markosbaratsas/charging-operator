@@ -1,5 +1,6 @@
 from django.conf import settings
-
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
@@ -8,3 +9,9 @@ from rest_framework.authtoken.models import Token
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+class MyUser(AbstractUser):
+    # already has the fiellds username, email, password because of
+    # inheriting AbstractUser
+    is_operator = models.BooleanField('operator status', default=True)
+    is_owner = models.BooleanField('owner status', default=True)
