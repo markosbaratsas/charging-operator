@@ -24,28 +24,8 @@ const NewStation = ({title}) => {
     const [phone, setPhone] = useState("");
     const [location, setLocation] = useState({name: "", id: null});
 
-    const [chargers, setChargers] = useState([{
-        current: "AC",
-        connector_type: "Whatever",
-        power: 12,
-        charger_name: "My Cool Charger",
-        charger_group: "whatever man",
-        id: -2
-    }]);
-    const [chargerGroups, setChargerGroups] = useState([{id: -1, name: "... Add a new Charger Group"},{id: 1000,
-            name: "whatever man",
-            pricing_method: {
-                name: "Fixed Price",
-                variables: [
-                    {
-                        name: "c",
-                        type: "float",
-                        id: 1,
-                        value: 0.1
-                    }
-                ]
-            }
-        }]);
+    const [chargers, setChargers] = useState([]);
+    const [chargerGroups, setChargerGroups] = useState([{id: -1, name: "... Add a new Charger Group"}]);
 
     // STEP 2 - counts so that we have unique ids in our arrays
     const [chargerCount, setChargerCount] = useState(0);
