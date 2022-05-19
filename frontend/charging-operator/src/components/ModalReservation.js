@@ -11,15 +11,13 @@ import { getTimeString, stringToDatetime } from "../utils/usefulFunctions";
 
 const OWNER_REGEX = /^[A-z0-9_\ ]{2,31}$/;
 const VEHICLE_NAME_REGEX = /^[A-z0-9_\ ]{2,31}$/;
-const VEHICLE_MODEL_REGEX = /^[A-z0-9_\ ]{2,31}$/;
 const VEHICLE_LICENSE_PLATE = /^[A-z0-9\ ]{2,31}$/;
 
 
 const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime,
-    departureTime, setDepartureTime, owner, setOwner, charger, setCharger,
-    vehicleModel, setVehicleModel, vehicleName, setVehicleName, initializeInputState,
-    vehicleLicensePlate, setVehicleLicensePlate, getAvailables, smartV2G, setSmartV2G,
-    availableChargers, handleCancel, reservation, searchReservations}) => {
+    departureTime, setDepartureTime, owner, setOwner, charger, setCharger, vehicleName,
+    setVehicleName, initializeInputState, vehicleLicensePlate, setVehicleLicensePlate, getAvailables,
+    smartV2G, setSmartV2G, availableChargers, handleCancel, reservation, searchReservations}) => {
 
     const alert = useAlert();
     const { getAuth } = AuthProvider();
@@ -28,7 +26,6 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
     const [departureTimeError, setDepartureTimeError] = useState(false);
     const [chargerError, setChargerError] = useState(false);
     const [ownerError, setOwnerError] = useState(false);
-    const [vehicleModelError, setVehicleModelError] = useState(false);
     const [vehicleNameError, setVehicleNameError] = useState(false);
     const [vehicleLicensePlateError, setVehicleLicensePlateError] = useState(false);
 
@@ -74,10 +71,6 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
             setVehicleNameError(true);
             errors = true;
         }
-        if (!VEHICLE_MODEL_REGEX.test(vehicleModel)) {
-            setVehicleModelError(true);
-            errors = true;
-        }
         if (!VEHICLE_LICENSE_PLATE.test(vehicleLicensePlate)) {
             setVehicleLicensePlateError(true);
             errors = true;
@@ -96,7 +89,6 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
                 station_id: stationId,
                 owner_name: owner,
                 vehicle_name: vehicleName,
-                vehicle_model: vehicleModel,
                 vehicle_license_plate: vehicleLicensePlate,
                 smart_vtg: smartV2G
             });
@@ -117,7 +109,6 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
                 station_id: stationId,
                 owner_name: owner,
                 vehicle_name: vehicleName,
-                vehicle_model: vehicleModel,
                 vehicle_license_plate: vehicleLicensePlate,
                 smart_vtg: smartV2G
             });
@@ -148,10 +139,9 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
     useEffect(() => {
         setChargerError(false);
         setOwnerError(false);
-        setVehicleModelError(false);
         setVehicleNameError(false);
         setVehicleLicensePlateError(false);
-    }, [charger, owner, vehicleName, vehicleModel, vehicleLicensePlate])
+    }, [charger, owner, vehicleName, vehicleLicensePlate])
     
 
     return (
@@ -247,21 +237,6 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
                             </div>
                             {vehicleNameError ?
                                 <p className="error-p">Specify a Vehicle Name. 2-31 characters and
-                                can include letters, numbers, spaces and underscores.</p>
-                            : null}
-
-                            <div className="label-input-reservations1">
-                                <h5>Vehicle Model</h5>
-                                <input
-                                    type="text"
-                                    className={"my-classic-input" + " " + (vehicleModelError ? "error-selected" : "")}
-                                    placeholder="Input Vehicle's model"
-                                    value={vehicleModel}
-                                    onChange={(e) => setVehicleModel(e.target.value)}
-                                />
-                            </div>
-                            {vehicleModelError ?
-                                <p className="error-p">Specify a Vehicle Model. 2-31 characters and
                                 can include letters, numbers, spaces and underscores.</p>
                             : null}
 

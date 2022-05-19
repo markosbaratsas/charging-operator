@@ -1,4 +1,4 @@
-import { checkAuthentication } from "../api/BackendCalls";
+import { checkAuthentication, checkAuthenticationOwner } from "../api/BackendCalls";
 
 const AuthProvider = () => {
     const getAuth = () => {
@@ -20,11 +20,21 @@ const AuthProvider = () => {
         return false;
     }
 
+    const isAuthenticatedOwner = async () => {
+        const auth = getAuth();
+        const validate_token = await checkAuthenticationOwner(auth);
+
+        if (auth && Object.keys(auth).length > 0 && validate_token) {
+            return true;
+        }
+        return false;
+    }
+
     const logout = () => {
         localStorage.removeItem('auth');
     }
 
-    return {getAuth, setAuth, isAuthenticated, logout}
+    return {getAuth, setAuth, isAuthenticated, isAuthenticatedOwner, logout}
 }
 
 export default AuthProvider;

@@ -45,7 +45,6 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
     const [departureTime, setDepartureTime] = useState("");
     const [owner, setOwner] = useState("");
     const [charger, setCharger] = useState("");
-    const [vehicleModel, setVehicleModel] = useState("");
     const [vehicleName, setVehicleName] = useState("");
     const [vehicleLicensePlate, setVehicleLicensePlate] = useState("");
     const [smartV2G, setSmartV2G] = useState(true);
@@ -101,7 +100,6 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
 
         setOwner(reserv.owner);
         setVehicleName(reserv.vehicle_name);
-        setVehicleModel(reserv.model);
         setVehicleLicensePlate(reserv.license_plate);
         setShow(true);
     }
@@ -124,7 +122,6 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
         setAvailableChargers([]);
         setOwner("");
         setVehicleName("");
-        setVehicleModel("");
         setVehicleLicensePlate("");
         setSmartV2G(true);
         setCurrentBattery("");
@@ -408,8 +405,6 @@ const Reservations = ({title, station, setStation, setActivePage}) => {
             charger={charger}
             setCharger={setCharger}
             reservation={reservation}
-            vehicleModel={vehicleModel}
-            setVehicleModel={setVehicleModel}
             vehicleName={vehicleName}
             setVehicleName={setVehicleName}
             vehicleLicensePlate={vehicleLicensePlate}

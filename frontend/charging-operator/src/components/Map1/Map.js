@@ -4,7 +4,7 @@ import {
     Marker,
     InfoWindow
 } from '@react-google-maps/api';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import mapStyles from './styles'
 
 const mapContainerStyle = {
@@ -33,45 +33,43 @@ const Map = ({stationSelected, setStationSelected, markers}) => {
     return (
         <GoogleMap 
             mapContainerStyle={mapContainerStyle}
-            zoom={7}
+            zoom={6}
             center={center}
             options={options}
         >
 
             {markers.map((marker) => (
-                <Marker
-                  key={marker.id}
-                  position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
-                  onClick={(e) => {
-                    setStationSelected(marker);
-                  }}
-                  icon={{
-                    url: "/icons/marker-icon.png",
-                    origin: new window.google.maps.Point(0, 0),
-                    anchor: new window.google.maps.Point(15, 15),
-                    scaledSize: new window.google.maps.Size(30, 30),
-                  }}
-                />
+                <>
+                    <Marker
+                        key={marker.id}
+                        position={{ lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) }}
+                        onClick={(e) => {
+                            setStationSelected(marker);
+                        }}
+                        icon={{
+                            url: "/icons/marker-icon-green2.png",
+                            origin: new window.google.maps.Point(0, 0),
+                            anchor: new window.google.maps.Point(15, 15),
+                            scaledSize: new window.google.maps.Size(35, 25),
+                        }}
+                    >
+                        {stationSelected === marker ?
+                            <InfoWindow
+                                onCloseClick={() => {
+                                setStationSelected(null);
+                                }}
+                            >
+                                <div>
+                                    <h2>
+                                        {stationSelected.name}
+                                    </h2>
+                                    <p>{stationSelected.address}</p>
+                                </div>
+                            </InfoWindow>
+                        : null}
+                    </Marker>
+                </>
               ))}
-
-            {stationSelected ? (
-                <InfoWindow
-                    position={{
-                            lat: parseFloat(stationSelected.latitude),
-                            lng: parseFloat(stationSelected.longitude)
-                    }}
-                    onCloseClick={() => {
-                    setStationSelected(null);
-                    }}
-                >
-                    <div>
-                        <h2>
-                            {stationSelected.name}
-                        </h2>
-                        <p>{stationSelected.address}</p>
-                    </div>
-                </InfoWindow>
-            ) : null}
         </GoogleMap>
     );
 }

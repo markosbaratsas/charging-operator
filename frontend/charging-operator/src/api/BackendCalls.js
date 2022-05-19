@@ -7,6 +7,7 @@ const urls = {
     register: '/register',
     logout: '/logout',
     checkAuth: '/validate-token',
+    checkAuthOwner: '/validate-token-owner',
     getUserStations: '/stations',
     getStationMarkers: '/stations/markers',
     addStation: '/stations/add-station',
@@ -40,6 +41,15 @@ const urls = {
     answerStationRequest: 'stations/answer-request',
     getStationRequests: 'stations/requests',
     getPersonalStationRequests: 'stations/personal-requests',
+    getOwner: 'reservations/owner',
+    editOwner: 'reservations/owner/edit',
+    getVehicles: 'reservations/vehicles',
+    ownerCreateReservation: 'reservations/owner-create-reservation',
+    deleteVehicle: 'reservations/vehicles/delete',
+    createVehicle: 'reservations/vehicles/create',
+    getModels: 'reservations/model/get-models',
+    getManufacturers: 'reservations/model/get-manufacturers',
+    ownerReservations: 'reservations/owner-reservations',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -591,6 +601,27 @@ export const registerUser = async (user, pwd, pwd2) => {
     return ['Registration failed. Please try again.', false];
 }
 
+export const registerUserOwner = async (user, pwd, pwd2, name, phone) => {
+
+    try {
+        const response = await axios.post(urls.register,
+            JSON.stringify({ owner:"Yes", username: user, password: pwd, password2: pwd2, name: name, phone: phone }),
+            unauthorizedHeaders
+        );
+        if (response && response.data && response.data.token)
+            return [null, response.data];
+
+    } catch (err) {
+        console.log(err);
+        if (!err?.response) {
+            return ['No Server Response.', false];
+        } else if (err.response?.status === 403) {
+            return ['Username already in use.', false];
+        }
+    }
+    return ['Registration failed. Please try again.', false];
+}
+
 export const logoutUser = async (token) => {
 
     try {
@@ -612,6 +643,21 @@ export const checkAuthentication = async (token) => {
 
     try {
         const response = await axios.post(urls.checkAuth,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return true;
+
+    } catch (err) {
+        console.log(err)
+        return false;
+    }
+}
+
+export const checkAuthenticationOwner = async (token) => {
+
+    try {
+        const response = await axios.post(urls.checkAuthOwner,
             JSON.stringify({}),
             getAuthorizedHeaders(token.accessToken)
         );
@@ -716,5 +762,124 @@ export const getNotHealthyChargers = async (token, station_id) => {
     } catch (err) {
         console.log(err?.response?.data)
     }
+    return null;
+}
+
+export const getOwner = async (token) => {
+    try {
+        const response = await axios.post(urls.getOwner,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
+
+    return null;
+}
+
+export const getVehicles = async (token) => {
+    try {
+        const response = await axios.post(urls.getVehicles,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
+
+    return null;
+}
+
+export const editOwner = async (token, name, phone) => {
+    try {
+        const response = await axios.post(urls.editOwner,
+            JSON.stringify({ name, phone }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+    } catch (err) {}
+
+    return {ok: false};
+}
+
+export const getManufacturers = async (token) => {
+    try {
+        const response = await axios.post(urls.getManufacturers,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
+
+    return null;
+}
+
+export const getModels = async (token, manufacturer) => {
+    try {
+        const response = await axios.post(urls.getModels,
+            JSON.stringify({ manufacturer }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {}
+
+    return null;
+}
+
+export const createVehicle = async (token, name, model_id, license_plate) => {
+    try {
+        const response = await axios.post(urls.createVehicle,
+            JSON.stringify({ name, model_id, license_plate }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return {ok: true, data: response.data};
+    } catch (err) {}
+
+    return {ok: false};
+}
+
+export const deleteVehicle = async (token, vehicle_id) => {
+    try {
+        const response = await axios.post(urls.deleteVehicle,
+            JSON.stringify({ vehicle_id }),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {}
+
+    return {ok: false};
+}
+
+export const ownerCreateReservation = async (token, reservation) => {
+    try {
+        await axios.post(urls.ownerCreateReservation,
+            JSON.stringify({reservation}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        return {ok: true};
+    } catch (err) {
+        console.log(err?.response?.data);
+    }
+
+    return {ok: false};
+}
+
+export const ownerReservations = async (token) => {
+    try {
+        const response = await axios.post(urls.ownerReservations,
+            JSON.stringify({}),
+            getAuthorizedHeaders(token.accessToken)
+        );
+        if (response && response.data)
+            return response.data;
+    } catch (err) {
+        console.log(err?.response?.data);
+    }
+
     return null;
 }

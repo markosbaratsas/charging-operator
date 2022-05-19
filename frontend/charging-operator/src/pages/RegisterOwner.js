@@ -5,12 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import AuthProvider from "../context/AuthProvider";
 import useTitle from "../hooks/useTitle";
-import { registerUser } from "../api/BackendCalls";
+import { registerUserOwner } from "../api/BackendCalls";
 
 const USER_REGEX = /^[A-z][A-z0-9_]{3,23}$/;
+const OWNER_NAME_REGEX = /^[A-z][A-z0-9_\ ]{3,30}$/;
+const PHONE_REGEX = /^[0-9]{10}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const Register = ({title}) => {
+const RegisterOwner = ({title}) => {
     useTitle({title});
 
     const { isAuthenticated, isAuthenticatedOwner } = AuthProvider();
@@ -25,6 +27,14 @@ const Register = ({title}) => {
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
+
+    const [nameOwner, setNameOwner] = useState('');
+    const [validNameOwner, setValidNameOwner] = useState(false);
+    const [nameOwnerFocus, setNameOwnerFocus] = useState(false);
+
+    const [phone, setPhone] = useState('');
+    const [validPhone, setValidPhone] = useState(false);
+    const [phoneFocus, setPhoneFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -54,25 +64,36 @@ const Register = ({title}) => {
     }, [user])
 
     useEffect(() => {
+        setValidNameOwner(OWNER_NAME_REGEX.test(nameOwner));
+    }, [nameOwner])
+
+    useEffect(() => {
+        setValidPhone(PHONE_REGEX.test(phone));
+    }, [phone])
+
+    useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
         setValidMatch(pwd === matchPwd);
     }, [pwd, matchPwd])
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchPwd])
+    }, [user, pwd, matchPwd, nameOwner, phone])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if button enabled with JS hack
+        console.log()
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
-        if (!v1 || !v2) {
+        const v3 = PHONE_REGEX.test(phone);
+        const v4 = OWNER_NAME_REGEX.test(nameOwner);
+        if (!v1 || !v2 || !v3 || !v4) {
             setErrMsg("Invalid Entry");
             return;
         }
 
-        let [error, ok] = await registerUser(user, pwd, matchPwd);
+        let [error, ok] = await registerUserOwner(user, pwd, matchPwd, nameOwner, phone);
         if (error) {
             setErrMsg(error);
             errRef.current.focus();
@@ -136,6 +157,57 @@ const Register = ({title}) => {
                                     <div className="input-note">
                                         <div className="input-validation">
                                             <input
+                                                placeholder="Full Name"
+                                                type="text"
+                                                id="ownername"
+                                                autoComplete="off"
+                                                onChange={(e) => setNameOwner(e.target.value)}
+                                                value={nameOwner}
+                                                required
+                                                onFocus={() => setNameOwnerFocus(true)}
+                                                onBlur={() => setNameOwnerFocus(false)}
+                                            />
+                                            <div>
+                                                <FontAwesomeIcon icon={faCheck} className={validNameOwner ? "valid" : "hide"} />
+                                                <FontAwesomeIcon icon={faTimes} className={validNameOwner || !nameOwner ? "hide" : "invalid"} />
+                                            </div>
+                                        </div>
+                                        <p id="uidnote" className={nameOwnerFocus && nameOwner && !validNameOwner ? "instructions" : "offscreen"}>
+                                            <FontAwesomeIcon className="info-icon" icon={faInfoCircle} />
+                                            4 to 31 characters.<br />
+                                            Must begin with a letter.<br />
+                                            Letters, numbers, spaces and underscores allowed.
+                                        </p>
+                                    </div>
+
+
+                                    <div className="input-note">
+                                        <div className="input-validation">
+                                            <input
+                                                placeholder="Phone"
+                                                type="tel"
+                                                id="phone"
+                                                autoComplete="off"
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                value={phone}
+                                                required
+                                                onFocus={() => setPhoneFocus(true)}
+                                                onBlur={() => setPhoneFocus(false)}
+                                            />
+                                            <div>
+                                                <FontAwesomeIcon icon={faCheck} className={validPhone ? "valid" : "hide"} />
+                                                <FontAwesomeIcon icon={faTimes} className={validPhone || !phone ? "hide" : "invalid"} />
+                                            </div>
+                                        </div>
+                                        <p id="uidnote" className={phoneFocus && phone && !validPhone ? "instructions" : "offscreen"}>
+                                            <FontAwesomeIcon className="info-icon" icon={faInfoCircle} />
+                                            Phone should have exactly 10 digits
+                                        </p>
+                                    </div>
+
+                                    <div className="input-note">
+                                        <div className="input-validation">
+                                            <input
                                                 placeholder="Password"
                                                 type="password"
                                                 id="password"
@@ -184,9 +256,8 @@ const Register = ({title}) => {
                                     <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
                                 </form>
 
-                                <p className="already-registered">
-                                    <Link to="/login">Sign In</Link><br />
-                                    <Link to="/register-owner">Register as an EV owner</Link>
+                                <p className="already-registered">Already registered?<br />
+                                    <Link to="/login">Sign In</Link>
                                 </p>
                             </div>
                         )}
@@ -197,4 +268,4 @@ const Register = ({title}) => {
     );
 }
 
-export default Register;
+export default RegisterOwner;

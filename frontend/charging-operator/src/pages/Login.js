@@ -9,11 +9,13 @@ import { loginUser } from '../api/BackendCalls';
 const Login = ({title}) => {
     useTitle({title});
 
-    const { isAuthenticated, setAuth } = AuthProvider();
+    const { isAuthenticated, setAuth, isAuthenticatedOwner } = AuthProvider();
 
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/app/dashboard";
+    const from_owner = location.state?.from?.pathname || "/owner/dashboard";
+    const[loggedIn, setLoggedIn] = useState(false);
 
     const userRef = useRef();
     const errRef = useRef();
@@ -24,9 +26,11 @@ const Login = ({title}) => {
 
     useEffect(async () => {
         const checkAuth = await isAuthenticated();
+        const checkAuthOwner = await isAuthenticatedOwner();
 
         if (checkAuth) navigate(from, { replace: true });
-    }, [])
+        if (checkAuthOwner) navigate(from_owner, { replace: true });
+    }, [loggedIn])
 
     useEffect(() => {
         userRef.current.focus();
@@ -49,7 +53,7 @@ const Login = ({title}) => {
         setAuth({ accessToken });
         setUser('');
         setPwd('');
-        navigate(from, { replace: true });
+        setLoggedIn(true);
     }
     
     return (
@@ -82,7 +86,8 @@ const Login = ({title}) => {
                             <button>Sign In</button>
                         </form>
                         <p className="need-acount">Need an Account?<br />
-                            <Link to="/register">Register for free</Link>
+                            <Link to="/register-owner">Register as a vehicle owner</Link><br />
+                            <Link to="/register">Register as a station operator</Link>
                         </p>
                     </div>
                 </div>

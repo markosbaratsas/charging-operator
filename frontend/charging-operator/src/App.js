@@ -24,6 +24,7 @@ import Layout1 from './components/Layout1';
 import Layout2 from './components/Layout2';
 import Layout3 from './components/Layout3';
 import RequireAuth from './components/RequireAuth';
+import RequireAuthOwner from './components/RequireAuthOwner';
 import VehicleState from './pages/app/VehicleState';
 import AppNotAuthorized from './pages/app/AppNotAuthorized';
 import Parking from './pages/app/Parking';
@@ -31,6 +32,10 @@ import Layout4 from './components/Layout4';
 import Statistics from './pages/app/Statistics';
 import Settings from './pages/app/Settings';
 import PricingMethod from './pages/PricingMethods';
+import RegisterOwner from './pages/RegisterOwner';
+import Layout5 from './components/Layout5';
+import OwnerDashboard from './pages/owner/OwnerDashboard';
+import OwnerReservation from './pages/owner/OwnerReservation';
 
 
 const options = {
@@ -58,6 +63,7 @@ function App() {
                     <Route path="/pricing-methods" element={<PricingMethod title="Pricing Methods - Charging Operator" />} />
                     <Route path="/login" element={<Login title="Charging Operator - Login" />} />
                     <Route path="/register" element={<Register title="Charging Operator - Register" />} />
+                    <Route path="/register-owner" element={<RegisterOwner title="Charging Operator - Owner Register" />} />
                     <Route path="/logout" element={<Logout title="Charging Operator - Successfully logged out"/>} />
                 </Route>
 
@@ -123,8 +129,17 @@ function App() {
                     </Route>
                 </Route>
 
+                <Route element={<RequireAuthOwner />}>
+                    <Route element={<Layout5 />}>
+                        <Route path="/owner/dashboard" element={<OwnerDashboard title="Owner Dashboard - Charging Operator"/>} />
+                    </Route>
+                    <Route element={<Layout5 />}>
+                        <Route path="/owner/create-reservation" element={<OwnerReservation title="New Reservation - Charging Operator"/>} />
+                    </Route>
+                </Route>
+
                 {/* catch all */}
-                <Route path="*" element={<Page404 />} />
+                <Route path="*" element={<Page404 title="404 - Charging Operator" />} />
             </Routes>
         </AlertProvider>
     );

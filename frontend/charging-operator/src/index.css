@@ -559,7 +559,7 @@
 }
 
 .third-div-signup form {
-  padding: 70px 40px 80px 40px;
+  padding: 90px 40px 80px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2790,7 +2790,7 @@
 
 .station-chargers-buttons button {
   border: none;
-  background-color: #d5d5d5;
+  background-color: transparent;
 }
 
 .station-chargers-buttons button:hover {
@@ -3563,4 +3563,228 @@
 .blue-info {
   color: #39397a !important;
   font-style: italic;
+}
+
+.owner-div {
+  background-color: #dddddd;
+  width: 420px;
+  padding: 30px 50px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.owner-div h2 {
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: 600;
+  color: #202020;
+  padding-bottom: 20px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.owner-div div {
+  width: 100%;
+}
+
+.owner-div h3 {
+  font-size: 17px;
+  text-align: left;
+  font-weight: 400;
+  color: #202020;
+}
+
+.owner-button {
+  background-color: #202020;
+  padding: 5px 20px;
+  border: none;
+  outline: none;
+  border-radius: 2px;
+  margin-top: 20px;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.owner-button:hover {
+  background-color: #505050;
+  cursor: pointer;
+}
+
+.owner-button h5 {
+  font-size: 18px;
+  line-height: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  color: #f3f3f3;
+  width: 150px;
+}
+
+.owner-button h4 {
+  font-size: 40px;
+  line-height: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-align: center;
+  color: #f3f3f3;
+  width: 60px;
+}
+
+.owner-button h6 {
+  font-size: 20px;
+  line-height: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  text-align: center;
+  color: #f3f3f3;
+}
+
+.owner-button p {
+  font-size: 60px;
+  line-height: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.width-800 {
+  width: 800px !important;
+}
+
+.vehicles-ul {
+  list-style: none;
+  width: 100%;
+}
+
+.vehicles-ul li {
+  width: 98%;
+  padding: 8px;
+  margin: 0px 0px 10px 0px;
+  border-radius: 8px;
+  text-decoration: none;
+  background-color: #eeeeee;
+}
+
+.vehicles-ul li h2 {
+  font-weight: 500;
+  color: #202020;
+  font-size: 18px;
+  line-height: 25px;
+  padding-bottom: 5px;
+  font-family: 'Poppins', sans-serif;
+  text-align: left;
+}
+
+.vehicles-ul li p {
+  font-weight: 400;
+  color: #202020;
+  font-size: 15px;
+  line-height: 23px;
+  font-family: 'Poppins', sans-serif;
+  text-align: left;
+}
+
+.owner-dashboard {
+  padding: 0px 0px 100px 0px;
+}
+
+.owner-reservation {
+  padding-bottom: 200px;
+  width: 700px;
+}
+
+.disclosure-p {
+  margin: 20px 0px 0px 0px;
+  font-weight: 400;
+  color: #505050;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  font-style: italic;
+}
+
+.change-info-p {
+  font-weight: 400;
+  color: #505050;
+  font-size: 16px;
+  line-height: 23px;
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.change-info-p a {
+  color: #202020;
+}
+
+.selected-station {
+  background-color: #dddddd;
+  padding: 10px 40px;
+  margin: 10px 0px 30px 0px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+.selected-station h4 {
+  font-weight: 400;
+  font-style: normal;
+  color: #202020;
+  font-size: 19px;
+  line-height: 30px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.selected-station h5 {
+  font-weight: 500;
+  font-style: normal;
+  color: #202020;
+  font-size: 15px;
+  line-height: 24px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.selected-station h5 span {
+  font-weight: 400;
+  font-style: italic;
+  color: #202020;
+  font-size: 15px;
+  line-height: 24px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.width-600 {
+  width: 900px !important;
+}
+
+.station-chargers-ul1-style2 {
+  background-color: #dddddd;
+  list-style: none;
+  padding: 20px 40px 10px 40px;
+  width: 800px;
+  border-radius: 5px;
+  border: 3px solid #909090;
+}
+
+.station-chargers-ul1-style2 li {
+  width: 98%;
+  padding: 8px;
+  margin: 0px 0px 10px 0px;
+  border-radius: 8px;
+  text-decoration: none;
+  background-color: #eeeeee;
+  border: 2px solid #bbb;
+}
+
+.station-chargers-ul1-style2 li h2 {
+  font-weight: 500;
+  color: #202020;
+  font-size: 18px;
+  line-height: 25px;
+  padding-bottom: 5px;
+  font-family: 'Poppins', sans-serif;
 }
