@@ -8,16 +8,19 @@ from chargers.models import Charger
 
 from chargers.serializers import ChargerReservationSerializer
 from chargers.useful_functions import get_charging_price
-from reservations.models import Owner, Reservation, Vehicle, VehicleState
-from reservations.serializers import (ReservationSerializer,
+from reservations.models import (Model, Owner, Reservation, Vehicle,
+                                 VehicleState)
+from reservations.serializers import (ModelSerializer, OwnerSerializer,
+                                      ReservationSerializer, VehicleSerializer,
                                       VehiclesChargingNowSerializer)
 from reservations.useful_functions import (get_station_available_chargers,
                                            str_to_datetime,
                                            validate_dates)
+from stations.models import Station
 from stations.useful_functions import (calculate_parking_cost,
                                        find_parking_costs, get_user_station)
 from users.body_parameters import AUTHENTICATION_HEADER
-from users.decorators import operator_required
+from users.decorators import operator_required, owner_required
 
 
 @swagger_auto_schema(
@@ -220,7 +223,6 @@ def get_reservations(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
-@operator_required
 def get_available_chargers(request):
     """Get available chargers based on reservations made on this charger
 
@@ -229,7 +231,13 @@ def get_available_chargers(request):
             an HTTP_200_OK status, else it returns an error message along
             with an error status
     """
-    station = get_user_station(request.user, request.data["station_id"])
+    try:
+        station = Station.objects.get(id=int(request.data["station_id"]))
+    except:
+        return Response({
+                "error": "Invalid data"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
     arrival_time = str_to_datetime(request.data["arrival_time"])
     departure_time = str_to_datetime(request.data["departure_time"])
 
@@ -325,9 +333,111 @@ def create_reservation(request):
         vehicle = Vehicle.objects.create(
             owner=owner,
             name=reservation_dict["vehicle_name"],
-            model=reservation_dict["vehicle_model"],
             license_plate=reservation_dict["vehicle_license_plate"]
         )
+        Reservation.objects.create(
+            vehicle=vehicle,
+            charger=charger,
+            station=station,
+            vehicle_state=None,
+            expected_arrival=arrival_time,
+            actual_arrival=arrival_time,
+            expected_departure=departure_time,
+            actual_departure=departure_time,
+            state="Reserved",
+            price_per_kwh=get_charging_price(charger.pricing_group,
+                                            set(),
+                                            arrival_time,
+                                            departure_time),
+            smart_vtg=reservation_dict["smart_vtg"]
+        )
+
+    except:
+        return Response({
+                "error": "Something went wrong on reservation creation"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['reservation'],
+        properties={
+            'reservation': openapi.TYPE_STRING
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def owner_create_reservation(request):
+    """Create a new Reservation
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an error message along with an error status
+    """
+    if 'reservation' not in request.data:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    reservation_dict = request.data["reservation"]
+
+    try:
+        station = Station.objects.get(id=int(reservation_dict["station_id"]))
+    except:
+        return Response({
+                "error": "Invalid station"
+            }, status=status.HTTP_400_BAD_REQUEST)
+    print("here1")
+
+    arrival_time = str_to_datetime(reservation_dict["arrival_time"])
+    departure_time = str_to_datetime(reservation_dict["departure_time"])
+
+    if arrival_time == None or departure_time == None:
+        return Response({
+                "error": "Invalid dates"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    available_chargers = set(get_station_available_chargers(station,
+                                                            arrival_time,
+                                                            departure_time))
+    if available_chargers == None:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        charger = Charger.objects.get(id=int(reservation_dict["charger_id"]))
+    except:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    if charger not in available_chargers:
+        return Response({
+                "error": "This charger is not available"
+            }, status=status.HTTP_400_BAD_REQUEST)
+    print("here2")
+
+    try:
+        vehicle = Vehicle.objects.get(id=reservation_dict["vehicle_id"])
+
+        if vehicle.owner.user != request.user:
+            return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         Reservation.objects.create(
             vehicle=vehicle,
             charger=charger,
@@ -427,7 +537,6 @@ def update_reservation(request):
         vehicle = Vehicle.objects.create(
             owner=owner,
             name=reservation_dict["vehicle_name"],
-            model=reservation_dict["vehicle_model"],
             license_plate=reservation_dict["vehicle_license_plate"]
         )
         Reservation.objects.create(
@@ -728,5 +837,339 @@ def end_reservation(request):
     r.save()
 
     serializer = ReservationSerializer(r)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'List with manufacturer names',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def get_manufacturers(_):
+    """Get all vehicle manufacturers that exist on the database
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status along with
+            the manufacturers, else it returns an error message along with an
+            error status
+    """
+    models = Model.objects.all()
+    manufacturers = set()
+
+    for i in models:
+        if i.manufacturer not in manufacturers:
+            manufacturers.add(i.manufacturer)
+
+    manufacturers = list(manufacturers)
+    manufacturers.sort()
+
+    ret = []
+    count = 1
+    for i in manufacturers:
+        ret.append({
+            "name": i,
+            "id": count
+        })
+        count += 1
+
+    return Response(ret, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['manufacturer'],
+        properties={
+            'manufacturer': openapi.TYPE_STRING,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ModelSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def get_models(request):
+    """Return all the models of a specific manufacturer
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an error message along with an error status
+    """
+    if 'manufacturer' not in request.data:
+        return Response({
+                "error": "Provide manufacturer name"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    models = Model.objects.filter(manufacturer=request.data['manufacturer'])
+    print(models, request.data['manufacturer'])
+    serializer = ModelSerializer(models, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['name', 'model_id', 'license_plate'],
+        properties={
+            'name': openapi.TYPE_STRING,
+            'model_id': openapi.TYPE_STRING,
+            'license_plate': openapi.TYPE_STRING,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: VehicleSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def create_vehicle(request):
+    """Create a new vehicle for a specific owner
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status along with
+            data, else it returns an error message along with an error status
+    """
+    if ('name' not in request.data
+            or 'model_id' not in request.data
+            or 'license_plate' not in request.data):
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        owner = Owner.objects.get(user=request.user)
+        model = Model.objects.get(id=int(request.data['model_id']))
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    # TODO: do better input checks here
+    vehicle = Vehicle.objects.create(
+        owner=owner,
+        name=request.data['name'],
+        model=model,
+        license_plate=request.data['license_plate']
+    )
+    serializer = VehicleSerializer(vehicle)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['vehicle_id'],
+        properties={
+            'vehicle_id': openapi.TYPE_BOOLEAN,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def delete_vehicle(request):
+    """Delete a vehicle
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status, else it
+            returns an error message along with an error status
+    """
+    if 'vehicle_id' not in request.data:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        owner = Owner.objects.get(user=request.user)
+        vehicle = Vehicle.objects.get(id=request.data['vehicle_id'],
+                                      owner=owner)
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    vehicle.delete()
+    return Response(status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: OwnerSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def get_owner(request):
+    """Get an owner's data
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status along with
+            owner's data, else it returns an error message along with an error
+            status
+    """
+    try:
+        owner = Owner.objects.get(user=request.user)
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = OwnerSerializer(owner)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: VehicleSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def get_vehicles(request):
+    """Get an owner's vehicles
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status along with
+            owner's vehicles, else it returns an error message along with an
+            error status
+    """
+    try:
+        owner = Owner.objects.get(user=request.user)
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    vehicles = Vehicle.objects.filter(owner=owner)
+    serializer = VehicleSerializer(vehicles, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        required=['name', 'phone'],
+        properties={
+            'name': openapi.TYPE_STRING,
+            'phone': openapi.TYPE_STRING,
+        },
+    ),
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: OwnerSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def edit_owner(request):
+    """Edit an owner's information
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status,
+            else it returns an error message along with an error status
+    """
+    if 'name' not in request.data or 'phone' not in request.data:
+        return Response({
+                "error": "Invalid format"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        owner = Owner.objects.get(user=request.user)
+        # TODO: do better input checks here
+        owner.name = str(request.data['name'])
+        owner.phone = str(request.data['phone'])
+        owner.save()
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    serializer = OwnerSerializer(owner)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: ReservationSerializer,
+        400: 'Bad Request',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def owner_reservations(request):
+    """Get an owner's reservations
+
+    Returns:
+        data, status: if successful returns an HTTP_200_OK status along with
+            owner's reservations, else it returns an error message along with an
+            error status
+    """
+    try:
+        owner = Owner.objects.get(user=request.user)
+    except:
+        return Response({
+                "error": "Unauthorized"
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+    reservations = []
+    for vehicle in Vehicle.objects.filter(owner=owner):
+        this_veh = Reservation.objects.filter(vehicle=vehicle)
+        for i in this_veh:
+            reservations.append(i)
+
+    # sort them by expected_arrival
+    reservations = sorted(reservations,
+                          key=lambda x: x.expected_arrival,
+                          reverse=True)
+    serializer = ReservationSerializer(reservations, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)

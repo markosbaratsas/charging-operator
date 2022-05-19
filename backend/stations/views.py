@@ -54,7 +54,6 @@ def get_stations(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
-@operator_required
 def get_station_markers(_):
     """Return stations markers, to be rendered on map
 
