@@ -4,6 +4,7 @@ from pytz import timezone
 
 from chargers.models import Charger
 from stations.models import Station
+from users.models import MyUser
 
 
 class Owner(models.Model):
@@ -11,17 +12,35 @@ class Owner(models.Model):
     name = models.CharField(max_length=31, default='')
     email = models.EmailField(max_length=31, default='')
     phone = models.CharField(max_length=15, default='')
+    user = models.ForeignKey(MyUser, on_delete=models.SET_NULL, null=True,
+                             blank=True)
 
     def __str__(self):
-        return f'{self.id}, {self.name}'
+        ret = f'{self.id}, {self.name}'
+        if self.user:
+            ret += ', ' + self.user.username
+        return ret
+
+
+class Model(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=63, default='')
+    manufacturer = models.CharField(max_length=63, default='')
+    battery_capacity = models.DecimalField(max_digits=8, decimal_places=4,
+                                          default=0)
+
+    def __str__(self):
+        return f'{self.id}, {self.name}, {self.manufacturer}, \
+{self.battery_capacity}'
 
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
     owner = models.ForeignKey(Owner, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=31, default='')
-    model = models.CharField(max_length=31, default='')
+    model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True)
     license_plate = models.CharField(max_length=31, default='')
+    default = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.id}, {self.name}, {self.model}'

@@ -2,7 +2,8 @@ from rest_framework import serializers
 from datetime import datetime
 from chargers.serializers import ChargerReservationSerializer
 
-from reservations.models import Reservation, VehicleState
+from reservations.models import Model, Owner, Reservation, Vehicle, VehicleState
+from stations.serializers import StationInformationSerializer
 
 
 class VehiclesChargingNowSerializer(serializers.ModelSerializer):
@@ -21,7 +22,7 @@ class VehiclesChargingNowSerializer(serializers.ModelSerializer):
                   'desired_final_battery']
 
     def get_model(self, obj):
-        return obj.vehicle.model
+        return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
 
     def get_license_plate(self, obj):
         return obj.vehicle.license_plate
@@ -55,6 +56,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     actual_arrival = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
     expected_departure = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
     actual_departure = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
+    station = serializers.SerializerMethodField()
 
     class Meta:
         model = Reservation
@@ -63,13 +65,13 @@ class ReservationSerializer(serializers.ModelSerializer):
                     'actual_departure', 'price_per_kwh', 'parking_cost',
                     'parking_cost_extra', 'energy_cost', 'total_cost',
                     'charger', 'total_energy_transmitted', 'vehicle_name',
-                    'owner_phone']
+                    'owner_phone', 'station']
 
     def get_vehicle_name(self, obj):
         return obj.vehicle.name
 
     def get_model(self, obj):
-        return obj.vehicle.model
+        return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
 
     def get_license_plate(self, obj):
         return obj.vehicle.license_plate
@@ -91,3 +93,39 @@ class ReservationSerializer(serializers.ModelSerializer):
                         'arrival_time': obj.actual_arrival,
                         'departure_time': obj.actual_departure,
                     }).data
+
+    def get_station(self, obj):
+        return StationInformationSerializer(obj.station).data
+
+
+class ModelSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Model
+        fields = ['id', 'name', 'manufacturer', 'battery_capacity']
+
+
+class OwnerSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Owner
+        fields = ['id', 'name', 'phone', 'email', 'username']
+
+    def get_username(self, obj):
+        return obj.user.username
+
+
+class VehicleSerializer(serializers.ModelSerializer):
+    model = serializers.SerializerMethodField()
+    owner = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Vehicle
+        fields = ['id', 'owner', 'name', 'model', 'license_plate', 'default']
+
+    def get_model(self, obj):
+        return ModelSerializer(obj.model).data
+
+    def get_owner(self, obj):
+        return OwnerSerializer(obj.owner).data
