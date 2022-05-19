@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <section className="footer flex-row-center-center">
+        <section className="footer flex-column-center-center">
             <div className="wrapper flex-row-center-start">
                 <div className="footer-left">
                     <ul className="flex-column-center-start">
@@ -24,14 +24,15 @@ const Footer = () => {
                 <div className="footer-right flex-column-end-center">
                     <ul>
                         <li>
-                            <Link to="/login/">Login</Link>
+                            <Link to="/login/">Get Started</Link>
                         </li>
                         <li>
-                            <Link to="/register/">Sign Up</Link>
+                            <Link to="/pricing-methods/">Pricing Methods</Link>
                         </li>
                     </ul>
                 </div>
             </div>
+            <p>© Charging Operator, 2022</p>
         </section>
     );
 }

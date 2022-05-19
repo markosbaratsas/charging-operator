@@ -50,6 +50,7 @@ const urls = {
     getModels: 'reservations/model/get-models',
     getManufacturers: 'reservations/model/get-manufacturers',
     ownerReservations: 'reservations/owner-reservations',
+    contact: 'contact',
 }
 const unauthorizedHeaders = {
     headers: { 'Content-Type': 'application/json' }
@@ -882,4 +883,16 @@ export const ownerReservations = async (token) => {
     }
 
     return null;
+}
+
+export const contactForm = async (fullname, email, message) => {
+    try {
+        await axios.post(urls.contact,
+            JSON.stringify({fullname, email, message}),
+            unauthorizedHeaders
+        );
+        return {ok: true}
+    } catch (err) {
+    }
+    return {ok: false};
 }

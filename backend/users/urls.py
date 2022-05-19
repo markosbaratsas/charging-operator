@@ -11,4 +11,5 @@ urlpatterns = [
                     name="validate_token_operator"),
     path('validate-token-owner', views.validate_token_owner,
                     name="validate_token_owner"),
+    path('contact', views.contact, name="contact"),
 ]

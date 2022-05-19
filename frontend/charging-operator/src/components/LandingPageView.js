@@ -7,7 +7,7 @@ const LandingPageView = () => {
                         Operator</h1>
                 </div>
                 <div className="landing-image flex-row-center-center">
-                    <img src="img/landing-page-img.png" alt="Charging operator app" />
+                    <img src="img/landing-page-laptop-phone.png" alt="Charging operator app" />
                 </div>
             </div>
         </section>
