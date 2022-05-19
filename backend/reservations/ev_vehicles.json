@@ -1,0 +1,1202 @@
+[
+    {
+        "company": "Tesla",
+        "model": "Model 3 Long Range Dual Motor",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Dacia",
+        "model": "Spring Electric",
+        "battery_capacity": 26
+    },
+    {
+        "company": "Tesla",
+        "model": "Model 3 ",
+        "battery_capacity": 57
+    },
+    {
+        "company": "BMW",
+        "model": "i4 eDrive40",
+        "battery_capacity": 80
+    },
+    {
+        "company": "Tesla",
+        "model": "Model Y Long Range Dual Motor",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Long Range AWD",
+        "battery_capacity": 70
+    },
+    {
+        "company": "Kia",
+        "model": "EV6 GT",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ Electric",
+        "battery_capacity": 38
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS 450+",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Kia",
+        "model": "EV6 Long Range 2WD",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq iV 80",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQA 250",
+        "battery_capacity": 66
+    },
+    {
+        "company": "Hyundai",
+        "model": "Kona Electric 64 kWh",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Polestar",
+        "model": "2 Long Range Dual Motor",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQE 350+",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Nissan",
+        "model": "Ariya 87kWh",
+        "battery_capacity": 87
+    },
+    {
+        "company": "Renault",
+        "model": "Megane E-Tech EV60 220hp",
+        "battery_capacity": 60
+    },
+    {
+        "company": "BMW",
+        "model": "i3 120 Ah",
+        "battery_capacity": 37
+    },
+    {
+        "company": "BMW",
+        "model": "i4 M50",
+        "battery_capacity": 80
+    },
+    {
+        "company": "BMW",
+        "model": "iX xDrive50",
+        "battery_capacity": 105
+    },
+    {
+        "company": "Lightyear",
+        "model": "One ",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Tesla",
+        "model": "Model S Plaid",
+        "battery_capacity": 95
+    },
+    {
+        "company": "Honda",
+        "model": "e ",
+        "battery_capacity": 28
+    },
+    {
+        "company": "Toyota",
+        "model": "bZ4X FWD",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID. Buzz ",
+        "battery_capacity": 77
+    },
+    {
+        "company": "BMW",
+        "model": "iX xDrive40",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS 580 4MATIC",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Renault",
+        "model": "Zoe ZE50 R110",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Lexus",
+        "model": "RZ 450e",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Tesla",
+        "model": "Model Y Performance",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 e-tron 40",
+        "battery_capacity": 76
+    },
+    {
+        "company": "Smart",
+        "model": "#1 ",
+        "battery_capacity": 66
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Long Range 2WD",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Tesla",
+        "model": "Model S Long Range",
+        "battery_capacity": 95
+    },
+    {
+        "company": "Kia",
+        "model": "Niro EV ",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Nissan",
+        "model": "Leaf ",
+        "battery_capacity": 39
+    },
+    {
+        "company": "Kia",
+        "model": "EV6 Long Range AWD",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Subaru",
+        "model": "Solterra AWD",
+        "battery_capacity": 71
+    },
+    {
+        "company": "MG",
+        "model": "ZS EV Long Range",
+        "battery_capacity": 68
+    },
+    {
+        "company": "Fiat",
+        "model": "500e Hatchback 42 kWh",
+        "battery_capacity": 37
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron GT RS",
+        "battery_capacity": 85
+    },
+    {
+        "company": "Mazda",
+        "model": "MX-30 ",
+        "battery_capacity": 30
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq iV 60",
+        "battery_capacity": 58
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQC 400 4MATIC",
+        "battery_capacity": 80
+    },
+    {
+        "company": "Jaguar",
+        "model": "I-Pace EV400",
+        "battery_capacity": 84
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-208 ",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.4 Pro Performance",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Lucid",
+        "model": "Air Dream Edition R",
+        "battery_capacity": 118
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQB 350 4MATIC",
+        "battery_capacity": 66
+    },
+    {
+        "company": "Polestar",
+        "model": "2 Long Range Single Motor",
+        "battery_capacity": 75
+    },
+    {
+        "company": "BMW",
+        "model": "i7 xDrive60",
+        "battery_capacity": 101
+    },
+    {
+        "company": "Toyota",
+        "model": "bZ4X AWD",
+        "battery_capacity": 71
+    },
+    {
+        "company": "BMW",
+        "model": "iX3 ",
+        "battery_capacity": 74
+    },
+    {
+        "company": "Volvo",
+        "model": "XC40 Recharge Pure Electric",
+        "battery_capacity": 67
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.5 GTX",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Long Range 2WD",
+        "battery_capacity": 70
+    },
+    {
+        "company": "Kia",
+        "model": "e-Niro 64 kWh",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.3 Pro",
+        "battery_capacity": 58
+    },
+    {
+        "company": "Lucid",
+        "model": "Air Pure",
+        "battery_capacity": 88
+    },
+    {
+        "company": "Nissan",
+        "model": "Leaf e+",
+        "battery_capacity": 59
+    },
+    {
+        "company": "Aiways",
+        "model": "U5 ",
+        "battery_capacity": 63
+    },
+    {
+        "company": "Seres",
+        "model": "3 ",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.4 GTX",
+        "battery_capacity": 77
+    },
+    {
+        "company": "CUPRA",
+        "model": "Born 150 kW - 58 kWh",
+        "battery_capacity": 58
+    },
+    {
+        "company": "CUPRA",
+        "model": "Born 170 kW - 77 kWh",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq Coupe iV RS",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo S",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-2008 SUV ",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Renault",
+        "model": "Twingo Electric",
+        "battery_capacity": 21
+    },
+    {
+        "company": "Opel",
+        "model": "Corsa-e ",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Volvo",
+        "model": "C40 Recharge Twin Pure Electric",
+        "battery_capacity": 75
+    },
+    {
+        "company": "MG",
+        "model": "Marvel R Performance",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Renault",
+        "model": "Zoe ZE50 R135",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Tesla",
+        "model": "Model X Long Range",
+        "battery_capacity": 95
+    },
+    {
+        "company": "MG",
+        "model": "MG5 Electric Long Range",
+        "battery_capacity": 57
+    },
+    {
+        "company": "Citroen",
+        "model": "e-C4 ",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Hyundai",
+        "model": "Kona Electric 39 kWh",
+        "battery_capacity": 39
+    },
+    {
+        "company": "Volkswagen",
+        "model": "e-Up! ",
+        "battery_capacity": 32
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq Coupe iV 80",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq iV 50",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 e-tron 35",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Lucid",
+        "model": "Air Grand Touring",
+        "battery_capacity": 112
+    },
+    {
+        "company": "Polestar",
+        "model": "2 Standard Range Single Motor",
+        "battery_capacity": 67
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Standard Range 2WD",
+        "battery_capacity": 54
+    },
+    {
+        "company": "Ford",
+        "model": "Mustang Mach-E ER RWD",
+        "battery_capacity": 91
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron GT quattro",
+        "battery_capacity": 85
+    },
+    {
+        "company": "Tesla",
+        "model": "Model 3 Performance",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Mini",
+        "model": "Cooper SE ",
+        "battery_capacity": 28
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron 55 quattro",
+        "battery_capacity": 86
+    },
+    {
+        "company": "Lexus",
+        "model": "UX 300e",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 e-tron 50 quattro",
+        "battery_capacity": 76
+    },
+    {
+        "company": "Opel",
+        "model": "Mokka-e ",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Fiat",
+        "model": "500e 3+1",
+        "battery_capacity": 37
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.4 Pro",
+        "battery_capacity": 77
+    },
+    {
+        "company": "BMW",
+        "model": "iX M60",
+        "battery_capacity": 105
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.4 Pure",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS AMG 53 4MATIC+",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQV 300 Long",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Renault",
+        "model": "Zoe ZE40 R110",
+        "battery_capacity": 41
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.3 Pro S - 5 Seats",
+        "battery_capacity": 77
+    },
+    {
+        "company": "BMW",
+        "model": "i3s 120 Ah",
+        "battery_capacity": 37
+    },
+    {
+        "company": "Volvo",
+        "model": "XC40 Recharge Twin Pure Electric",
+        "battery_capacity": 75
+    },
+    {
+        "company": "Renault",
+        "model": "Megane E-Tech EV40 130hp",
+        "battery_capacity": 40
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 Sportback e-tron 40",
+        "battery_capacity": 76
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.5 Pro",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Ford",
+        "model": "Mustang Mach-E ER AWD",
+        "battery_capacity": 91
+    },
+    {
+        "company": "Tesla",
+        "model": "Model X Plaid",
+        "battery_capacity": 95
+    },
+    {
+        "company": "Kia",
+        "model": "EV6 Standard Range 2WD",
+        "battery_capacity": 54
+    },
+    {
+        "company": "XPENG",
+        "model": "P5 ",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Smart",
+        "model": "EQ forfour ",
+        "battery_capacity": 16
+    },
+    {
+        "company": "Fiat",
+        "model": "500e Hatchback 24 kWh",
+        "battery_capacity": 21
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.5 Pro Performance",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.3 Pro Performance",
+        "battery_capacity": 58
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq iV 80x",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS SUV 580 4MATIC",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Renault",
+        "model": "Megane E-Tech EV60 130hp",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Long Range AWD",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQE AMG 43 4MATIC",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQB 250",
+        "battery_capacity": 66
+    },
+    {
+        "company": "MG",
+        "model": "ZS EV Standard Range",
+        "battery_capacity": 49
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS 350",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Fiat",
+        "model": "500e Cabrio",
+        "battery_capacity": 37
+    },
+    {
+        "company": "Genesis",
+        "model": "GV60 Premium",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 Sportback e-tron 50 quattro",
+        "battery_capacity": 76
+    },
+    {
+        "company": "Nissan",
+        "model": "Ariya 63kWh",
+        "battery_capacity": 63
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQB 300 4MATIC",
+        "battery_capacity": 66
+    },
+    {
+        "company": "Sono",
+        "model": "Sion ",
+        "battery_capacity": 47
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS SUV 450+",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4S",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Mazda",
+        "model": "MX-30 ",
+        "battery_capacity": 30
+    },
+    {
+        "company": "Kia",
+        "model": "e-Soul 64 kWh",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Plus",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQA 350 4MATIC",
+        "battery_capacity": 66
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.3 Pure Performance",
+        "battery_capacity": 45
+    },
+    {
+        "company": "MG",
+        "model": "MG5 EV Long Range",
+        "battery_capacity": 57
+    },
+    {
+        "company": "Honda",
+        "model": "e Advance",
+        "battery_capacity": 28
+    },
+    {
+        "company": "Nissan",
+        "model": "Ariya e-4ORCE 87kWh",
+        "battery_capacity": 87
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.3 Pro S - 4 Seats",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Volvo",
+        "model": "C40 Recharge Pure Electric",
+        "battery_capacity": 67
+    },
+    {
+        "company": "Ford",
+        "model": "Mustang Mach-E SR RWD",
+        "battery_capacity": 70
+    },
+    {
+        "company": "Lucid",
+        "model": "Air Dream Edition P",
+        "battery_capacity": 118
+    },
+    {
+        "company": "MG",
+        "model": "Marvel R ",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron 50 quattro",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Aiways",
+        "model": "U5 ",
+        "battery_capacity": 63
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan ",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Volkswagen",
+        "model": "ID.4 Pure Performance",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4 Cross Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Ford",
+        "model": "Mustang Mach-E GT",
+        "battery_capacity": 91
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Berlingo M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq Coupe iV 80x",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQA 250+",
+        "battery_capacity": 70
+    },
+    {
+        "company": "Genesis",
+        "model": "GV60 Sport",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Smart",
+        "model": "EQ fortwo coupe",
+        "battery_capacity": 16
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQA 300 4MATIC",
+        "battery_capacity": 66
+    },
+    {
+        "company": "JAC",
+        "model": "iEV7s ",
+        "battery_capacity": 39
+    },
+    {
+        "company": "Kia",
+        "model": "e-Niro 39 kWh",
+        "battery_capacity": 39
+    },
+    {
+        "company": "Lucid",
+        "model": "Air Touring",
+        "battery_capacity": 88
+    },
+    {
+        "company": "CUPRA",
+        "model": "Born 110 kW - 45 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 e-tron 45 quattro",
+        "battery_capacity": 76
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq iV RS",
+        "battery_capacity": 77
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4S Plus",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan GTS",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron Sportback 55 quattro",
+        "battery_capacity": 86
+    },
+    {
+        "company": "MG",
+        "model": "MG5 Electric Standard Range",
+        "battery_capacity": 46
+    },
+    {
+        "company": "Skoda",
+        "model": "Enyaq Coupe iV 60",
+        "battery_capacity": 58
+    },
+    {
+        "company": "SsangYong",
+        "model": "Korando e-Motion",
+        "battery_capacity": 56
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQE AMG 53 4MATIC+",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron S ",
+        "battery_capacity": 86
+    },
+    {
+        "company": "DS",
+        "model": "3 Crossback E-Tense",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Nissan",
+        "model": "Ariya e-4ORCE 87kWh Performance",
+        "battery_capacity": 87
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQS SUV 450 4MATIC",
+        "battery_capacity": 107
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron S Sportback ",
+        "battery_capacity": 86
+    },
+    {
+        "company": "Genesis",
+        "model": "GV60 Sport Plus",
+        "battery_capacity": 72
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Ford",
+        "model": "Mustang Mach-E SR AWD",
+        "battery_capacity": 70
+    },
+    {
+        "company": "CUPRA",
+        "model": "Born 170 kW - 58 kWh",
+        "battery_capacity": 58
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Rifter Standard 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Audi",
+        "model": "e-tron Sportback 50 quattro",
+        "battery_capacity": 64
+    },
+    {
+        "company": "Audi",
+        "model": "Q4 Sportback e-tron 35",
+        "battery_capacity": 52
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Traveller Standard 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Kia",
+        "model": "e-Soul 39 kWh",
+        "battery_capacity": 39
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Verso M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo S Sport Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Hyundai",
+        "model": "IONIQ 5 Standard Range AWD",
+        "battery_capacity": 54
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Verso L 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQV 300 Extra-Long",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Smart",
+        "model": "EQ fortwo cabrio",
+        "battery_capacity": 16
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Rifter Long 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Combo-e Life 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Jumpy Combi M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan GTS Sport Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Berlingo XL 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Sport Turismo",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Plus Sport Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Expert Combi Long 75 kWh",
+        "battery_capacity": 68
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo S Cross Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Mercedes",
+        "model": "eVito Tourer Long 90 kWh",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Traveller Long 75 kWh",
+        "battery_capacity": 68
+    },
+    {
+        "company": "Opel",
+        "model": "Zafira-e Life L 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Opel",
+        "model": "Combo-e Life XL 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Expert Combi Standard 75 kWh",
+        "battery_capacity": 68
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4S Plus Sport Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Citroen",
+        "model": "e-SpaceTourer M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4S Cross Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo Sport Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Citroen",
+        "model": "e-SpaceTourer M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Mercedes",
+        "model": "eVito Tourer Extra-Long 60 kWh",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Opel",
+        "model": "Vivaro-e Combi M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan Turbo Cross Turismo",
+        "battery_capacity": 83
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Verso M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQV 250 Long",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Jumpy Combi XL 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Mercedes",
+        "model": "eVito Tourer Extra-Long 90 kWh",
+        "battery_capacity": 90
+    },
+    {
+        "company": "Opel",
+        "model": "Vivaro-e Combi M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Verso L 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Shuttle L 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Jumpy Combi M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Mercedes",
+        "model": "eVito Tourer Long 60 kWh",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Opel",
+        "model": "Zafira-e Life L 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Porsche",
+        "model": "Taycan 4S Sport Turismo",
+        "battery_capacity": 71
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Jumpy Combi XL 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Vivaro-e Combi L 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Mercedes",
+        "model": "EQV 250 Extra-Long",
+        "battery_capacity": 60
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Shuttle M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Citroen",
+        "model": "e-SpaceTourer XL 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Traveller Long 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Expert Combi Compact 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Citroen",
+        "model": "e-SpaceTourer XL 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Vivaro-e Combi L 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Expert Combi Standard 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Citroen",
+        "model": "e-Jumpy Combi XS 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Zafira-e Life M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Shuttle M 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Zafira-e Life S 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Traveller Compact 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Opel",
+        "model": "Zafira-e Life M 75 kWh",
+        "battery_capacity": 65
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Expert Combi Long 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Toyota",
+        "model": "PROACE Shuttle L 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Citroen",
+        "model": "e-SpaceTourer XS 50 kWh",
+        "battery_capacity": 45
+    },
+    {
+        "company": "Peugeot",
+        "model": "e-Traveller Standard 75 kWh",
+        "battery_capacity": 68
+    }
+]
