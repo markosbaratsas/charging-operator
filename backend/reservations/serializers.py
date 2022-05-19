@@ -22,10 +22,14 @@ class VehiclesChargingNowSerializer(serializers.ModelSerializer):
                   'desired_final_battery']
 
     def get_model(self, obj):
-        return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
+        if obj.vehicle and obj.vehicle.model:
+            return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
+        return "Unknown vehicle model"
 
     def get_license_plate(self, obj):
-        return obj.vehicle.license_plate
+        if obj.vehicle and obj.vehicle.license_plate:
+            return obj.vehicle.license_plate
+        return "Unknown vehicle licence plate"
 
     def get_charging_in(self, obj):
         return obj.charger.name
@@ -68,23 +72,29 @@ class ReservationSerializer(serializers.ModelSerializer):
                     'owner_phone', 'station']
 
     def get_vehicle_name(self, obj):
-        return obj.vehicle.name
+        if obj.vehicle:
+            return obj.vehicle.name
+        return "Unknown vehicle name"
 
     def get_model(self, obj):
-        return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
+        if obj.vehicle and obj.vehicle.model:
+            return f'{obj.vehicle.model.manufacturer} {obj.vehicle.model.name}'
+        return "Unknown vehicle model"
 
     def get_license_plate(self, obj):
-        return obj.vehicle.license_plate
+        if obj.vehicle and obj.vehicle.license_plate:
+            return obj.vehicle.license_plate
+        return "Unknown vehicle licence plate"
 
     def get_owner(self, obj):
-        if not obj.vehicle.owner:
-            return "Uknown Owner's name"
-        return obj.vehicle.owner.name
+        if obj.vehicle and obj.vehicle.owner:
+            return obj.vehicle.owner.name
+        return "Uknown Owner's name"
 
     def get_owner_phone(self, obj):
-        if not obj.vehicle.owner.phone:
-            return "Uknown Owner's phone"
-        return str(obj.vehicle.owner.phone)
+        if obj.vehicle and obj.vehicle.owner:
+            return str(obj.vehicle.owner.phone)
+        return "Uknown Owner's phone"
 
     def get_charger(self, obj):
         return ChargerReservationSerializer(
