@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout', views.delete_token_operator, name="delete_token_operator"),
     path('validate-token', views.validate_token_operator,
                     name="validate_token_operator"),
+    path('validate-token-owner', views.validate_token_owner,
+                    name="validate_token_owner"),
 ]

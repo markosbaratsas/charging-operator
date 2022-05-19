@@ -7,8 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from users.body_parameters import AUTHENTICATION_HEADER
-from users.decorators import operator_required
-from users.serializers import RegistrationOperatorSerializer
+from users.decorators import operator_required, owner_required
+from users.serializers import (RegistrationOperatorSerializer,
+                               RegistrationOwnerSerializer)
 
 
 @swagger_auto_schema(
@@ -20,7 +21,17 @@ from users.serializers import RegistrationOperatorSerializer
 )
 @api_view(['POST', ])
 def register_operator(request):
-    serializer = RegistrationOperatorSerializer(data=request.data)
+    """Register a user (operator or owner)
+
+    Returns:
+        Response: Status HTTP_200_OK if registration is successful, else
+            returns HTTP_403_FORBIDDEN
+    """
+    if 'owner' in request.data:
+        serializer = RegistrationOwnerSerializer(data=request.data)
+    else:
+        serializer = RegistrationOperatorSerializer(data=request.data)
+
     data = {}
     if serializer.is_valid():
         user = serializer.save()
@@ -43,8 +54,13 @@ def register_operator(request):
 )
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated,))
-@operator_required
-def delete_token_operator(request):
+def delete_token(request):
+    """Logout a user by deleting the token from the database
+
+    Returns:
+        Response: Status HTTP_200_OK if user was logged in and logout is
+            successful, else returns HTTP_401_UNAUTHORIZED
+    """
     try:
         request.user.auth_token.delete()
     except (AttributeError, ObjectDoesNotExist):
@@ -66,9 +82,32 @@ def delete_token_operator(request):
 @operator_required
 def validate_token_operator(_):
     """Endpoint used to validate that a user's token is actually valid
+    and that this user is an operator
 
     Returns:
-        Ressponse: Status HTTP_200_OK if token is valid, else
+        Response: Status HTTP_200_OK if token is valid, else
+            returns HTTP_401_UNAUTHORIZED
+    """
+    return Response(status=status.HTTP_200_OK)
+
+
+@swagger_auto_schema(
+    methods=['POST'],
+    manual_parameters=[AUTHENTICATION_HEADER],
+    responses={
+        200: 'Success',
+        401: 'Not Authorized'
+    }
+)
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+@owner_required
+def validate_token_owner(_):
+    """Endpoint used to validate that a user's token is actually valid
+    and that this user is an owner
+
+    Returns:
+        Response: Status HTTP_200_OK if token is valid, else
             returns HTTP_401_UNAUTHORIZED
     """
     return Response(status=status.HTTP_200_OK)
