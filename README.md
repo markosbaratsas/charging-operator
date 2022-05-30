@@ -13,15 +13,19 @@ This repository includes the following:
 
 ## System Architecture Diagram
 The following diagram explains the system architecture.
+
 <img src="documentation/diagrams/deployment-diagram.png" alt="Architecture Diagram - Charging Operator" width="500" />
 
 ## Backend ER Diagram
 The backend ER diagram can be seen below.
+
 <img src="documentation/diagrams/ER.png" alt="ER Diagram - Charging Operator" width="500" />
 
 ## App screenshots
 Below there are some screenshots of the Frontend Environment:
+
 <img src="documentation/app screenshots/overview-screenshot2.png" alt="Overview Screenshot" width="500" />
+
 <img src="documentation/app screenshots/statistics-screenshot2.png" alt="Overview Screenshot" width="500" />
 
 ## Thesis Abstract
