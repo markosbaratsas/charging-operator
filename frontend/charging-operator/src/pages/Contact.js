@@ -78,7 +78,7 @@ const Contact = ({title}) => {
                             <input
                                 type="email"
                                 className={"my-classic-input contact-input1" + " " + (emailError ? "error-selected" : "")}
-                                placeholder="email"
+                                placeholder="Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />

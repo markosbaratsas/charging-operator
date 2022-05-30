@@ -154,7 +154,11 @@ const ModalReservation = ({show, setShow, stationId, arrivalTime, setArrivalTime
             contentClassName="my-modal-content"
         >
             <Modal.Header  className="modal-header">
-                <h1 className="modal-h1">Create Reservation</h1>
+                {reservation === null ?(
+                    <h1 className="modal-h1">Create Reservation</h1>
+                ) : (
+                    <h1 className="modal-h1">Update Reservation</h1>
+                )}
             </Modal.Header>
             <Modal.Body>
                 <div className="charger-inputs">

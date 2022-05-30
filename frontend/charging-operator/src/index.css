@@ -3926,7 +3926,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 800px;
+  min-height: calc(100vh - 335px);
   width: 100%;
 }
 
@@ -3963,7 +3963,7 @@
 
 .about-image {
   width: 55%;
-  height: 800px;
+  min-height: calc(100vh - 335px);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -3979,7 +3979,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 800px;
+  min-height: calc(100vh - 335px);
   width: 100%;
 }
 
@@ -3989,7 +3989,7 @@
 
 .contact-image {
   width: 55%;
-  height: 800px;
+  min-height: calc(100vh - 335px);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -4026,12 +4026,12 @@
 }
 
 .contact-input1 {
-  width: 287px !important;
+  width: 50% !important;
   margin: 0px 5px !important;
 }
 
 .contact-input2 {
-  width: 600px !important;
+  width: 95% !important;
 }
 
 .contact-f {
