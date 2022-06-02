@@ -53,6 +53,10 @@ const Contact = ({title}) => {
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+      }, [])
+
+    useEffect(() => {
         setFullnameError(false);
         setEmailError(false);
         setMessageError(false);

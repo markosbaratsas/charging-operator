@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import LandingPageView from '../components/LandingPageView';
 import useTitle from '../hooks/useTitle';
@@ -10,6 +10,10 @@ const Home = ({title}) => {
 
     const [image, setImage] = useState("overview-screenshot2");
     const [image2, setImage2] = useState("owner-dashboard-screenshot2");
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+      }, [])
 
     if (width >= 1300) {
     return (

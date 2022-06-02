@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useTitle from '../hooks/useTitle';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 
@@ -5,6 +6,10 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 const About = ({title}) => {
     useTitle({title});
     const { width } = useWindowDimensions();
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+      }, [])
 
     if (width >= 1000) {
     return (
