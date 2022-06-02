@@ -29,11 +29,22 @@ SECRET_KEY = data['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = [
+    'http://charging-operator.baratsas.gr',
+    'http://www.charging-operator.baratsas.gr',
+    'charging-operator.baratsas.gr',
+    'localhost',
+    '127.0.0.1',
+    '172.105.130.133',
+]
 
 CORS_ORIGIN_WHITELIST = [
     'https://localhost:3000',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://charging-operator.baratsas.gr',
+    'https://www.charging-operator.baratsas.gr',
+    'charging-operator.baratsas.gr'
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -155,7 +166,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static-django/'
+STATIC_ROOT = '/var/www/charging-operator.baratsas.gr/charging-operator/backend/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
