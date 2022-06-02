@@ -1,13 +1,17 @@
 import { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAlert } from 'react-alert';
 
 import AuthProvider from '../context/AuthProvider';
 import useTitle from '../hooks/useTitle';
 import { loginUser } from '../api/BackendCalls';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 
 
 const Login = ({title}) => {
     useTitle({title});
+    const { width } = useWindowDimensions();
+    const alert = useAlert();
 
     const { isAuthenticated, setAuth, isAuthenticatedOwner } = AuthProvider();
 
@@ -23,6 +27,13 @@ const Login = ({title}) => {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
+
+    useEffect(() => {
+        if (width < 1000) {
+            window.scrollTo(0, 0);
+            alert.success('The main application is created only for desktops.');
+        }
+    }, [])
 
     useEffect(async () => {
         const checkAuth = await isAuthenticated();

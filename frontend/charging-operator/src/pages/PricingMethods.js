@@ -1,7 +1,20 @@
+import { useEffect } from 'react';
+import { useAlert } from 'react-alert';
+
 import useTitle from '../hooks/useTitle';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 
 const PricingMethod = ({title}) => {
     useTitle({title});
+    const { width } = useWindowDimensions();
+    const alert = useAlert();
+
+    useEffect(() => {
+        if (width < 1000) {
+            window.scrollTo(0, 0);
+            alert.success('The main application is created only for desktops.');
+        }
+    }, [])
 
     return (
         <main className="flex-column-center-center pricing-methods-page">
