@@ -4322,3 +4322,116 @@
   text-align: center;
   color: #444;
 }
+
+
+.about-page-phone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 335px);
+  width: 100%;
+}
+
+.about-words-phone {
+  width: 90%;
+}
+
+.about-words-phone h1 {
+  font-weight: 600;
+  color: #202020;
+  font-size: 30px;
+  line-height: 40px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  padding: 40px 10px;
+}
+
+.about-words-phone p {
+  font-weight: 400;
+  color: #202020;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  padding-bottom: 30px;
+}
+
+.about-words-phone p a {
+  color: #202020;
+}
+
+.about-image-phone {
+  width: 100%;
+  min-height: calc(50vh);
+  display: block;
+  background-image: url('../public/img/chargers-about-page-ready2.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.contact-page-phone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 335px);
+  width: 100%;
+}
+
+.contact-words-phone {
+  width: 90%;
+}
+
+.contact-image-phone {
+  width: 100%;
+  min-height: calc(100vh - 335px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  background-image: url('../public/img/car-contact2.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.contact-words-phone h1 {
+  font-weight: 600;
+  color: #202020;
+  font-size: 30px;
+  line-height: 25px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  padding: 40px 5px 20px 5px;
+}
+
+.contact-words-phone p {
+  font-weight: 400;
+  color: #202020;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 25px;
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  padding-bottom: 5px;
+}
+
+.contact-words-phone p a {
+  color: #202020;
+}
+
+.contact-input1-phone {
+  width: 50% !important;
+  margin: 0px 5px !important;
+}
+
+.contact-input2-phone {
+  width: 95% !important;
+}
+
+.contact-f-phone {
+  margin-top: 30px;
+  padding-bottom: 30px;
+}
