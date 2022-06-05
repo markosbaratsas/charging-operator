@@ -5,6 +5,9 @@ Charging operator is an app used by EV Charging Station operators, so that they 
 
 This project was developed by [Markos Baratsas](https://github.com/markosbaratsas) as part of his Diploma Thesis in the [School of Electrical and Computer Engineering of NTUA](https://www.ece.ntua.gr/en).
 
+## Live Website
+A live version of this system is deployed on this [link](https://charging-operator.baratsas.gr/).
+
 ## What this repository includes
 
 This repository includes the following:
