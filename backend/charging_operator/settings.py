@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-with open('secrets.json', 'r') as f:
+with open('config/secrets.json', 'r') as f:
     data = json.load(f)
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -44,7 +44,6 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://charging-operator.baratsas.gr',
     'https://www.charging-operator.baratsas.gr',
-    'charging-operator.baratsas.gr'
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -184,13 +183,9 @@ CELERY_TIMEZONE = TIME_ZONE
 FINGRID_API_URL = data['FINGRID_API_URL']
 FINGRID_X_API_KEY = data['FINGRID_X_API_KEY']
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = data["EMAIL_HOST"]
-EMAIL_PORT = data["EMAIL_PORT"]
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = data["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = data["EMAIL_HOST_PASSWORD"]
-EMAIL_TO = data["EMAIL_TO"]
-
+# email
+EMAIL_BACKEND = 'django_gsuite_email.GSuiteEmailBackend'
 DEFAULT_FROM_EMAIL = data["DEFAULT_FROM_EMAIL"]
+EMAIL_TO = data["EMAIL_TO"]
 SERVER_EMAIL = data["DEFAULT_FROM_EMAIL"]
+GOOGLE_CREDENTIALS_FILE_PATH = BASE_DIR / 'config/google_credentials_file.json'

@@ -1,5 +1,4 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.mail import send_mail
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -7,7 +6,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from charging_operator.settings import DEFAULT_FROM_EMAIL, EMAIL_TO
+from charging_operator.settings import (DEFAULT_FROM_EMAIL, EMAIL_TO,
+                                        GOOGLE_CREDENTIALS_FILE_PATH)
+from charging_operator.send_email import send_email
 from users.body_parameters import AUTHENTICATION_HEADER
 from users.decorators import operator_required, owner_required
 from users.serializers import (RegistrationOperatorSerializer,
@@ -119,18 +120,19 @@ def validate_token_owner(_):
 def contact(request):
     """Endpoint ot be used by frontend when a form is submitted
     """
-    send_mail(
-        'Charging Operator - Contact Form',
-        f"""
-        Email: {request.data["email"]}
+    send_email(
+        credentials_file=GOOGLE_CREDENTIALS_FILE_PATH,
+        subject='Charging Operator - Contact Form',
+        from_email=DEFAULT_FROM_EMAIL,
+        to=[EMAIL_TO],
+        bcc=[],
+        text_content=f'''
+            Email: {request.data["email"]}
 
-        Fullname: {request.data["fullname"]}
+            Fullname: {request.data["fullname"]}
 
-        Message: {request.data["message"]}
-
-        """,
-        DEFAULT_FROM_EMAIL,
-        [EMAIL_TO],
-        fail_silently=False,
+            Message: {request.data["message"]}
+            ''',
+        reply_to=[],
     )
     return Response(status=status.HTTP_200_OK)
