@@ -27,10 +27,15 @@ def get_fingrid_prices():
     grid_prices = response.json()
 
     for i in grid_prices:
-        start_time = make_aware(datetime.strptime(i["start_time"],
+        try:
+            start_time = make_aware(datetime.strptime(i["start_time"],
                                                   "%Y-%m-%dT%H:%M:%S+0300"))
-        end_time = make_aware(datetime.strptime(i["end_time"],
+            end_time = make_aware(datetime.strptime(i["end_time"],
                                                 "%Y-%m-%dT%H:%M:%S+0300"))
+        except:
+            # error might happen for example in 26 March 03:00 (when time changes)
+            continue
+
         value = float(i["value"])
 
         location, _ = Location.objects.get_or_create(
