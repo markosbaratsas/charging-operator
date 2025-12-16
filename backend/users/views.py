@@ -138,11 +138,11 @@ def contact(request):
     ]
     text_content = ''
     for form_item in form_potential_fields:
-        if request.data[form_item] != None:
+        if form_item in request.data:
             text_content += f'\nEmail: {request.data[form_item]}\n'
 
     subject = 'Charging Operator - Contact Form'
-    if request.data["email_subject"] != None:
+    if  "email_subject" in request.data:
         subject = request.data["email_subject"]
 
     send_email(
