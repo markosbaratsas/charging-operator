@@ -120,19 +120,38 @@ def validate_token_owner(_):
 def contact(request):
     """Endpoint ot be used by frontend when a form is submitted
     """
+    if request.data == None: 
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    form_potential_fields = [
+        'email',
+        'fullname',
+        'message',
+        'first_name',
+        'last_name',
+        'business_name',
+        'business_category',
+        'location',
+        'expected_number_of_reservations_per_day',
+        'phone',
+        'notes',
+    ]
+    text_content = ''
+    for form_item in form_potential_fields:
+        if request.data[form_item] != None:
+            text_content += f'\nEmail: {request.data[form_item]}\n'
+
+    subject = 'Charging Operator - Contact Form'
+    if request.data["email_subject"] != None:
+        subject = request.data["email_subject"]
+
     send_email(
         credentials_file=GOOGLE_CREDENTIALS_FILE_PATH,
-        subject='Charging Operator - Contact Form',
+        subject=subject,
         from_email=DEFAULT_FROM_EMAIL,
         to=[EMAIL_TO],
         bcc=[],
-        text_content=f'''
-            Email: {request.data["email"]}
-
-            Fullname: {request.data["fullname"]}
-
-            Message: {request.data["message"]}
-            ''',
+        text_content=text_content,
         reply_to=[],
     )
     return Response(status=status.HTTP_200_OK)
