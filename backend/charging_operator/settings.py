@@ -39,6 +39,8 @@ ALLOWED_HOSTS = [
     '172.105.130.133',
 
     # for tzes
+    'https://tzes.figma.site',
+    'https://tzes.gr',
     'tzes.figma.site'
     'tzes.gr'
 ]
@@ -48,6 +50,9 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://charging-operator.baratsas.gr',
     'https://www.charging-operator.baratsas.gr',
+
+    'https://tzes.figma.site',
+    'https://tzes.gr',
 ]
 
 CORS_ALLOW_HEADERS = [
