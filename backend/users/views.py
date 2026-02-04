@@ -139,7 +139,7 @@ def contact(request):
     text_content = ''
     for form_item in form_potential_fields:
         if form_item in request.data:
-            text_content += f'\nEmail: {request.data[form_item]}\n'
+            text_content += f'\n{form_item}: {request.data[form_item]}\n'
 
     subject = 'Charging Operator - Contact Form'
     if  "email_subject" in request.data:
