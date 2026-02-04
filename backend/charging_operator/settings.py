@@ -37,6 +37,10 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '172.105.130.133',
+
+    # for tzes
+    'tzes.figma.site'
+    'tzes.gr'
 ]
 
 CORS_ORIGIN_WHITELIST = [
